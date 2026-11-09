@@ -211,3 +211,143 @@ Celdas por detector: `exposiciones / visitas`.
 - [ ] Correr `02_fetch_cutouts.py` para ε Indi B (saturación de A a 6.7'), RW Aur y R Dra (curva de luz).
 - [ ] Revisar `TAP_SCHEMA.columns` de `spherex.plane` por una columna de colección/release.
 - [ ] Mapa de ángulo sólido (`solid_angle_pixel_map`) para pasar MJy/sr → µJy en `/api/spectrum`.
+
+---
+
+# 9 nov · Brechas 12 y 15 de `docs/13`, diferenciador 1 de `docs/14`, y los otros tres objetos
+
+Scripts nuevos: `poc/03_delta_lambda_residual.py` (residuo vs Δλ), `poc/04_s3_range.py` (cutout por HTTP Range).
+`poc/02_fetch_cutouts.py` ahora cachea en `out/cache/`, reproyecta la VARIANCE, mide flujo de apertura
+(r = 2 px, fondo en anillo 4–6 px, 1 MJy/sr·px = 889 µJy con píxel uniforme) y tiene `--coadd-visit` y `--out`.
+Hoy: **355 cutouts, 0 fallos**, 6.2–7.5 s/cutout con 4 workers, 1.6 GB bajados.
+
+## 8. Brecha 12 · Residuo de la resta entre exposiciones de λ distinta (`03`)
+
+Visita del 2025-11-07 de WISE 0855 en D5: 18 exposiciones en 17 canales consecutivos (3.815 → 4.402 µm, paso = 1
+ancho de banda = 0.036 µm), malla de 0.2° (117 px), 153 pares, 5 estrellas Gaia G = 10.2–13.9 con S/N > 5.
+
+| Δ canales | Δλ (µm) | pares | fondo: RMS(a−b)/√(VARa+VARb) | estrellas: RMS(a−b)/ruido, mediana (máx) | residuo fraccional del flujo estelar |
+|---|---|---|---|---|---|
+| 0–1 | 0.02–0.04 | 19 | 0.80 | 2.8 (32) | **4–7 %** |
+| 2 | 0.072 | 17 | 0.80 | 3.7 (27) | 4.1 % |
+| 4 | 0.145 | 15 | 0.87 | 2.9 (32) | 4.9 % |
+| 8 | 0.297 | 10 | 0.84 | 4.1 (32) | 8.0 % |
+| 12 | 0.446 | 5 | 0.83 | 3.9 (30) | 14.3 % |
+| 16 | 0.587 | 1 | 1.57 | 3.8 (20) | **25 %** |
+
+- **El fondo se resta limpio**: cociente 0.80–0.87, así que la `VARIANCE` del pipeline es honesta (incluso algo conservadora).
+- **Las estrellas no**: aun a Δ = 1 canal el residuo es 3–4× el ruido (hasta 32× en la estrella de G = 10),
+  con dipolos visibles en los PNG (`out/wise0855_dlam/diff_D5_d01_*.png`). Ese **piso de ~4 %** del flujo no es
+  cromático: es remuestreo (`reproject_interp` sobre una PSF submuestreada a 6.15"/px) más la rotación entre
+  exposiciones.
+- Sobre el piso, el residuo **crece linealmente con Δλ: +1.4 % del flujo por canal** (ajuste), frente a
+  +1.8 %/canal que predice la cola de Rayleigh-Jeans (F_ν ∝ λ⁻², 2Δλ/λ con Δλ = 0.036 y λ = 4.1 µm). Las estrellas
+  normales "se apagan" hacia el rojo en MJy/sr; a 16 canales (0.59 µm) el residuo es 25 % del flujo.
+- **Regla para el producto ("veredicto espectral")**: restar solo dentro de ±2 canales (residuo ≈ piso) o entre coadds
+  del mismo canal; entre 3 y 8 canales avisar ("residuos de 5–8 % en estrellas, dipolos esperables"); más de 8 canales,
+  bloquear o mostrar solo como "comparación de color". Para bajar el piso: PSF-matching o `reproject_exact`, y
+  buscar movers sobre coadds por visita en lugar de restas crudas.
+
+## 9. Brecha 15 · Cutout sin PSF (`04`)
+
+- **El servicio de cutouts no permite omitir HDUs.** Probados `hdus=`, `hdu=`, `ext=`, `extension=`, `hdulist=`,
+  `nopsf=`, `exclude=`, `planes=`, `format=`: todos devuelven los mismos 5 071 680 B. Solo **`gzip=1` funciona**
+  (3.78 MB, −25 %), aunque la documentación dice que los cutouts de SPHEREx no se comprimen.
+- **HTTP Range funciona, anónimo, en los dos sitios**: `https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/<key>`
+  (`Accept-Ranges: bytes`, archivo de 71 634 240 B) y también el propio `/ibe/data/…` de IRSA (206). La `key` de S3 es
+  la `uri` de TAP sin el prefijo `ibe/data/spherex/`. El listado del bucket confirma 20 prefijos `qr3/` (`level2`,
+  `epsf`, `spectral_wcs`, `solid_angle_pixel_map`, …).
+- `04_s3_range.py` recorre las cabeceras HDU por HDU con peticiones Range, baja las filas y0..y1 completas de
+  IMAGE/FLAGS/VARIANCE/ZODI (29 filas × 2040 × 4 B ≈ 237 KB por plano) y la tabla WCS-WAVE, y arma un MEF con CRPIX
+  corregido. Resultado sobre 4 exposiciones D5 de WISE 0855 (0.05°):
+
+| Método | Bytes por cutout | Peticiones | Segundos | ¿Idéntico? |
+|---|---|---|---|---|
+| Cutout service | 5.07 MB | 1 | 5.8 (2.8–7.6) | — |
+| Range S3 | **1.20 MB** | 14 (10 son cabeceras) | **4.0** (2.1–2.6 solo en cabeceras) | **sí**: máx abs(Δ) IMAGE = 0.0, FLAGS iguales, λ a 0.0002 µm |
+
+  Son ×4 menos bytes y ×1.4 menos tiempo. La disposición de cabeceras es fija por release y versión de pipeline, así
+  que cacheando los offsets quedan **5 peticiones y ~1.5 s por cutout**. Archivos de prueba en
+  `out/wise0855_range/*_range.fits`.
+
+## 10. Diferenciador 1 · Coadd por visita (`02 --coadd-visit`)
+
+WISE 0855, todas las exposiciones de D5+D6 (91) y de D1+D2 (84), coadd 1/VARIANCE por visita y detector.
+
+| Detector | Visitas | n_exp por visita | Flujo del coadd (µJy) | Error típico: exposición → coadd | Movimiento coadds (esperado) |
+|---|---|---|---|---|---|
+| D5 (3.8–4.4 µm) | 6 | 1–18 | 400–430 (n ≥ 6); 734 ± 59 en la visita de 5 exp | 102 → 28–43 | 0.97 px (1.35) |
+| D6 (4.4–5.0 µm) | 10 | 1–8 | 530–660 (n ≥ 3) | 178 → 58–99 | **1.30 px (1.34)** |
+| D1 (0.75–1.1 µm) | 5 | 4–12 | 450 → 1146 (ver nota) | 67 → 20–32 | 0.24 px (1.32) |
+| D2 (1.1–1.6 µm) | 6 | 1–18 | 393 → 980 (ver nota) | 62 → 15–28 | 0.21 px (1.35) |
+
+- **WISE 0855 sale a S/N 10–14 por visita en D5 y D6**, nítido en `out/wise0855_coadd56/coadd_D5.gif`
+  (6 cuadros) y `coadd_D6.gif` (10 cuadros). Su flujo, ~430 µJy en D5 y ~600 µJy en D6, cuadra con W2 = 13.9
+  (≈ 430 µJy): la calibración en MJy/sr con píxel uniforme ya está a ~10 %.
+- **En D1–D2 lo que hay en la apertura no es WISE 0855**: no se mueve (0.2 px en un año) y su flujo "sube"
+  450 → 1146 µJy solo porque la apertura, centrada en la posición predicha de la enana marrón, se va acercando a
+  ella. Gaia DR3 tiene una **estrella G = 16.3 a 6.8" (1.1 px) de la posición de WISE 0855 en 2026.0**
+  (pm −6, +2 mas/yr, ϖ = 0.29 mas: fondo). Es el ejemplo perfecto para la demo: en D1–D4 el visor muestra una
+  estrella quieta; en D5–D6 aparece el objeto que se mueve; y "¿es conocido?" debe listar ambas cosas.
+- El movimiento medido sobre coadds en D6 (1.30 px vs 1.34) iguala al de exposiciones sueltas; en D5 el centroide
+  sufre con las visitas de 1 exposición. Unidad de línea de tiempo = visita: **validado**.
+
+## 11. Los otros tres objetos (`--per-visit 1`; D2 para ε Indi B y RW Aur; D1 y D4 para R Dra)
+
+| Objeto | Cuadros | Rango | Saturación | Flags en el centro | Flujo apertura | Movimiento (esperado) |
+|---|---|---|---|---|---|---|
+| ε Indi Ba/Bb D2 | 14 | 2025-04-24 → 2026-09-29 | **No** (pico 3–28 MJy/sr) | `SOURCE` | 6.4–42 mJy **según λ** | 0.98 px (1.09) |
+| RW Aur D2 | 11 | 2025-09-08 → 2026-09-15 | **Sí**: 1–4 px `OVERFLOW` en el núcleo (pico 70–260 MJy/sr) | `OVERFLOW`, `SOURCE`, bit 26 | alas 6–13 mJy; apertura no fiable | 0.84 px (0): ruido del núcleo NaN |
+| R Dra D1 | 67 | 2025-06-06 → 2026-09-27 | **Total**: 1–19 px NaN, radio enmascarado 1–4.5 px (pico 1 000–4 250 MJy/sr) | `OVERFLOW`, `SUR_ERROR`, `SOURCE`, bit 26 | 0 (apertura entera NaN) | — |
+| R Dra D4 | 66 | ídem | **Total**: 4–41 px NaN, radio hasta 9.8 px, `DICHROIC` cerca de 2.4 µm | ídem | 0 | — |
+
+- **ε Indi Ba/Bb es el objeto limpio de la lista**: a 0.05° ε Indi A (6.7') queda fuera del recorte, el par no
+  satura y se mueve lo predicho. Su "curva de luz" por visita es en realidad **su espectro**: 14 mJy a 1.1 µm,
+  12.5 mJy a 1.47 µm, **6.4 mJy en la banda de agua de 1.39 µm**, 32–42 mJy en el pico H de 1.54–1.64 µm. Un blink
+  ingenuo lo mostraría "parpadeando" ×6. Es la demo más didáctica de la trampa del LVF y del espectro al vuelo.
+- **R Dra satura en todas las exposiciones** (es una Mira de K ≈ 0): el núcleo es NaN hasta r ≈ 10 px en D4 y la
+  máscara de `docs/02` deja un hueco negro. Probé un proxy de brillo con las alas (anillo 3–7 px sin píxeles
+  saturados): varía ×4 en D1 pero no sigue el periodo de 245.6 d (hay "máximos" a 122 d de distancia) y depende de la λ
+  exacta (bandas de TiO a 0.7–0.8 µm) y del tamaño del hueco. **La variabilidad de R Dra no es medible con este
+  pipeline**; haría falta ajuste de alas con la ePSF de QR3 a canal fijo, y ni así es seguro.
+- **RW Aur** también satura el núcleo (1–4 px). Sus alas dan 6–13 mJy sin tendencia clara; con su amplitud de 2–3 mag
+  en eventos de oscurecimiento quizá se vea en D5–D6 (no probado). El bit 26 de `FLAGS` aparece desde mediados de 2026
+  (pipeline 6.5.6 y 7.0.5) y **no está en la tabla de `docs/02`**: verificar en el Explanatory Supplement.
+
+## 12. Qué cambiar en `docs/04` y `docs/14`
+
+`docs/04`:
+1. **Adquisición**: sustituir el cutout service por **HTTP Range** (IRSA o S3) sobre IMAGE/FLAGS/VARIANCE/ZODI/WCS-WAVE
+   con cache de offsets por versión: 1.2 MB y 1.5–4 s por exposición en vez de 5 MB. Dejar el cutout service con
+   `gzip=1` como fallback. Nunca bajar PSF/EPSF salvo bajo demanda.
+2. **Unidad del pipeline = visita**: el coadd 1/VAR por visita y detector es el "cuadro" de `/api/frames`; las
+   exposiciones sueltas quedan como "escalera de λ" dentro de la visita. Añadir al contrato `n_exp`, `lambda_min/max`,
+   `depth` y flujo ± error de apertura por cuadro.
+3. **Veredicto espectral** como campo del contrato de `/api/diff`: `ok` (≤ 2 canales), `warn` (3–8), `block` (> 8), con
+   el residuo esperado (4 % + 1.4 %/canal) en la respuesta para mostrarlo en la UI.
+4. **Saturación**: el bit 1 de `FLAGS` no se enmascara para display, se pinta; `/api/frames` debe devolver `saturated_px`
+   y `mask_radius_px` por cuadro. Objetos de K ≲ 5 (R Dra, Barnard en D2, RW Aur) llevan aviso "núcleo saturado".
+5. **`/api/known`**: para WISE 0855 debe aparecer la estrella G = 16.3 a 6.8" y la propia enana marrón (CatWISE), con
+   la nota "en D1–D4 ves la estrella; en D5–D6 el objeto en movimiento".
+6. Tabla de bits de `FLAGS`: añadir el bit 26 (pendiente de nombre).
+
+`docs/14`:
+- Diferenciador 1 (coadd + escalera de λ): **validado con números**: S/N ×3, WISE 0855 a 430 µJy ≈ W2 13.9, movimiento
+  1.30 px vs 1.34 en D6. Usar ε Indi B como ejemplo didáctico: su blink ingenuo "parpadea" ×6 por λ.
+- Diferenciador 2 (veredicto + residuo medido): ya hay cifra publicable: piso 4 % + 1.4 %/canal (Rayleigh-Jeans predice 1.8 %).
+- Diferenciador 6 (**Deep Field con R Dra**): **replantear**. R Dra satura por completo en D1 y D4; no habrá curva de
+  luz. Opciones: (a) otra variable del campo profundo del NEP con K ≈ 6–9 (buscar en VSX/Gaia DR3 dentro de ~5° del
+  polo), (b) usar R Dra como pieza de la "Field Guide" de saturación y mostrar la cadencia del Deep Field con un
+  asteroide o una estrella de campo. Lo mismo aplica a RW Aur: su variabilidad tampoco se mide aquí.
+- Nuevo argumento de demo: la conjunción WISE 0855 ↔ estrella G = 16.3 a 1.1 px en 2026 explica en una pantalla por qué
+  hay que comparar por detector y cruzar con catálogos.
+- Pitch: cambiar "cruza cada punto con cuatro catálogos" por un ejemplo concreto: "a 7 segundos de arco de WISE 0855
+  hay una estrella de Gaia que no se mueve; el visor te dice cuál es cuál".
+
+## 13. Pendientes que quedan
+
+- [ ] Nombre del bit 26 de `FLAGS` (Explanatory Supplement) y revisar si hay bits nuevos en 7.0.5.
+- [ ] Cache de offsets de cabecera por (release, versión) en `04` y medir el tiempo con 5 peticiones.
+- [ ] Buscar una variable no saturada en el Deep Field del NEP para el diferenciador 6.
+- [ ] Probar WISE 0855 en D3–D4 con coadd (transición entre "invisible" y "visible").
+- [ ] `reproject_exact` o PSF-matching para bajar el piso de 4 % del residuo.
