@@ -26,8 +26,11 @@ hora de Ciudad de México. Recursos oficiales del reto salen el viernes 13 nov.
   (ya lo hace `poc/targets.py`). QR3 cambia la HDU `PSF` por una tabla `EPSF`.
 - **Siguiente paso** (docs/05, martes 10): repo base `apps/web` (Next.js + TS) y `apps/api` (FastAPI)
   según `docs/04`, incorporando los ajustes de la sección "Qué ajustar" de `docs/06`.
-  Pendientes de la PoC: probar si el servicio de cutouts permite omitir la HDU PSF (99 % del peso),
-  coadd por visita para WISE 0855, correr `02_fetch_cutouts.py` en epsindib/rwaur/rdra.
+- **9 nov**: cerradas las brechas 12 y 15 de `docs/13` y validado el diferenciador 1 de `docs/14` (sección "9 nov"
+  de `docs/06`): el cutout service no permite omitir HDUs pero **HTTP Range** (IRSA o S3) baja 1.2 MB en vez de 5 MB con
+  resultado idéntico; el residuo de restar λ distintas es 4 % + 1.4 %/canal del flujo estelar; el coadd por visita
+  muestra WISE 0855 a S/N 10–14 (430 µJy ≈ W2 13.9); **R Dra y RW Aur saturan** (no hay curva de luz con este
+  pipeline) y ε Indi B es el objeto limpio. Hay repo git con Conventional Commits.
 
 ## Convenciones
 - Código en TypeScript (Next.js, App Router) para el front y Python 3.11+ para el backend de datos.

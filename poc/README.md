@@ -27,7 +27,12 @@ python 01_find_epochs.py wise0855          # ¿cuántas épocas hay y en qué de
 python 02_fetch_cutouts.py wise0855 --det 5 6 --per-visit 1 --max 16   # 1 cuadro por visita: se ve el movimiento
 python 02_fetch_cutouts.py barnard --det 2 --per-visit 1 --max 14
 python 02_fetch_cutouts.py wise0855 --det 5 6 --max 12   # sin --per-visit: toma las primeras 12 en el tiempo (casi todas de UNA visita)
+python 02_fetch_cutouts.py wise0855 --det 5 6 --coadd-visit --max 200 --out out/wise0855_coadd56   # coadd 1/VAR por visita
+python 03_delta_lambda_residual.py wise0855 --det 5 --size 0.2   # residuo de la resta vs Δλ (brecha 12 de docs/13)
+python 04_s3_range.py wise0855 --det 5 --n 4                     # cutout por HTTP Range sobre S3 vs cutout service
 ```
+
+Los cutouts se cachean en `out/cache/` (5 MB cada uno); borrar la carpeta para forzar descarga.
 
 Objetos disponibles: `wise0855`, `barnard`, `epsindib`, `rwaur`, `rdra` (ver `targets.py`).
 
@@ -40,6 +45,8 @@ Opciones de `02_fetch_cutouts.py`:
 | `--per-visit N` | — | a lo más N exposiciones por visita y detector (muestrea todo el rango temporal) |
 | `--max` | 24 | tope total de cutouts |
 | `--release qr3` | — | filtrar por release (la tabla TAP mezcla QR2 y QR3) |
+| `--coadd-visit` | — | además, coadd ponderado 1/VARIANCE de cada visita por detector + `coadd_D<d>.gif` |
+| `--out` | out/<target> | carpeta de salida (para no pisar corridas anteriores) |
 | `--upscale` | 8 | ampliación (vecino más cercano) de PNG/GIF; a 29 px nativos el GIF es ilegible |
 | `--workers` | 4 | descargas en paralelo |
 
@@ -54,4 +61,6 @@ centroide medido por cuadro). La consola imprime el desplazamiento medido vs esp
   vecinos: el núcleo saturado de Barnard sale como un hueco de ~5×5 px. Para fotometría usar
   `reproject_exact` y para display rellenar/colorear los píxeles con OVERFLOW en vez de ocultarlos.
 - Movimiento propio lineal; no corrige paralaje (0.5" = 0.08 px, irrelevante a esta escala).
-- Baja el cutout completo (5 MB, 99 % es la HDU PSF/EPSF) aunque solo use IMAGE/FLAGS/VARIANCE/ZODI/WCS-WAVE.
+- `02` baja el cutout completo (5 MB, 99 % es la HDU PSF/EPSF); `04_s3_range.py` muestra la alternativa por HTTP Range (1.2 MB).
+- Fotometría de apertura con píxel uniforme (889 µJy por MJy/sr·px); el producto debe usar `solid_angle_pixel_map`.
+- Objetos saturados (R Dra, RW Aur, Barnard en D2) tienen el núcleo NaN: flujo de apertura no fiable.
