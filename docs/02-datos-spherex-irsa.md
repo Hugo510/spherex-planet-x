@@ -126,3 +126,8 @@ IDs de HiPS marcados como "verificar": tomarlos del listado de Aladin (`https://
   píxel de la PSF sobremuestreada ×10. Se corrigió en este doc, en 04 y en la PoC. Implicación: un cutout de 0.25°
   son solo ~146 px de lado, y el movimiento propio estelar entre visitas es < 1 px (ver doc 07 §3).
 - QR3 tiene DOI propio: 10.26131/IRSA662. QR2 corrigió headers de la extensión PSF en abril de 2026.
+
+## Bits de FLAGS añadidos en pipeline ≥ 6.5 / R7 (Expsupp v2.0, tabla 16)
+20 CROSSTALK · 22 GHOST · 25 STREAK · **26 BLOOM** (desborde de carga de fuentes saturadas; es el "bit 26" visto
+en RW Aur y R Dra) · 27 SNOWBALL · 28 HALO · 29 SATELLITE_HALO. En la Spectrophotometry Tool además 32 CONTAINS_BAD_PIXEL
+y 33 FIT_ERROR. Para display: pintar OVERFLOW/BLOOM, no enmascarar (`docs/06` §9 nov).

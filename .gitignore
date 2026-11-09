@@ -6,3 +6,8 @@ poc/*.gif
 .env
 .env.*
 node_modules/
+.venv/
+node_modules/
+.next/
+.env*
+!.env.example

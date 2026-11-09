@@ -16,7 +16,12 @@ hora de Ciudad de México. Recursos oficiales del reto salen el viernes 13 nov.
 
 - `docs/13` (brechas cerradas y acciones pendientes) y `docs/14` (tesis y diferenciadores definitivos) — leer antes de decidir alcance.
 
-## Estado actual
+## Estado actual (9 nov, tarde)
+- PoC completa contra IRSA real: 355 cutouts sin fallos; `docs/06` secciones 8 nov y 9 nov. Contrato de API v2 al final de `docs/04`.
+- Repo git ya inicializado (7+ commits). **No volver a hacer `git init`.**
+- Hugo viaja a Junction 2026 (Finlandia, UTC+2) desde el martes 10; su rol en Space Apps es asíncrono. El equipo en México construye el producto el 14–15.
+
+## Estado previo
 - Investigación hecha (8 nov). PoC en `poc/` **validada contra IRSA real el 8 nov**: TAP y cutouts
   funcionan, 0 fallos en 50 cutouts, la WCS espectral sobrevive al recorte y el movimiento de
   WISE 0855 y Barnard se mide y coincide con su pm. Hallazgos y correcciones en `docs/06-hallazgos-poc.md`.

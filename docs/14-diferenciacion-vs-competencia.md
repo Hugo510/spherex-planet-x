@@ -96,3 +96,27 @@ un simple 'antes y después' miente. [Nombre] es el comparador honesto: colapsa 
 limpia, te dice si dos cuadros se pueden comparar, mide el movimiento contra Gaia y cruza cada punto con
 cuatro catálogos. Aquí está WISE 0855 moviéndose 8 segundos de arco en un año, exactamente lo que predice
 Gaia. Y aquí está lo que SPHEREx no puede ver, con números. Abierto, bilingüe, embebible."
+
+## Actualización 9 nov (con cifras de la PoC)
+
+- **Diferenciadores 1 y 2 ya tienen números publicables**: fondo se resta a RMS/ruido = 0.80–0.87 (la VARIANCE es
+  honesta); en estrellas, piso de 4 % por remuestreo + 1.4 %/canal (Rayleigh-Jeans predice 1.8 %/canal); 25 % a 16 canales.
+  Regla ok ≤ 2 / warn 3–8 / block > 8 canales. Nadie más tiene esta tabla.
+- **Diferenciador 3**: WISE 0855 D6 1.30 px medidos vs 1.34 esperados; ε Indi B 0.98 vs 1.09; S/N 10–14 por visita en coadd.
+- **Diferenciador 6 (Deep Field con R Dra) se replantea**: R Dra satura por completo (núcleo NaN hasta r ≈ 10 px) y
+  RW Aur satura el núcleo. Opciones: (a) buscar otra variable del NEP con K entre 6 y 9 (bajo saturación AB ~11.5 y
+  con S/N alto) cruzando `fp_psc` (2MASS) con `gaia_dr3_source.phot_variable_flag = 'VARIABLE'` en 1.5° del polo
+  (RA 270°, Dec +66.56°); (b) usar R Dra y RW Aur como ejemplos de saturación/BLOOM en la Field Guide, que también suma.
+- **ε Indi Ba/Bb pasa a ser el objeto didáctico**: no satura, se mueve, y su "parpadeo" entre exposiciones es su propio
+  espectro (banda de agua a 1.39 µm vs pico H). Es la demostración perfecta de "el blink ingenuo confunde color con cambio".
+- **WISE 0855 en D1–D2**: lo que se ve es una estrella Gaia G = 16.3 a 6.8″, quieta. Demo de "compara por detector y
+  cruza con catálogos" en un solo objeto.
+
+Consulta ADQL sugerida para la opción (a), en el TAP de IRSA (ordenar en cliente):
+```sql
+SELECT g.source_id, g.ra, g.dec, g.phot_g_mean_mag, g.phot_variable_flag, t.k_m, t.j_m
+FROM gaia_dr3_source g JOIN fp_psc t
+  ON 1 = CONTAINS(POINT('ICRS', g.ra, g.dec), CIRCLE('ICRS', t.ra, t.dec, 0.0006))
+WHERE 1 = CONTAINS(POINT('ICRS', g.ra, g.dec), CIRCLE('ICRS', 270.0, 66.56, 1.5))
+  AND g.phot_variable_flag = 'VARIABLE' AND t.k_m BETWEEN 6 AND 9
+```
