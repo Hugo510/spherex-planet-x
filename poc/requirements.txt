@@ -1,0 +1,6 @@
+astropy>=6.0
+pyvo>=1.5
+astroquery>=0.4.7
+reproject>=0.13
+numpy>=1.26
+pillow>=10.0

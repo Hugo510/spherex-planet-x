@@ -1,0 +1,8 @@
+__pycache__/
+.venv/
+poc/out/
+poc/*.csv
+poc/*.gif
+.env
+.env.*
+node_modules/
