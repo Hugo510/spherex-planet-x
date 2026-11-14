@@ -113,6 +113,12 @@ def find_changes(res, known: dict, grid_naxis: int) -> list[dict]:
     return kept[:MAX_PER_FIELD]
 
 
+def _build(spec: dict, tgt: Target):
+    return build_visits(tgt, size_deg=spec["fov"], detectors=(1, 2, 3, 4, 5, 6), releases=spec.get("releases"),
+                        max_per_visit=spec.get("max_per_visit"), max_visits=spec.get("max_visits"),
+                        mjd_range=spec.get("mjd_range"), query_epoch=spec.get("query_epoch"))
+
+
 def main() -> int:
     sys.path.insert(0, str(ROOT / "scripts"))
     from precompute import FIELDS, asteroid_fields
@@ -127,15 +133,17 @@ def main() -> int:
             continue
         known = json.loads((d / "known.json").read_text()) if (d / "known.json").exists() else {}
         tgt: Target = spec["target"]
-        res = build_visits(tgt, size_deg=spec["fov"], detectors=(1, 2, 3, 4, 5, 6), releases=spec.get("releases"),
-                           max_per_visit=spec.get("max_per_visit"), max_visits=spec.get("max_visits"),
-                           mjd_range=spec.get("mjd_range"), query_epoch=spec.get("query_epoch"))
+        try:
+            res = _build(spec, tgt)
+        except Exception as e:  # noqa: BLE001 — TAP caído: seguir con el siguiente campo
+            print(f"  {spec['id']}: FALLO {str(e)[:160]}")
+            continue
         cands = find_changes(res, known, res.grid.naxis)
         data = {"field": spec["id"], "generated_at": datetime.now(UTC).isoformat(timespec="seconds"), "snr_min": SNR_MIN,
                 "method": "exposición − mediana de exposiciones del MISMO canal en otras visitas (|Δ| = 0 canales); S/N ≥ 6; ≥ 2 px; sin saturación a ≤ 2 px",
                 "n": len(cands), "candidates": cands}
         (d / "candidates.json").write_text(json.dumps(data))
-        kinds = {}
+        kinds: dict[str, int] = {}
         for c in cands:
             kinds[c["verdict"]] = kinds.get(c["verdict"], 0) + 1
         print(f"  {spec['id']}: {len(cands)} cambios {kinds}")
