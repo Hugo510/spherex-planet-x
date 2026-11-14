@@ -14,9 +14,6 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
 ]
 
-[project.urls]
-Repository = "https://github.com/Hugo510/spherex-planet-x"
-Documentation = "https://github.com/Hugo510/spherex-planet-x/tree/main/docs"
 dependencies = [
   "fastapi>=0.115", "uvicorn[standard]>=0.30", "pydantic>=2.7",
   "astropy>=6.0", "pyvo>=1.5", "reproject>=0.13", "photutils>=1.12", "scipy>=1.13",
@@ -25,6 +22,10 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8", "pytest-asyncio>=0.23", "ruff>=0.5", "openapi-spec-validator>=0.7"]
 modal = ["modal>=1.0"]
+
+[project.urls]
+Repository = "https://github.com/Hugo510/spherex-planet-x"
+Documentation = "https://github.com/Hugo510/spherex-planet-x/tree/main/docs"
 
 [build-system]
 requires = ["setuptools>=68"]
