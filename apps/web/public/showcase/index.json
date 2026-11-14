@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T08:54:16+00:00",
+ "generated_at": "2026-11-14T09:02:56+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -179,6 +179,78 @@
    "bytes": 2130079,
    "seconds": 246.4,
    "thumbnail": "/showcase/rdra/visits/1e34768f09e1802e_D1_2025-06-06.png",
+   "asteroid": null
+  },
+  {
+   "id": "nep-deep-1",
+   "kind": "deepfield",
+   "title": {
+    "es": "Campo profundo NEP (centro)",
+    "en": "NEP deep field (center)"
+   },
+   "blurb": {
+    "es": "Centro del campo profundo del polo norte ecl\u00edptico: ~5 000 exposiciones por detector en 17 meses. Aqu\u00ed la l\u00ednea de tiempo tiene decenas de visitas; se muestran 24 por detector.",
+    "en": "Center of the North Ecliptic Pole deep field: ~5,000 exposures per detector in 17 months. Here the timeline has dozens of visits; 24 per detector are shown."
+   },
+   "default_det": 3,
+   "ra": 270.0,
+   "dec": 66.56,
+   "epoch": 2025.9923,
+   "fov_deg": 0.1,
+   "n_visits": 210,
+   "n_exposures": 432,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 4355755,
+   "seconds": 239.1,
+   "thumbnail": "/showcase/nep-deep-1/visits/c9a846e118ec029f_D3_2025-04-26.png",
+   "asteroid": null
+  },
+  {
+   "id": "nep-deep-2",
+   "kind": "deepfield",
+   "title": {
+    "es": "Campo profundo NEP (borde)",
+    "en": "NEP deep field (edge)"
+   },
+   "blurb": {
+    "es": "A 0.7\u00b0 del centro del campo profundo: la cadencia cae pero sigue siendo decenas de visitas. \u00datil para comparar el ruido del coadd con el centro.",
+    "en": "0.7\u00b0 from the deep-field center: cadence drops but is still dozens of visits. Useful to compare coadd noise with the center."
+   },
+   "default_det": 3,
+   "ra": 268.8,
+   "dec": 66.1,
+   "epoch": 2026.0015,
+   "fov_deg": 0.1,
+   "n_visits": 183,
+   "n_exposures": 432,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 4523214,
+   "seconds": 280.5,
+   "thumbnail": "/showcase/nep-deep-2/visits/fb050f2988f162d6_D3_2025-04-26.png",
    "asteroid": null
   }
  ]

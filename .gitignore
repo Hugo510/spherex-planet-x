@@ -21,3 +21,4 @@ apps/api/tests/fixtures/_tmp/
 scripts/_cache/
 *.fits
 !apps/api/tests/fixtures/*.fits
+apps/web/public/**/*.npy

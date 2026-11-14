@@ -1,0 +1,602 @@
+{
+ "generated_at": "2026-11-14T08:57:51+00:00",
+ "injection": [
+  {
+   "field": "wise0855",
+   "label": "WISE 0855 D5 (3.8\u20134.4 \u00b5m)",
+   "detector": 5,
+   "visit": "D5_2025-05-06",
+   "n_exp": 8,
+   "fwhm_arcsec": 8.63,
+   "fwhm_px": 1.4,
+   "noise_1sigma_aperture_ujy": 49.9,
+   "rows": [
+    {
+     "flux_ujy": 20,
+     "ab_mag": 20.65,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 35,
+     "ab_mag": 20.04,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 50,
+     "ab_mag": 19.65,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 75,
+     "ab_mag": 19.21,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 100,
+     "ab_mag": 18.9,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 150,
+     "ab_mag": 18.46,
+     "n": 40,
+     "recovered": 2,
+     "completeness": 0.05
+    },
+    {
+     "flux_ujy": 200,
+     "ab_mag": 18.15,
+     "n": 40,
+     "recovered": 8,
+     "completeness": 0.2
+    },
+    {
+     "flux_ujy": 300,
+     "ab_mag": 17.71,
+     "n": 40,
+     "recovered": 34,
+     "completeness": 0.85
+    },
+    {
+     "flux_ujy": 500,
+     "ab_mag": 17.15,
+     "n": 40,
+     "recovered": 39,
+     "completeness": 0.975
+    },
+    {
+     "flux_ujy": 800,
+     "ab_mag": 16.64,
+     "n": 40,
+     "recovered": 39,
+     "completeness": 0.975
+    },
+    {
+     "flux_ujy": 1500,
+     "ab_mag": 15.96,
+     "n": 40,
+     "recovered": 36,
+     "completeness": 0.9
+    },
+    {
+     "flux_ujy": 3000,
+     "ab_mag": 15.21,
+     "n": 40,
+     "recovered": 40,
+     "completeness": 1.0
+    }
+   ],
+   "ab_50pct": 17.71,
+   "lambda_um": 4.221
+  },
+  {
+   "field": "epsindib",
+   "label": "\u03b5 Indi Ba/Bb D2 (1.1\u20131.6 \u00b5m)",
+   "detector": 2,
+   "visit": "D2_2025-04-26",
+   "n_exp": 8,
+   "fwhm_arcsec": 7.46,
+   "fwhm_px": 1.21,
+   "noise_1sigma_aperture_ujy": 26.1,
+   "rows": [
+    {
+     "flux_ujy": 20,
+     "ab_mag": 20.65,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 35,
+     "ab_mag": 20.04,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 50,
+     "ab_mag": 19.65,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 75,
+     "ab_mag": 19.21,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 100,
+     "ab_mag": 18.9,
+     "n": 40,
+     "recovered": 6,
+     "completeness": 0.15
+    },
+    {
+     "flux_ujy": 150,
+     "ab_mag": 18.46,
+     "n": 40,
+     "recovered": 35,
+     "completeness": 0.875
+    },
+    {
+     "flux_ujy": 200,
+     "ab_mag": 18.15,
+     "n": 40,
+     "recovered": 32,
+     "completeness": 0.8
+    },
+    {
+     "flux_ujy": 300,
+     "ab_mag": 17.71,
+     "n": 40,
+     "recovered": 32,
+     "completeness": 0.8
+    },
+    {
+     "flux_ujy": 500,
+     "ab_mag": 17.15,
+     "n": 40,
+     "recovered": 37,
+     "completeness": 0.925
+    },
+    {
+     "flux_ujy": 800,
+     "ab_mag": 16.64,
+     "n": 40,
+     "recovered": 38,
+     "completeness": 0.95
+    },
+    {
+     "flux_ujy": 1500,
+     "ab_mag": 15.96,
+     "n": 40,
+     "recovered": 37,
+     "completeness": 0.925
+    },
+    {
+     "flux_ujy": 3000,
+     "ab_mag": 15.21,
+     "n": 40,
+     "recovered": 38,
+     "completeness": 0.95
+    }
+   ],
+   "ab_50pct": 18.46,
+   "lambda_um": 1.411
+  },
+  {
+   "field": "barnard",
+   "label": "Barnard D3 (1.6\u20132.4 \u00b5m)",
+   "detector": 3,
+   "visit": "D3_2026-03-19",
+   "n_exp": 8,
+   "fwhm_arcsec": 7.45,
+   "fwhm_px": 1.21,
+   "noise_1sigma_aperture_ujy": 29.3,
+   "rows": [
+    {
+     "flux_ujy": 20,
+     "ab_mag": 20.65,
+     "n": 40,
+     "recovered": 1,
+     "completeness": 0.025
+    },
+    {
+     "flux_ujy": 35,
+     "ab_mag": 20.04,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 50,
+     "ab_mag": 19.65,
+     "n": 40,
+     "recovered": 1,
+     "completeness": 0.025
+    },
+    {
+     "flux_ujy": 75,
+     "ab_mag": 19.21,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 100,
+     "ab_mag": 18.9,
+     "n": 40,
+     "recovered": 0,
+     "completeness": 0.0
+    },
+    {
+     "flux_ujy": 150,
+     "ab_mag": 18.46,
+     "n": 40,
+     "recovered": 28,
+     "completeness": 0.7
+    },
+    {
+     "flux_ujy": 200,
+     "ab_mag": 18.15,
+     "n": 40,
+     "recovered": 27,
+     "completeness": 0.675
+    },
+    {
+     "flux_ujy": 300,
+     "ab_mag": 17.71,
+     "n": 40,
+     "recovered": 28,
+     "completeness": 0.7
+    },
+    {
+     "flux_ujy": 500,
+     "ab_mag": 17.15,
+     "n": 40,
+     "recovered": 26,
+     "completeness": 0.65
+    },
+    {
+     "flux_ujy": 800,
+     "ab_mag": 16.64,
+     "n": 40,
+     "recovered": 31,
+     "completeness": 0.775
+    },
+    {
+     "flux_ujy": 1500,
+     "ab_mag": 15.96,
+     "n": 40,
+     "recovered": 32,
+     "completeness": 0.8
+    },
+    {
+     "flux_ujy": 3000,
+     "ab_mag": 15.21,
+     "n": 40,
+     "recovered": 38,
+     "completeness": 0.95
+    }
+   ],
+   "ab_50pct": 18.46,
+   "lambda_um": 1.947
+  }
+ ],
+ "proper_motion": [
+  {
+   "field": "wise0855",
+   "name": "WISE 0855\u22120714",
+   "detector": 5,
+   "n_visits": 5,
+   "span_yr": 1.02,
+   "pm_px_yr": 1.16,
+   "pm_err_px_yr": 0.31,
+   "pm_arcsec_yr": 7.16,
+   "expected_px_yr": 1.33,
+   "expected_arcsec_yr": 8.15,
+   "pmra_meas_arcsec_yr": -7.04,
+   "pmdec_meas_arcsec_yr": 1.29,
+   "pmra_cat": -8.1237,
+   "pmdec_cat": 0.6732,
+   "saturated": false,
+   "source": "Kirkpatrick et al. 2021 (ApJS 253, 7)"
+  },
+  {
+   "field": "wise0855",
+   "name": "WISE 0855\u22120714",
+   "detector": 6,
+   "n_visits": 8,
+   "span_yr": 1.01,
+   "pm_px_yr": 1.67,
+   "pm_err_px_yr": 0.19,
+   "pm_arcsec_yr": 10.25,
+   "expected_px_yr": 1.33,
+   "expected_arcsec_yr": 8.15,
+   "pmra_meas_arcsec_yr": -8.68,
+   "pmdec_meas_arcsec_yr": 5.45,
+   "pmra_cat": -8.1237,
+   "pmdec_cat": 0.6732,
+   "saturated": false,
+   "source": "Kirkpatrick et al. 2021"
+  },
+  {
+   "field": "epsindib",
+   "name": "\u03b5 Indi Ba/Bb",
+   "detector": 2,
+   "n_visits": 10,
+   "span_yr": 1.43,
+   "pm_px_yr": 0.72,
+   "pm_err_px_yr": 0.04,
+   "pm_arcsec_yr": 4.4,
+   "expected_px_yr": 0.76,
+   "expected_arcsec_yr": 4.68,
+   "pmra_meas_arcsec_yr": 3.51,
+   "pmdec_meas_arcsec_yr": -2.66,
+   "pmra_cat": 3.982,
+   "pmdec_cat": -2.4668,
+   "saturated": false,
+   "source": "Gaia DR3 (\u03b5 Indi Ba/Bb via SIMBAD)"
+  },
+  {
+   "field": "barnard",
+   "name": "Barnard's Star",
+   "detector": 2,
+   "n_visits": 9,
+   "span_yr": 0.99,
+   "pm_px_yr": 2.69,
+   "pm_err_px_yr": 0.44,
+   "pm_arcsec_yr": 16.57,
+   "expected_px_yr": 1.69,
+   "expected_arcsec_yr": 10.39,
+   "pmra_meas_arcsec_yr": 0.43,
+   "pmdec_meas_arcsec_yr": 16.56,
+   "pmra_cat": -0.8016,
+   "pmdec_cat": 10.3624,
+   "saturated": true,
+   "source": "Gaia DR3"
+  },
+  {
+   "field": "barnard",
+   "name": "Barnard's Star",
+   "detector": 3,
+   "n_visits": 9,
+   "span_yr": 1.0,
+   "pm_px_yr": 2.07,
+   "pm_err_px_yr": 0.65,
+   "pm_arcsec_yr": 12.76,
+   "expected_px_yr": 1.69,
+   "expected_arcsec_yr": 10.39,
+   "pmra_meas_arcsec_yr": -6.73,
+   "pmdec_meas_arcsec_yr": 10.84,
+   "pmra_cat": -0.8016,
+   "pmdec_cat": 10.3624,
+   "saturated": true,
+   "source": "Gaia DR3"
+  }
+ ],
+ "delta_lambda": {
+  "source": "PoC 9 nov 2026 (docs/06 \u00a78): visita 2025-11-07 de WISE 0855 en D5, 18 exposiciones en 17 canales (3.815\u21924.402 \u00b5m), malla 0.2\u00b0 (117 px), 153 pares, 5 estrellas Gaia G 10.2\u201313.9 con S/N > 5",
+  "rows": [
+   {
+    "delta_channels": "0\u20131",
+    "delta_lambda_um": "0.02\u20130.04",
+    "pairs": 19,
+    "bg_rms_over_noise": 0.8,
+    "star_rms_over_noise_median": 2.8,
+    "star_rms_over_noise_max": 32,
+    "residual_fraction": "4\u20137 %"
+   },
+   {
+    "delta_channels": "2",
+    "delta_lambda_um": "0.072",
+    "pairs": 17,
+    "bg_rms_over_noise": 0.8,
+    "star_rms_over_noise_median": 3.7,
+    "star_rms_over_noise_max": 27,
+    "residual_fraction": "4.1 %"
+   },
+   {
+    "delta_channels": "4",
+    "delta_lambda_um": "0.145",
+    "pairs": 15,
+    "bg_rms_over_noise": 0.87,
+    "star_rms_over_noise_median": 2.9,
+    "star_rms_over_noise_max": 32,
+    "residual_fraction": "4.9 %"
+   },
+   {
+    "delta_channels": "8",
+    "delta_lambda_um": "0.297",
+    "pairs": 10,
+    "bg_rms_over_noise": 0.84,
+    "star_rms_over_noise_median": 4.1,
+    "star_rms_over_noise_max": 32,
+    "residual_fraction": "8.0 %"
+   },
+   {
+    "delta_channels": "12",
+    "delta_lambda_um": "0.446",
+    "pairs": 5,
+    "bg_rms_over_noise": 0.83,
+    "star_rms_over_noise_median": 3.9,
+    "star_rms_over_noise_max": 30,
+    "residual_fraction": "14.3 %"
+   },
+   {
+    "delta_channels": "16",
+    "delta_lambda_um": "0.587",
+    "pairs": 1,
+    "bg_rms_over_noise": 1.57,
+    "star_rms_over_noise_median": 3.8,
+    "star_rms_over_noise_max": 20,
+    "residual_fraction": "25 %"
+   }
+  ],
+  "fit": {
+   "floor": 0.04,
+   "per_channel": 0.014,
+   "rayleigh_jeans_per_channel": 0.018
+  },
+  "rule": {
+   "ok_max": 2,
+   "warn_max": 8
+  }
+ },
+ "not_visible": [
+  {
+   "what": "parallax",
+   "value": "WISE 0855 0.44\u2033 \u2192 0.07 px; Barnard 0.55\u2033 \u2192 0.09 px",
+   "limit": "centroide por visita a 0.1\u20130.3 px (PoC): no medible",
+   "source": "docs/06 \u00a74"
+  },
+  {
+   "what": "planet_nine",
+   "value": "P9 predicho V \u2248 20\u201322, W2 \u2273 18 mag; l\u00edmite 50 % del coadd por visita AB \u2248 17\u201318 (ver inyecci\u00f3n)",
+   "limit": "3\u20135 mag por debajo del l\u00edmite de una visita",
+   "source": "Batygin & Brown 2019; inyecci\u00f3n-recuperaci\u00f3n de esta p\u00e1gina"
+  },
+  {
+   "what": "saturation",
+   "value": "AB \u2248 11.5 / 11.5 / 11.3 / 11.7 / 10.2 / 9.75 (D1\u2013D6)",
+   "limit": "OVERFLOW (bit 1) y BLOOM (bit 26) se pintan y se cuentan; la apertura no es fiable",
+   "source": "Explanatory Supplement QR v2.0 \u00a73.2.1 (umbrales por banda); verificado en Barnard D2, R Dra, RW Aur"
+  },
+  {
+   "what": "motion_per_visit",
+   "value": "Barnard 1.7 px/a\u00f1o, WISE 0855 1.3 px/a\u00f1o: entre dos visitas de la misma temporada < 0.1 px",
+   "limit": "el movimiento solo se ve comparando visitas separadas \u2265 1 a\u00f1o (y con la referencia de 2010)",
+   "source": "docs/06 \u00a74; medici\u00f3n de esta p\u00e1gina"
+  }
+ ],
+ "field_guide": [
+  {
+   "key": "saturation",
+   "bits": [
+    "OVERFLOW",
+    "BLOOM"
+   ],
+   "png": "/limits/fieldguide/saturation.png",
+   "n_px": 309,
+   "obsid": "2025W29_2A_0805_1",
+   "detector": 4,
+   "lambda_um": 3.757,
+   "mjd": 60876.774797844,
+   "color": "#ff2fa8",
+   "shape": [
+    87,
+    87
+   ]
+  },
+  {
+   "key": "dichroic",
+   "bits": [
+    "DICHROIC"
+   ],
+   "png": "/limits/fieldguide/dichroic.png",
+   "n_px": 1212,
+   "obsid": "2025W42_1A_0549_1",
+   "detector": 4,
+   "lambda_um": 2.437,
+   "mjd": 60963.168071247,
+   "color": "#ffb454",
+   "shape": [
+    76,
+    76
+   ]
+  },
+  {
+   "key": "snowball",
+   "bits": [
+    "SNOWBALL"
+   ],
+   "png": "/limits/fieldguide/snowball.png",
+   "n_px": 147,
+   "obsid": "2025W46_1A_0683_3",
+   "detector": 5,
+   "lambda_um": 4.296,
+   "mjd": 60991.49057333,
+   "color": "#7cc4ff",
+   "shape": [
+    85,
+    84
+   ]
+  },
+  {
+   "key": "streak",
+   "bits": [
+    "STREAK"
+   ],
+   "png": "/limits/fieldguide/streak.png",
+   "n_px": 411,
+   "obsid": "2026W39_2A_0682_2",
+   "detector": 6,
+   "lambda_um": 4.528,
+   "mjd": 61310.794535819,
+   "color": "#43d17a",
+   "shape": [
+    84,
+    84
+   ]
+  },
+  {
+   "key": "persist",
+   "bits": [
+    "PERSIST"
+   ],
+   "png": "/limits/fieldguide/persist.png",
+   "n_px": 1090,
+   "obsid": "2026W13_1A_0129_2",
+   "detector": 3,
+   "lambda_um": 1.662,
+   "mjd": 61122.656283979,
+   "color": "#ffd666",
+   "shape": [
+    64,
+    64
+   ]
+  },
+  {
+   "key": "lambda_dipole",
+   "bits": [],
+   "png": null,
+   "diff": {
+    "a": "D3_2025-05-05",
+    "b": "D3_2025-11-10",
+    "detector": 3,
+    "verdict": "block",
+    "json": "diffs/diff_a61dce7b3447f332_D3_2025-05-05_a61dce7b3447f332_D3_2025-11-10.json"
+   },
+   "field": "wise0855",
+   "n_px": null,
+   "obsid": null,
+   "detector": 3,
+   "lambda_um": null,
+   "mjd": 0,
+   "color": "#ff6b6b",
+   "shape": [
+    59,
+    59
+   ]
+  }
+ ],
+ "pixscale_arcsec": 6.15,
+ "aperture": {
+  "r_px": 2.5,
+  "ann_in_px": 5,
+  "ann_out_px": 8
+ }
+}
