@@ -105,3 +105,14 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
 - **2026-11-14 11:05 UTC** — Lighthouse sobre el visor (export estático servido sin compresión): accesibilidad **96**,
   buenas prácticas 96, rendimiento 65 (sin gzip ni cache en el servidor de prueba; en Vercel mejora). Chips de la línea de
   tiempo ampliados a 24×36 px por el aviso de touch targets. OG image generada del coadd D5 de WISE 0855 (`scripts/og_image.py`).
+
+## F9–F10 · Deploy y entrega
+
+- **2026-11-14 11:20 UTC** — CI en GitHub Actions verde desde el commit de F5 (los tres primeros runs fallaron porque el job
+  `web` corría antes de existir `apps/web` con lockfile; corregido con el scaffold completo).
+- **2026-11-14 11:25 UTC** — Vercel: la cuenta del equipo está conectada, pero la creación del proyecto desde esta sesión fue
+  **rechazada en el prompt de permiso**; no se reintenta. Pasos manuales en `docs/DEPLOY.md` (importar el repo, root `/`,
+  `vercel.json` ya trae build y `outputDirectory`). Modal: no hay token en el entorno (`MODAL_TOKEN_ID` vacío); `modal_app.py`
+  queda listo y documentado; el front funciona solo con showcase y muestra "modo en vivo no disponible".
+- **2026-11-14 11:30 UTC** — Showcase final regenerado con la regla de saturación por mayoría, vecinos de todo el campo y
+  referencia AllWISE 2010 en los 11 campos (se corre encadenado tras el primer precómputo); Limits y OG se regeneran después.
