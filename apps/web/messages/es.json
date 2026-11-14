@@ -281,7 +281,7 @@
     "vel": {
       "title": "Completitud por velocidad (movers sintéticos)",
       "intro": "Movers sintéticos inyectados en los coadds reales de {n} visitas de WISE 0855 D5 ({span} años) y recuperados a ciegas: centroide en ±3 px alrededor de la posición inicial en cada visita y ajuste lineal. Recuperado si el pm ajustado está a ≤ 30 % (o ≤ 0.3 px/año) del inyectado.",
-      "note": "La caída a pm altos es el límite del método por visitas sin conocer el pm: el objeto sale de la caja de búsqueda. Con un pm de catálogo (Gaia, CatWISE) la posición se propaga y el límite desaparece; sin él, por encima de ~2 px/año (12″/año) hace falta enlazar detecciones, no centroides."
+      "note": "Dos regímenes: a 400 µJy (el brillo de WISE 0855) la recuperación a ciegas cae con el pm porque el centroide por visita tiene S/N ≈ 8 y el ajuste no alcanza el 30 % de precisión; a 1 200 µJy se mantiene en 70–80 % hasta 3 px/año y se desploma a 4 px/año, cuando el objeto sale de la caja de ±3 px en un año. Con un pm de catálogo (Gaia, CatWISE) la posición se propaga y ese segundo límite desaparece; sin él, por encima de ~3 px/año (18″/año) hay que enlazar detecciones, no centroides."
     }
   },
   "status": {

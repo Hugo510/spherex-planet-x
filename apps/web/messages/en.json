@@ -280,7 +280,7 @@
     "vel": {
       "title": "Completeness by velocity (synthetic movers)",
       "intro": "Synthetic movers injected into the real coadds of {n} visits of WISE 0855 D5 ({span} yr) and recovered blind: centroid within ±3 px of the initial position in every visit plus a linear fit. Recovered if the fitted pm is within 30 % (or 0.3 px/yr) of the injected one.",
-      "note": "The drop at high pm is the limit of the per-visit method without a known pm: the object leaves the search box. With a catalogue pm (Gaia, CatWISE) the position is propagated and the limit disappears; without it, above ~2 px/yr (12″/yr) detections must be linked, not centroided."
+      "note": "Two regimes: at 400 µJy (WISE 0855's brightness) blind recovery drops with pm because the per-visit centroid has S/N ≈ 8 and the fit cannot reach 30 % precision; at 1,200 µJy it stays at 70–80 % up to 3 px/yr and collapses at 4 px/yr, when the object leaves the ±3 px box within a year. With a catalogue pm (Gaia, CatWISE) the position is propagated and that second limit disappears; without it, above ~3 px/yr (18″/yr) detections must be linked, not centroided."
     }
   },
   "status": {
