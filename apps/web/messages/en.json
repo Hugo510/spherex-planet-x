@@ -101,7 +101,8 @@
       "knownSoon": "Click on the viewer to list neighbours (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
       "spectrumSoon": "Spectrum and light curve in µJy.",
       "aladinSoon": "Context with Aladin Lite (unWISE, 2MASS, Gaia DR3).",
-      "hint": "Pick a tab. Click the frame (or Shift+arrows and Enter) to ask what is at a pixel."
+      "hint": "Pick a tab. Click the frame (or Shift+arrows and Enter) to ask what is at a pixel.",
+      "changes": "What to look at first"
     },
     "refEpoch": "mean epoch",
     "refNote": "2010 frame (AllWISE W2, 15 years earlier) reprojected onto the same grid: compare field stars and the object position.",
@@ -113,7 +114,13 @@
       "asteroid": "asteroid",
       "deepfield": "deep field",
       "random": "random field"
-    }
+    },
+    "trail": "Trail",
+    "trailHint": "Pixel-wise maximum of all visits of the detector",
+    "trailTitle": "Trail · max of {n} visits",
+    "trailNote": "Visual aid: mixes different mean λ; not photometry.",
+    "sameLambda": "same λ",
+    "sameLambdaHint": "Pick as B the exposure from another visit with the channel closest to A"
   },
   "known": {
     "at": "Point",
@@ -148,7 +155,10 @@
     "lcTitle": "Light curve · visit coadd ·",
     "lcNote": "each visit has a different mean λ (see ladder)",
     "thisVisit": "This visit",
-    "saturated": "saturation in aperture: unreliable"
+    "saturated": "saturation in aperture: unreliable",
+    "fixedLambda": "fixed λ {l} µm (±1 channel)",
+    "perVisit": "per visit (mean λ)",
+    "fixedNote": "{n} same-channel exposures: the honest curve"
   },
   "aladin": {
     "survey": "Background",
@@ -204,7 +214,11 @@
       "expected": "expected",
       "catalog": "source",
       "saturated": "saturated core: biased centroid",
-      "note": "WISE 0855 and ε Indi B are measured; Barnard saturates its core in D2–D3 and its (wing) centroid is biased: shown anyway, with a warning."
+      "note": "WISE 0855 and ε Indi B are measured; Barnard saturates its core in D2–D3 and its (wing) centroid is biased: shown anyway, with a warning.",
+      "control": "control (field stars)",
+      "median": "median",
+      "max": "max",
+      "controlNote": "Control: the same fit applied to Gaia field stars (G < 16, away from the object) after removing their catalogue pm; their residual |pm| is the systematic floor of the method."
     },
     "inj": {
       "title": "Injection–recovery on real coadds",
@@ -262,7 +276,12 @@
       }
     },
     "source": "Source",
-    "generated": "Generated on"
+    "generated": "Generated on",
+    "vel": {
+      "title": "Completeness by velocity (synthetic movers)",
+      "intro": "Synthetic movers injected into the real coadds of {n} visits of WISE 0855 D5 ({span} yr) and recovered blind: centroid within ±3 px of the initial position in every visit plus a linear fit. Recovered if the fitted pm is within 30 % (or 0.3 px/yr) of the injected one.",
+      "note": "The drop at high pm is the limit of the per-visit method without a known pm: the object leaves the search box. With a catalogue pm (Gaia, CatWISE) the position is propagated and the limit disappears; without it, above ~2 px/yr (12″/yr) detections must be linked, not centroided."
+    }
   },
   "status": {
     "home": "Home",
@@ -280,5 +299,22 @@
     "liveDown": "no answer",
     "kind": "kind",
     "failures": "failures"
+  },
+  "changes": {
+    "title": "Changes at the same λ",
+    "method": "Each exposure is subtracted from the median of same-channel exposures in other visits (|Δ| = 0 channels, verdict ok by construction). Peaks with S/N ≥ 6 and ≥ 2 px, away from saturation, cross-matched with Gaia, CatWISE, AllWISE, SIMBAD and JPL.",
+    "allDetectors": "all detectors",
+    "empty": "No changes with S/N ≥ 6 in this detector.",
+    "none": "No precomputed list for this field.",
+    "noMatch": "no counterpart within 2 px",
+    "repeats": "repeats in {n} exposures",
+    "single": "single exposure: possible artefact (cosmic ray, snowball, persistence)",
+    "caveat": "Not a Planet X detector. A filter of “what changed at the same λ”: variability of known sources, asteroids and artefacts. A real candidate must repeat across exposures and not be in the Field Guide.",
+    "v": {
+      "known_star": "known star",
+      "known_ir_source": "known IR source",
+      "known_sso": "asteroid",
+      "candidate": "candidate"
+    }
   }
 }

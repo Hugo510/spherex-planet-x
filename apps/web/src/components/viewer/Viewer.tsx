@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { frameBase, loadLiveField, loadShowcaseField, LIVE_AVAILABLE } from "@/lib/data";
 import { loadFrame } from "@/lib/png16";
-import { diffFrames, percentiles, robustSigma, type StretchParams } from "@/lib/stretch";
+import { diffFrames, maxStack, percentiles, robustSigma, type StretchParams } from "@/lib/stretch";
 import type { ExposureOut, Frame, ShowcaseField, VisitOut } from "@/lib/types";
 import { viewerParsers } from "@/lib/urlstate";
 import { expectedResidual, spectralVerdict } from "@/lib/verdict";
@@ -111,6 +111,20 @@ export function Viewer() {
     return null;
   }, [field]);
   const A = lookup(aKey), B = lookup(bKey);
+  const sameLambda = useCallback(() => {
+    if (!A) return;
+    const aVisit = field?.visits.find((v) => v.key === aKey || v.exposures.some((e) => e.key === aKey));
+    let best: { key: string; d: number } | null = null;
+    for (const v of visits) {
+      if (!aVisit || v.id === aVisit.id || v.detector !== A.det) continue;
+      for (const e of v.exposures) {
+        if (e.lambda_um == null) continue;
+        const d = Math.abs(e.lambda_um - A.lambda);
+        if (!best || d < best.d) best = { key: e.key, d };
+      }
+    }
+    if (best) setQ({ b: best.key, mode: "diff" });
+  }, [A, aKey, field, visits, setQ]);
   useEffect(() => {
     if (q.mode !== "diff") return;
     if (A) ensure(aKey, A.png.png16, A.png.mask_png, A.png.png_scale);
@@ -124,10 +138,14 @@ export function Viewer() {
     return fa && fb && fa.width === fb.width ? diffFrames(fa, fb) : null;
   }, [q.mode, verdict, loaded, aKey, bKey]);
   const diffSigma = diff ? robustSigma(diff) : 1;
+  const trail = useMemo(() => {
+    if (q.mode !== "trail") return null;
+    return maxStack(visits.map((v) => loaded.get(v.key)).filter((f): f is Frame => !!f));
+  }, [q.mode, visits, loaded]);
 
   const params: StretchParams = q.mode === "diff"
     ? { a: 0, lo: -4 * diffSigma, hi: 4 * diffSigma, cmap: q.cmap, invert: q.invert }
-    : showRef && ref
+    : showRef && ref && q.mode !== "trail"
       ? { a: q.stretch, lo: ref.stretch.lo, hi: ref.stretch.hi, cmap: q.cmap, invert: q.invert }
       : { a: q.stretch, lo: limits.lo, hi: limits.hi, cmap: q.cmap, invert: q.invert };
 
@@ -174,6 +192,12 @@ export function Viewer() {
   }, [visit, exposure, q.mode, q.pick, field, t, showRef, ref]);
 
   const onPick = (x: number, y: number) => setQ({ pick: `${x},${y}`, panel: q.panel === "none" ? "known" : q.panel });
+  const onGo = (visitId: string, exposureId: string, x: number, y: number, detNew: number) => {
+    const vs = (String(detNew) === det ? visits : field?.visits.filter((v) => v.detector === detNew).sort((a, b) => a.mjd_mean - b.mjd_mean)) ?? [];
+    const vi2 = vs.findIndex((v) => v.id === visitId);
+    const fi = vs[vi2]?.exposures.findIndex((e) => e.id === exposureId) ?? -1;
+    setQ({ det: String(detNew) === det ? q.det : String(detNew), visit: Math.max(vi2, 0), frame: fi, pick: `${x},${y}`, mode: "blink", a: "", b: "" });
+  };
   const onKeyPick = (dx: number, dy: number, confirm: boolean) => {
     if (!visit) return;
     const [px, py] = q.pick ? q.pick.split(",").map(Number) : visit.expected_xy.map(Math.round);
@@ -192,7 +216,7 @@ export function Viewer() {
   }
   if (!field || !visit) return <div className="glass p-6 text-[var(--muted)]" aria-busy="true">{t("loading")}…</div>;
 
-  const showFrame = q.mode === "diff" ? diff : showRef && ref ? loaded.get(ref.key) ?? null : current?.frame ?? null;
+  const showFrame = q.mode === "diff" ? diff : q.mode === "trail" ? trail : showRef && ref ? loaded.get(ref.key) ?? null : current?.frame ?? null;
   const title = field.showcase?.title[locale] ?? field.target.name;
   const abVisits = visits.filter((v) => det === "all" || v.detector === visit.detector);
   return (
@@ -231,7 +255,15 @@ export function Viewer() {
                 </div>
               </div>
             )}
-            {current && !showRef && <FrameLabel current={current} field={field} mode={q.mode} verdict={verdict ? { verdict, dChan, residual: expectedResidual(dChan), aLabel: A?.label ?? "", bLabel: B?.label ?? "" } : null} />}
+            {q.mode === "trail" && (
+              <div className="pointer-events-none absolute left-0 top-0 max-w-full p-2 text-xs leading-tight" aria-live="polite">
+                <div className="mono inline-block rounded-md bg-black/70 px-2 py-1.5">
+                  <div className="text-[13px] font-semibold">{t("trailTitle", { n: visits.length })}</div>
+                  <div className="text-[var(--warn)]">{t("trailNote")}</div>
+                </div>
+              </div>
+            )}
+            {current && !showRef && q.mode !== "trail" && <FrameLabel current={current} field={field} mode={q.mode} verdict={verdict ? { verdict, dChan, residual: expectedResidual(dChan), aLabel: A?.label ?? "", bLabel: B?.label ?? "" } : null} />}
             {q.mode === "diff" && verdict === "block" && (
               <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/75 p-5 text-center backdrop-blur-sm" role="alert">
                 <div>
@@ -257,6 +289,7 @@ export function Viewer() {
                 <label className="flex items-center gap-1.5"><span className="mono text-xs">A</span><select className="sel max-w-[16rem]" value={aKey} onChange={(e) => setQ({ a: e.target.value })} aria-label="A">{keyOptions(abVisits, abExposures)}</select></label>
                 <label className="flex items-center gap-1.5"><span className="mono text-xs">B</span><select className="sel max-w-[16rem]" value={bKey} onChange={(e) => setQ({ b: e.target.value })} aria-label="B">{keyOptions(abVisits, abExposures)}</select></label>
                 <button className="btn btn-icon text-xs" onClick={() => setQ({ a: bKey, b: aKey })}>A ⇄ B</button>
+                <button className="btn text-xs" onClick={sameLambda} title={t("sameLambdaHint")}>λ= {t("sameLambda")}</button>
                 <label className="flex items-center gap-1.5 text-xs text-[var(--muted)]"><input type="checkbox" checked={abExposures} onChange={(e) => setAbExposures(e.target.checked)} />{t("abExposures")}</label>
                 <span className="text-xs text-[var(--muted)]">{abVisits.length} {t("visits")}{det !== "all" ? ` · D${visit.detector}` : ""}</span>
               </div>
@@ -265,7 +298,7 @@ export function Viewer() {
           </>
         )}
       </div>
-      {!q.embed && <SidePanel field={field} current={current} pick={q.pick} panel={q.panel} setPanel={(p) => setQ({ panel: p })} />}
+      {!q.embed && <SidePanel field={field} current={current} pick={q.pick} panel={q.panel} setPanel={(p) => setQ({ panel: p })} onGo={onGo} />}
     </div>
   );
 }

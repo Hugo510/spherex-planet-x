@@ -34,3 +34,11 @@ export type Frame = {
   data: Float32Array;
   mask: Uint8Array; // bit0 sin dato, bit1 saturado
 };
+
+export type ChangeCandidate = {
+  x: number; y: number; ra: number; dec: number; snr: number; n_px: number; flux_diff_ujy: number; detector: number; channel: number;
+  lambda_um: number; exposure_id: string; visit_id: string; mjd: number; n_same_channel: number; epoch: number;
+  verdict: "known_star" | "known_ir_source" | "known_sso" | "candidate"; match: { id: string; sep_arcsec: number } | null;
+  n_detections: number; exposures?: string[];
+};
+export type ChangesFile = { field: string; generated_at: string; snr_min: number; method: string; n: number; candidates: ChangeCandidate[] };

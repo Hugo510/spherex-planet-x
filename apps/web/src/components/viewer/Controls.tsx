@@ -4,7 +4,7 @@ import type { Cmap } from "@/lib/colormaps";
 
 export type ControlState = {
   playing: boolean; speed: number; stretch: number; clip: string; cmap: Cmap; invert: boolean;
-  mode: "blink" | "diff"; det: string; detectors: number[]; reducedMotion: boolean;
+  mode: "blink" | "diff" | "trail"; det: string; detectors: number[]; reducedMotion: boolean;
 };
 
 export function Controls({ s, set, onStep }: {
@@ -40,6 +40,7 @@ export function Controls({ s, set, onStep }: {
         <span className="kicker mr-1">{t("mode")}</span>
         <button className="btn btn-icon text-xs" aria-pressed={s.mode === "blink"} onClick={() => set({ mode: "blink" })}>{t("blink")}</button>
         <button className="btn btn-icon mono text-xs" aria-pressed={s.mode === "diff"} onClick={() => set({ mode: "diff" })}>A − B</button>
+        <button className="btn btn-icon text-xs" aria-pressed={s.mode === "trail"} onClick={() => set({ mode: "trail" })} title={t("trailHint")}>{t("trail")}</button>
       </div>
       <label className="flex items-center gap-2">
         <span className="kicker">asinh</span>

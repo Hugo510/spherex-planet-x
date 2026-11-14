@@ -6,7 +6,7 @@ import type { SpectralVerdict } from "@spherex/shared";
 
 /** Lo que SIEMPRE va impreso sobre el cuadro: λ, detector, fecha, release, versión l2b y pipeline. Sin excepción. */
 export function FrameLabel({ current, field, mode, verdict }: {
-  current: Current; field: ShowcaseField; mode: "blink" | "diff";
+  current: Current; field: ShowcaseField; mode: "blink" | "diff" | "trail";
   verdict: { verdict: SpectralVerdict; dChan: number; residual: number; aLabel: string; bLabel: string } | null;
 }) {
   const t = useTranslations("viewer");

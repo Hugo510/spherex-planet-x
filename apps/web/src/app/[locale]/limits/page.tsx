@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { readLimits } from "@/lib/limits-static";
-import { CompletenessChart } from "@/components/CompletenessChart";
+import { CompletenessChart, VelocityChart } from "@/components/CompletenessChart";
 import { readShowcaseIndex } from "@/lib/showcase-static";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Suspense } from "react";
@@ -52,19 +52,20 @@ export default async function LimitsPage({ params }: { params: Promise<{ locale:
           <h2 className="display mt-12 border-b border-[var(--line)] pb-2 text-xl font-semibold">3 · {t("pm.title")}</h2>
           <p className="mt-1 text-[var(--muted)]">{t("pm.intro")}</p>
           <table className="data mt-3 text-xs">
-            <thead><tr><th>{t("pm.object")}</th><th>Det</th><th>{t("pm.visits")}</th><th>{t("pm.span")}</th><th>{t("pm.measured")}</th><th>{t("pm.expected")}</th><th>{t("pm.catalog")}</th></tr></thead>
+            <thead><tr><th>{t("pm.object")}</th><th>Det</th><th>{t("pm.visits")}</th><th>{t("pm.span")}</th><th>{t("pm.measured")}</th><th>{t("pm.expected")}</th><th>{t("pm.control")}</th><th>{t("pm.catalog")}</th></tr></thead>
             <tbody>
               {L.proper_motion.map((r) => (
                 <tr key={r.field + r.detector} className="">
                   <td>{r.name}{r.saturated && <span className="text-[var(--sat)]"> · {t("pm.saturated")}</span>}</td><td>D{r.detector}</td><td>{r.n_visits}</td><td>{r.span_yr}</td>
                   <td className="font-semibold">{r.pm_px_yr} ± {r.pm_err_px_yr} px/yr = {r.pm_arcsec_yr}″/yr</td>
                   <td>{r.expected_px_yr} px/yr = {r.expected_arcsec_yr}″/yr</td>
+                  <td>{r.field_control ? `${r.field_control.n_stars} ★ · ${t("pm.median")} ${r.field_control.median_pm_px_yr} px/yr · ${t("pm.max")} ${r.field_control.max_pm_px_yr}` : "—"}</td>
                   <td className="text-[var(--muted)]">{r.source}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <p className="mt-2 text-xs text-[var(--muted)]">{t("pm.note")}</p>
+          <p className="mt-2 text-xs text-[var(--muted)]">{t("pm.note")} {t("pm.controlNote")}</p>
 
           <h2 className="display mt-12 border-b border-[var(--line)] pb-2 text-xl font-semibold">4 · {t("inj.title")}</h2>
           <p className="mt-1 text-[var(--muted)]">{t("inj.intro", { fwhm: L.injection[0]?.fwhm_arcsec ?? 8.6 })}</p>
@@ -76,6 +77,14 @@ export default async function LimitsPage({ params }: { params: Promise<{ locale:
             ))}</tbody>
           </table>
 
+          {L.velocity && (
+            <>
+              <h2 className="display mt-12 border-b border-[var(--line)] pb-2 text-xl font-semibold">4b · {t("vel.title")}</h2>
+              <p className="mt-1 text-[var(--muted)]">{t("vel.intro", { n: L.velocity.n_visits, span: L.velocity.span_yr })}</p>
+              <div className="mt-3"><VelocityChart vel={L.velocity} title={t("vel.title")} /></div>
+              <p className="mt-2 text-xs text-[var(--muted)]">{t("vel.note")}</p>
+            </>
+          )}
           <h2 className="display mt-12 border-b border-[var(--line)] pb-2 text-xl font-semibold">5 · {t("nv.title")}</h2>
           <ul className="mt-2 space-y-2">
             {L.not_visible.map((n) => (

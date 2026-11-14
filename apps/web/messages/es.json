@@ -101,7 +101,8 @@
       "knownSoon": "Haz clic en el visor para listar vecinos (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
       "spectrumSoon": "Espectro y curva de luz en µJy.",
       "aladinSoon": "Contexto con Aladin Lite (unWISE, 2MASS, Gaia DR3).",
-      "hint": "Elige una pestaña. Haz clic en el cuadro (o Shift+flechas y Enter) para preguntar qué hay en un píxel."
+      "hint": "Elige una pestaña. Haz clic en el cuadro (o Shift+flechas y Enter) para preguntar qué hay en un píxel.",
+      "changes": "Qué mirar primero"
     },
     "refEpoch": "época media",
     "refNote": "Cuadro de 2010 (AllWISE W2, 15 años antes) reproyectado a la misma malla: compara estrellas de campo y la posición del objeto.",
@@ -113,7 +114,13 @@
       "asteroid": "asteroide",
       "deepfield": "campo profundo",
       "random": "campo aleatorio"
-    }
+    },
+    "trail": "Traza",
+    "trailHint": "Máximo píxel a píxel de todas las visitas del detector",
+    "trailTitle": "Traza · máximo de {n} visitas",
+    "trailNote": "Ayuda visual: mezcla λ medias distintas; no es fotometría.",
+    "sameLambda": "misma λ",
+    "sameLambdaHint": "Elige como B la exposición de otra visita con el canal más cercano al de A"
   },
   "known": {
     "at": "Punto",
@@ -149,7 +156,10 @@
     "lcTitle": "Curva de luz · coadd por visita ·",
     "lcNote": "cada visita tiene una λ media distinta (ver escalera)",
     "thisVisit": "Esta visita",
-    "saturated": "saturación en la apertura: no fiable"
+    "saturated": "saturación en la apertura: no fiable",
+    "fixedLambda": "λ fija {l} µm (±1 canal)",
+    "perVisit": "por visita (λ media)",
+    "fixedNote": "{n} exposiciones del mismo canal: la curva honesta"
   },
   "aladin": {
     "survey": "Fondo",
@@ -205,7 +215,11 @@
       "expected": "esperado",
       "catalog": "fuente",
       "saturated": "núcleo saturado: centroide sesgado",
-      "note": "WISE 0855 y ε Indi B se miden; Barnard satura el núcleo en D2–D3 y su centroide (alas) sale sesgado: se muestra igual, con aviso."
+      "note": "WISE 0855 y ε Indi B se miden; Barnard satura el núcleo en D2–D3 y su centroide (alas) sale sesgado: se muestra igual, con aviso.",
+      "control": "control (estrellas de campo)",
+      "median": "mediana",
+      "max": "máx",
+      "controlNote": "Control: el mismo ajuste aplicado a estrellas Gaia del campo (G < 16, lejos del objeto) tras quitar su pm de catálogo; su |pm| residual es el piso sistemático del método."
     },
     "inj": {
       "title": "Inyección-recuperación en coadds reales",
@@ -263,7 +277,12 @@
       }
     },
     "source": "Fuente",
-    "generated": "Generado el"
+    "generated": "Generado el",
+    "vel": {
+      "title": "Completitud por velocidad (movers sintéticos)",
+      "intro": "Movers sintéticos inyectados en los coadds reales de {n} visitas de WISE 0855 D5 ({span} años) y recuperados a ciegas: centroide en ±3 px alrededor de la posición inicial en cada visita y ajuste lineal. Recuperado si el pm ajustado está a ≤ 30 % (o ≤ 0.3 px/año) del inyectado.",
+      "note": "La caída a pm altos es el límite del método por visitas sin conocer el pm: el objeto sale de la caja de búsqueda. Con un pm de catálogo (Gaia, CatWISE) la posición se propaga y el límite desaparece; sin él, por encima de ~2 px/año (12″/año) hace falta enlazar detecciones, no centroides."
+    }
   },
   "status": {
     "home": "Inicio",
@@ -281,5 +300,22 @@
     "liveDown": "sin respuesta",
     "kind": "tipo",
     "failures": "fallos"
+  },
+  "changes": {
+    "title": "Cambios a la misma λ",
+    "method": "Cada exposición se resta de la mediana de exposiciones del mismo canal en otras visitas (|Δ| = 0 canales, veredicto ok por construcción). Picos con S/N ≥ 6 y ≥ 2 px, lejos de saturación, cruzados con Gaia, CatWISE, AllWISE, SIMBAD y JPL.",
+    "allDetectors": "todos los detectores",
+    "empty": "Sin cambios con S/N ≥ 6 en este detector.",
+    "none": "No hay lista precomputada para este campo.",
+    "noMatch": "sin contraparte a ≤ 2 px",
+    "repeats": "se repite en {n} exposiciones",
+    "single": "una sola exposición: posible artefacto (rayo cósmico, snowball, persistencia)",
+    "caveat": "No es un detector del Planeta X. Es un filtro de «lo que cambió a λ igual»: variabilidad de fuentes conocidas, asteroides y artefactos. Un candidato real debe repetirse en varias exposiciones y no estar en la Field Guide.",
+    "v": {
+      "known_star": "estrella conocida",
+      "known_ir_source": "fuente IR conocida",
+      "known_sso": "asteroide",
+      "candidate": "candidato"
+    }
   }
 }

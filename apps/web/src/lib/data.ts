@@ -1,4 +1,4 @@
-import type { KnownResponse, ShowcaseField, ShowcaseIndex, SpectrumResponse } from "./types";
+import type { ChangesFile, KnownResponse, ShowcaseField, ShowcaseIndex, SpectrumResponse } from "./types";
 
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
 export const LIVE_AVAILABLE = API_URL.length > 0;
@@ -65,4 +65,9 @@ export function loadSpectrum(field: ShowcaseField): Promise<SpectrumResponse> {
 
 export function mjdToIso(mjd: number): string {
   return new Date((mjd - 40587) * 86400000).toISOString().slice(0, 10);
+}
+
+export function loadChanges(field: ShowcaseField): Promise<ChangesFile | null> {
+  if (field.mode !== "showcase" || !field.showcase) return Promise.resolve(null);
+  return getJson<ChangesFile>(`/showcase/${field.showcase.id}/candidates.json`).catch(() => null);
 }

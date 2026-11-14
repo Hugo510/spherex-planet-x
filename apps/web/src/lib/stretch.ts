@@ -79,3 +79,21 @@ export function robustSigma(f: Frame): number {
   const dev = v.map((x) => Math.abs(x - med)).sort((x, y) => x - y);
   return 1.4826 * dev[Math.floor(dev.length / 2)] || 1;
 }
+
+/** Traza: máximo píxel a píxel de varios cuadros (misma malla). Mezcla λ medias distintas: solo como ayuda visual. */
+export function maxStack(frames: Frame[]): Frame | null {
+  if (!frames.length) return null;
+  const n = frames[0].data.length;
+  const data = new Float32Array(n).fill(NaN);
+  const mask = new Uint8Array(n);
+  for (const f of frames) {
+    if (f.data.length !== n) continue;
+    for (let i = 0; i < n; i++) {
+      const v = f.data[i];
+      if (Number.isFinite(v) && !(data[i] >= v)) data[i] = v;
+      mask[i] |= f.mask[i] & 2;
+    }
+  }
+  for (let i = 0; i < n; i++) if (!Number.isFinite(data[i])) mask[i] |= 1;
+  return { key: "trail:" + frames.map((f) => f.key).join(","), width: frames[0].width, height: frames[0].height, data, mask };
+}

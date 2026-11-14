@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import uPlot from "uplot";
 import "uplot/dist/uPlot.min.css";
 import { loadSpectrum } from "@/lib/data";
-import type { ShowcaseField, SpectrumResponse, VisitOut } from "@/lib/types";
+import type { ShowcaseField, SpectrumPoint, SpectrumResponse, VisitOut } from "@/lib/types";
 
 /** Paleta categórica (color por visita): separa forma espectral de variabilidad. */
 const PALETTE = ["#7cc4ff", "#ffd166", "#43d17a", "#ff8fab", "#b28dff", "#ffa94d", "#5ee7df", "#f06595", "#9775fa", "#a9e34b", "#ff6b6b", "#74c0fc"];
@@ -31,9 +31,10 @@ function drawPoints(pts: Pt[]) {
   };
 }
 
-export function SpectrumPanel({ field, visit, currentExposureId, detector }: { field: ShowcaseField; visit: VisitOut; currentExposureId: string | null; detector: number }) {
+export function SpectrumPanel({ field, visit, currentExposureId, detector, currentLambda, currentBw }: { field: ShowcaseField; visit: VisitOut; currentExposureId: string | null; detector: number; currentLambda: number; currentBw: number }) {
   const t = useTranslations("spectrum");
   const [sp, setSp] = useState<SpectrumResponse | null>(null);
+  const [fixed, setFixed] = useState(true);
   const [err, setErr] = useState<string | null>(null);
   const specRef = useRef<HTMLDivElement>(null);
   const lcRef = useRef<HTMLDivElement>(null);
@@ -73,14 +74,25 @@ export function SpectrumPanel({ field, visit, currentExposureId, detector }: { f
     return () => u.destroy();
   }, [sp, currentExposureId, visit.id, visitColors]);
 
+  const fixedPts = useMemo(() => {
+    if (!sp) return [] as SpectrumPoint[];
+    const tol = 1.5 * (currentBw || 0.03);
+    return sp.points.filter((p) => p.detector === detector && Math.abs(p.lambda_um - currentLambda) <= tol).sort((a, b) => a.mjd - b.mjd);
+  }, [sp, detector, currentLambda, currentBw]);
   useEffect(() => {
     if (!lcRef.current) return;
-    const vs = field.visits.filter((v) => v.detector === detector && v.flux_ujy != null).sort((a, b) => a.mjd_mean - b.mjd_mean);
-    if (!vs.length) return;
-    const pts: Pt[] = vs.map((v) => ({
-      x: (v.mjd_mean - 40587) * 86400, y: v.flux_ujy as number, e: v.flux_err_ujy ?? 0, color: visitColors.map.get(v.id) ?? "#7cc4ff",
-      current: v.id === visit.id, sat: (v.saturated_px_aperture ?? 0) > 0,
-    }));
+    let pts: Pt[];
+    if (fixed) {
+      pts = fixedPts.map((p) => ({ x: (p.mjd - 40587) * 86400, y: p.flux_ujy, e: p.err_ujy, color: visitColors.map.get(p.visit_id) ?? "#7cc4ff",
+        current: p.exposure_id === currentExposureId || (!currentExposureId && p.visit_id === visit.id), sat: (p.saturated_px ?? 0) > 0 }));
+    } else {
+      const vs = field.visits.filter((v) => v.detector === detector && v.flux_ujy != null).sort((a, b) => a.mjd_mean - b.mjd_mean);
+      pts = vs.map((v) => ({
+        x: (v.mjd_mean - 40587) * 86400, y: v.flux_ujy as number, e: v.flux_err_ujy ?? 0, color: visitColors.map.get(v.id) ?? "#7cc4ff",
+        current: v.id === visit.id, sat: (v.saturated_px_aperture ?? 0) > 0,
+      }));
+    }
+    if (pts.length < 1) return;
     const u = new uPlot({
       width: lcRef.current.clientWidth || 360, height: 190,
       scales: { x: { time: true }, y: {} },
@@ -90,7 +102,7 @@ export function SpectrumPanel({ field, visit, currentExposureId, detector }: { f
       legend: { show: false }, cursor: { show: false },
     }, [pts.map((p) => p.x), pts.map((p) => p.y)], lcRef.current);
     return () => u.destroy();
-  }, [field, detector, visit.id, visitColors]);
+  }, [field, detector, visit.id, visitColors, fixed, fixedPts, currentExposureId]);
 
   const n = sp?.points.length ?? 0;
   const nSat = sp?.points.filter((p) => (p.saturated_px ?? 0) > 0).length ?? 0;
@@ -110,7 +122,11 @@ export function SpectrumPanel({ field, visit, currentExposureId, detector }: { f
       </div>
       <div className="border-t border-[var(--line)] pt-3">
         <p className="kicker">{t("lcTitle")} D{detector}</p>
-        <p className="mono mt-0.5 text-[11px] text-[var(--muted)]">{t("lcNote")}</p>
+        <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px]">
+          <button className={`btn btn-icon text-[11px] ${fixed ? "is-active" : ""}`} aria-pressed={fixed} onClick={() => setFixed(true)}>{t("fixedLambda", { l: currentLambda.toFixed(2) })}</button>
+          <button className={`btn btn-icon text-[11px] ${!fixed ? "is-active" : ""}`} aria-pressed={!fixed} onClick={() => setFixed(false)}>{t("perVisit")}</button>
+          <span className="mono text-[var(--muted)]">{fixed ? t("fixedNote", { n: fixedPts.length }) : t("lcNote")}</span>
+        </div>
       </div>
       <div ref={lcRef} />
       {visit.flux_ujy != null && (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { diffFrames, percentiles, robustSigma, stretchValue } from "./stretch";
+import { diffFrames, maxStack, percentiles, robustSigma, stretchValue } from "./stretch";
 import type { Frame } from "./types";
 
 const mk = (vals: number[], mask?: number[]): Frame => ({
@@ -31,5 +31,12 @@ describe("stretch", () => {
   it("sigma robusta de ruido gaussiano ≈ 1", () => {
     const vals = Array.from({ length: 4001 }, (_, i) => (i - 2000) / 1000 * 3); // uniforme ±6 → MAD·1.4826 ≈ 4.4
     expect(robustSigma(mk(vals))).toBeGreaterThan(3);
+  });
+
+  it("traza = máximo píxel a píxel, NaN ignorados, saturación unida", () => {
+    const m = maxStack([mk([1, NaN, 3], [0, 0, 2]), mk([2, 5, NaN], [0, 1, 0])])!;
+    expect(Array.from(m.data)).toEqual([2, 5, 3]);
+    expect(m.mask[0]).toBe(0);
+    expect(m.mask[2] & 2).toBe(2);
   });
 });

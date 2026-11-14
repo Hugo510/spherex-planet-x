@@ -18,7 +18,7 @@ export const viewerParsers = {
   det: parseAsString.withDefault(""),
   visit: parseAsInteger.withDefault(0),
   frame: parseAsInteger.withDefault(-1), // −1 = coadd de la visita; ≥ 0 = exposición (escalera de λ)
-  mode: parseAsStringLiteral(["blink", "diff"] as const).withDefault("blink"),
+  mode: parseAsStringLiteral(["blink", "diff", "trail"] as const).withDefault("blink"),
   stretch: parseAsFloat.withDefault(3), // parámetro a del asinh
   clip: parseAsString.withDefault("5,99.7"),
   cmap: parseAsStringLiteral(["gray", "cividis"] as const).withDefault("gray"),
@@ -28,6 +28,6 @@ export const viewerParsers = {
   b: parseAsString.withDefault(""),
   speed: parseAsFloat.withDefault(1.5), // cuadros por segundo
   play: parseAsBoolean.withDefault(false),
-  panel: parseAsStringLiteral(["none", "known", "spectrum", "aladin", "class"] as const).withDefault("none"),
+  panel: parseAsStringLiteral(["none", "known", "spectrum", "aladin", "class", "changes"] as const).withDefault("none"),
   pick: parseAsString.withDefault(""), // "x,y" clic en el visor
 };

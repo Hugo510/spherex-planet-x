@@ -23,7 +23,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "apps" / "api"))
 from app.domain.flags import FLAG_BITS  # noqa: E402
-from app.domain.models import PIXSCALE_ARCSEC, UJY_PER_MJYSR_ARCSEC2  # noqa: E402
+from app.domain.models import PIXSCALE_ARCSEC, UJY_PER_MJYSR_ARCSEC2, mjd_to_year  # noqa: E402
 from app.domain.photometry import aperture_photometry  # noqa: E402
 from app.domain.targets import TARGETS  # noqa: E402
 from app.usecases.build_visits import build_visits  # noqa: E402
@@ -103,7 +103,122 @@ def _fwhm_from_cache(det: int) -> float:
     return 8.6
 
 
-# ---------------------------------------------------------------- 2. pm medido vs catálogo
+# ---------------------------------------------------------------- 2. pm medido vs catálogo (+ control con estrellas de campo)
+def field_star_control(fid: str, det: int, max_stars: int = 10) -> dict | None:
+    """Mismo ajuste de centroides por visita aplicado a estrellas Gaia del campo (G < 16, lejos del objeto y del borde):
+    su pm medido debería ser ~0; la mediana de |pm| y su dispersión son el piso sistemático de la medida."""
+    from math import cos, radians
+
+    from app.domain.photometry import centroid_near
+    from app.usecases.reprojection import grid_wcs
+
+    kp = SHOWCASE / fid / "known.json"
+    if not kp.exists():
+        return None
+    known = json.loads(kp.read_text())
+    tgt = TARGETS[fid]
+    res = build_visits(tgt, size_deg=0.1, detectors=(det,), max_per_visit=8)
+    vs = [v for v in res.visits_of(det) if v.meta.n_exp >= 3]
+    if len(vs) < 3:
+        return None
+    wcs = grid_wcs(res.grid)
+    n = res.grid.naxis
+    stars = []
+    for s in known["sources"]:
+        if s["catalog"] != "gaia_dr3" or s.get("mag") is None or s["mag"] > 16 or s["epoch"] is None:
+            continue
+        x, y = (float(q) for q in wcs.world_to_pixel_values(s["ra"], s["dec"]))
+        if not (6 < x < n - 7 and 6 < y < n - 7):
+            continue
+        if np.hypot(x - n / 2, y - n / 2) < 6:  # no el objeto ni su entorno
+            continue
+        stars.append((s, x, y))
+    stars.sort(key=lambda t: t[0]["mag"])
+    rows = []
+    for s, x0, y0 in stars[:max_stars]:
+        pm_ra = (s.get("pmra_mas_yr") or 0) / 1000
+        pm_de = (s.get("pmdec_mas_yr") or 0) / 1000
+        ts, xs, ys = [], [], []
+        for v in vs:
+            dt = mjd_to_year(v.meta.mjd_mean) - s["epoch"]
+            ra = s["ra"] + pm_ra * dt / 3600 / cos(radians(s["dec"]))
+            dec = s["dec"] + pm_de * dt / 3600
+            xe, ye = (float(q) for q in wcs.world_to_pixel_values(ra, dec))
+            c = centroid_near(v.img, xe, ye, r=2)
+            if c is None:
+                continue
+            ts.append(v.meta.mjd_mean / 365.25)
+            xs.append(c[0] - (xe - x0))  # quitar el pm de catálogo: lo que quede es error de medida
+            ys.append(c[1] - (ye - y0))
+        if len(ts) < 3:
+            continue
+        t = np.array(ts)
+        mx = np.polyfit(t, np.array(xs), 1)[0]
+        my = np.polyfit(t, np.array(ys), 1)[0]
+        rows.append({"id": s["id"], "G": round(s["mag"], 2), "n_visits": len(ts), "pm_px_yr": round(float(np.hypot(mx, my)), 3),
+                     "pmra_cat_mas_yr": s.get("pmra_mas_yr"), "pmdec_cat_mas_yr": s.get("pmdec_mas_yr")})
+    if not rows:
+        return None
+    pms = np.array([r["pm_px_yr"] for r in rows])
+    return {"n_stars": len(rows), "median_pm_px_yr": round(float(np.median(pms)), 3), "max_pm_px_yr": round(float(pms.max()), 3),
+            "mad_px_yr": round(float(1.4826 * np.median(np.abs(pms - np.median(pms)))), 3), "stars": rows}
+
+
+def velocity_block() -> dict | None:
+    """Completitud por velocidad: movers sintéticos (PSF gaussiana, flujo fijo) inyectados en los coadds reales de las visitas de
+    WISE 0855 D5 y recuperados A CIEGAS: centroide en una caja de ±3 px alrededor de la posición inicial en cada visita y
+    ajuste lineal. Recuperado si el pm ajustado está a ≤ 30 % y ≤ 0.3 px/año del inyectado. Mide hasta qué velocidad el
+    método por visitas sigue al objeto sin conocer su pm."""
+    from app.domain.photometry import centroid_near
+
+    tgt = TARGETS["wise0855"]
+    res = build_visits(tgt, size_deg=0.1, detectors=(5,), max_per_visit=8)
+    vs = [v for v in res.visits_of(5) if v.meta.n_exp >= 3]
+    if len(vs) < 4:
+        return None
+    omega = vs[0].meta.photometry.omega_arcsec2 if vs[0].meta.photometry else 37.9
+    fwhm_px = _fwhm_from_cache(5) / PIXSCALE_ARCSEC
+    sigma = fwhm_px / 2.3548
+    t0 = vs[0].meta.mjd_mean
+    years = np.array([(v.meta.mjd_mean - t0) / 365.25 for v in vs])
+    n = res.grid.naxis
+    yy, xx = np.indices((n, n))
+    rows = []
+    for flux in (400.0, 1200.0):
+        peak = flux / (omega * UJY_PER_MJYSR_ARCSEC2) / (2 * np.pi * sigma**2)
+        for pm in (0.0, 0.3, 0.6, 1.0, 1.5, 2.0, 3.0, 4.0):
+            found, tried = 0, 0
+            while tried < 30:
+                x0, y0 = RNG.uniform(10, n - 11), RNG.uniform(10, n - 11)
+                ang = RNG.uniform(0, 2 * np.pi)
+                vx, vy = pm * np.cos(ang), pm * np.sin(ang)
+                if not (6 < x0 + vx * years[-1] < n - 7 and 6 < y0 + vy * years[-1] < n - 7):
+                    continue
+                tried += 1
+                xs, ys, ts = [], [], []
+                for v, yr in zip(vs, years, strict=True):
+                    fake = v.img + peak * np.exp(-((xx - (x0 + vx * yr)) ** 2 + (yy - (y0 + vy * yr)) ** 2) / (2 * sigma**2))
+                    c = centroid_near(fake, x0, y0, r=3)  # a ciegas: siempre alrededor de la posición inicial
+                    if c is None:
+                        continue
+                    xs.append(c[0])
+                    ys.append(c[1])
+                    ts.append(yr)
+                if len(ts) < 4:
+                    continue
+                mx = np.polyfit(ts, xs, 1)[0]
+                my = np.polyfit(ts, ys, 1)[0]
+                err = np.hypot(mx - vx, my - vy)
+                if err <= max(0.3, 0.3 * pm):
+                    found += 1
+            rows.append({"flux_ujy": flux, "pm_px_yr": pm, "pm_arcsec_yr": round(pm * PIXSCALE_ARCSEC, 1), "n": tried, "recovered": found,
+                         "completeness": round(found / tried, 3) if tried else None})
+            print(f"  velocidad {flux:.0f} µJy, {pm} px/yr: {found}/{tried}")
+    return {"field": "wise0855", "detector": 5, "n_visits": len(vs), "span_yr": round(float(years[-1]), 2), "search_radius_px": 3,
+            "method": "centroide a ciegas en ±3 px alrededor de la posición inicial por visita + ajuste lineal; recuperado si |Δpm| ≤ max(0.3, 30 %)",
+            "rows": rows}
+
+
 def pm_block() -> list[dict]:
     out = []
     for fid, det, source in (("wise0855", 5, "Kirkpatrick et al. 2021 (ApJS 253, 7)"), ("wise0855", 6, "Kirkpatrick et al. 2021"),
@@ -126,12 +241,20 @@ def pm_block() -> list[dict]:
         err = float(np.hypot(mx * np.sqrt(covx[0, 0]), my * np.sqrt(covy[0, 0])) / max(pm_px, 1e-9))
         exp_px = float(np.hypot(tg["pmra"], tg["pmdec"]) / PIXSCALE_ARCSEC)
         # dirección: x crece hacia el oeste (CDELT1 < 0) → pmra medido = −mx·6.15
+        ctrl = None
+        if fid in TARGETS:
+            try:
+                ctrl = field_star_control(fid, det)
+            except Exception as e:  # noqa: BLE001
+                print("  control estrellas", fid, det, "fallo:", e)
         out.append({"field": fid, "name": d["showcase"]["title"]["en"], "detector": det, "n_visits": len(vs), "span_yr": round(float(t.max() - t.min()), 2),
+                    "field_control": ctrl,
                     "pm_px_yr": round(pm_px, 2), "pm_err_px_yr": round(err, 2), "pm_arcsec_yr": round(pm_px * PIXSCALE_ARCSEC, 2),
                     "expected_px_yr": round(exp_px, 2), "expected_arcsec_yr": round(exp_px * PIXSCALE_ARCSEC, 2),
                     "pmra_meas_arcsec_yr": round(-mx * PIXSCALE_ARCSEC, 2), "pmdec_meas_arcsec_yr": round(my * PIXSCALE_ARCSEC, 2),
                     "pmra_cat": tg["pmra"], "pmdec_cat": tg["pmdec"], "saturated": sat, "source": source})
-        print(f"  pm {fid} D{det}: {pm_px:.2f} ± {err:.2f} px/yr (esperado {exp_px:.2f}) en {len(vs)} visitas{' [saturado]' if sat else ''}")
+        print(f"  pm {fid} D{det}: {pm_px:.2f} ± {err:.2f} px/yr (esperado {exp_px:.2f}) en {len(vs)} visitas{' [saturado]' if sat else ''}"
+              + (f"; control {ctrl['n_stars']} estrellas: mediana {ctrl['median_pm_px_yr']} px/yr, máx {ctrl['max_pm_px_yr']}" if ctrl else ""))
     return out
 
 
@@ -234,9 +357,11 @@ def main() -> int:
     inj = injection_block()
     print("# pm medido")
     pm = pm_block()
+    print("# completitud por velocidad")
+    vel = velocity_block()
     print("# field guide")
     fg = field_guide()
-    data = {"generated_at": datetime.now(UTC).isoformat(timespec="seconds"), "injection": inj, "proper_motion": pm,
+    data = {"generated_at": datetime.now(UTC).isoformat(timespec="seconds"), "injection": inj, "proper_motion": pm, "velocity": vel,
             "delta_lambda": DELTA_LAMBDA, "not_visible": NOT_VISIBLE, "field_guide": fg,
             "pixscale_arcsec": PIXSCALE_ARCSEC, "aperture": {"r_px": 2.5, "ann_in_px": 5, "ann_out_px": 8}}
     (OUT / "limits.json").write_text(json.dumps(data, indent=1))
