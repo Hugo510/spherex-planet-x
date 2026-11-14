@@ -26,6 +26,7 @@ app = modal.App("spherex-api")
     volumes={"/cache": volume},
     timeout=600,
     scaledown_window=300,
+    min_containers=1,  # sin arranque en frío durante la evaluación (docs/DEPLOY.md)
     cpu=2.0,
     memory=2048,
     env={"SPHEREX_CACHE_DIR": "/cache"},
