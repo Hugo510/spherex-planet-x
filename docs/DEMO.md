@@ -1,6 +1,15 @@
 # Demo: guion de 30 s y versión en 7 slides
 
-Grabación: `python scripts/record_demo.py --base http://localhost:3000 --out docs/demo` (WebM + GIF). Subtítulos en inglés.
+**Video listo para la plataforma: `docs/demo/demo.mp4`** (29.4 s, 1280×720, H.264 + AAC, 1.3 MB, subtítulos en inglés quemados
+y en `docs/demo/demo.srt`). Se genera con `python scripts/make_video.py` (Playwright graba el visor cuadro a cuadro, ElevenLabs
+narra cinco frases cortas con voz «Daniel» a 1.15× y ffmpeg lo monta). GIF rápido alternativo: `python scripts/record_demo.py`.
+
+Escenas del video (texto = subtítulo = narración):
+1. ε Indi B, escalera de λ — "Every SPHEREx pixel sees a different colour. This blinking is a spectrum, not change."
+2. WISE 0855, 2010 → visitas — "One coadd per visit, plus a 2010 frame on the same grid: the brown dwarf moves as Gaia predicts."
+3. A−B aviso → bloqueo — "A spectral verdict before any subtraction, measured on real data. Past eight channels, it refuses."
+4. Ceres, traza + ¿qué hay aquí? — "Click anywhere: Gaia, CatWISE, AllWISE, SIMBAD and JPL asteroids. This one is Ceres."
+5. Limits — "What SPHEREx cannot see, we say with numbers. The honest SPHEREx comparator."
 
 ## Video de 30 s (subtítulos EN)
 

@@ -31,10 +31,13 @@ VOICES = {"es": "EXAVITQu4vr4xnSDxMaL", "en": "EXAVITQu4vr4xnSDxMaL", "video": "
 OUTPUT_FORMAT = "mp3_22050_32"  # ~4 KB/s: 20 s ≈ 80 KB
 
 
-def tts(key: str, voice: str, text: str, out: Path) -> int:
+def tts(key: str, voice: str, text: str, out: Path, speed: float = 1.0) -> int:
+    settings = {"stability": 0.55, "similarity_boost": 0.75, "style": 0.15, "use_speaker_boost": True}
+    if speed != 1.0:
+        settings["speed"] = speed  # 0.7–1.2 en eleven_multilingual_v2
     r = httpx.post(
         f"{API}/{voice}", params={"output_format": OUTPUT_FORMAT}, headers={"xi-api-key": key, "accept": "audio/mpeg"},
-        json={"text": text, "model_id": MODEL, "voice_settings": {"stability": 0.55, "similarity_boost": 0.75, "style": 0.15, "use_speaker_boost": True}},
+        json={"text": text, "model_id": MODEL, "voice_settings": settings},
         timeout=120,
     )
     if r.status_code != 200:

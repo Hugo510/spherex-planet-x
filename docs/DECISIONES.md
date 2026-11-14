@@ -191,3 +191,10 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   El cliente vuelve a preguntar cada 2 s (hasta 15 min) y muestra una tarjeta con etapa, barra, segundos y aviso de arranque
   en frío; si IRSA falla, un mensaje claro y un botón al showcase. En Modal, el hilo vive dentro de la función ASGI con
   `@modal.concurrent`, así que el contenedor sigue respondiendo a las consultas de progreso mientras construye.
+
+## Video de entrega (tarde del 14 nov)
+
+- **2026-11-14 19:40 UTC** — `scripts/make_video.py`: cinco escenas grabadas del visor real con Playwright a 8 fps (1280×720),
+  narración de cinco frases cortas con ElevenLabs (voz Daniel, `speed` 1.15) y un `atempo` global de 1.09× para caber en
+  29.4 s, subtítulos en inglés quemados con Pillow y `demo.srt` aparte, montaje con ffmpeg (imageio-ffmpeg, H.264 + AAC,
+  1.3 MB). La locución larga de 57 s (`voiceover_en.mp3`) queda como material; el video de la plataforma es `demo.mp4`.

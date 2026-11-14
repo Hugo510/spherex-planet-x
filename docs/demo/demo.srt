@@ -1,0 +1,20 @@
+1
+00:00:00,000 --> 00:00:05,357
+Every SPHEREx pixel sees a different colour. This blinking is a spectrum, not change.
+
+2
+00:00:05,557 --> 00:00:11,931
+One coadd per visit, plus a 2010 frame on the same grid: the brown dwarf moves as Gaia predicts.
+
+3
+00:00:12,131 --> 00:00:17,827
+A spectral verdict before any subtraction, measured on real data. Past eight channels, it refuses.
+
+4
+00:00:18,027 --> 00:00:24,997
+Click anywhere: Gaia, CatWISE, AllWISE, SIMBAD and JPL asteroids. This one is Ceres.
+
+5
+00:00:25,197 --> 00:00:29,363
+What SPHEREx cannot see, we say with numbers. The honest SPHEREx comparator.
+
