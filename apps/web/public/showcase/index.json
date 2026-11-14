@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:02:56+00:00",
+ "generated_at": "2026-11-14T09:09:52+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -32,8 +32,8 @@
     "dr1"
    ],
    "failures": 0,
-   "bytes": 2031656,
-   "seconds": 157.8,
+   "bytes": 2173711,
+   "seconds": 114.1,
    "thumbnail": "/showcase/wise0855/visits/a61dce7b3447f332_D5_2025-05-06.png",
    "asteroid": null
   },
@@ -252,6 +252,126 @@
    "seconds": 280.5,
    "thumbnail": "/showcase/nep-deep-2/visits/fb050f2988f162d6_D3_2025-04-26.png",
    "asteroid": null
+  },
+  {
+   "id": "random-1",
+   "kind": "random",
+   "title": {
+    "es": "Campo aleatorio",
+    "en": "Random field"
+   },
+   "blurb": {
+    "es": "Posici\u00f3n elegida al azar (semilla 2026) en el cielo del Wide Survey, cerca de la ecl\u00edptica: lo que ve cualquier usuario al escribir unas coordenadas.",
+    "en": "Position drawn at random (seed 2026) in the Wide Survey sky near the ecliptic: what any user sees when typing coordinates."
+   },
+   "default_det": 3,
+   "ra": 23.4617,
+   "dec": 8.9021,
+   "epoch": 2025.9582,
+   "fov_deg": 0.1,
+   "n_visits": 81,
+   "n_exposures": 324,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 2853581,
+   "seconds": 251.3,
+   "thumbnail": "/showcase/random-1/visits/99e7ca0ac5d4e765_D3_2025-07-25.png",
+   "asteroid": null
+  },
+  {
+   "id": "asteroid-1",
+   "kind": "asteroid",
+   "title": {
+    "es": "Asteroide (1)",
+    "en": "Asteroid (1)"
+   },
+   "blurb": {
+    "es": "Asteroide brillante (V \u2248 9.1) observado por SPHEREx a 83\u00b0 del Sol. Dentro de una visita se desplaza varios p\u00edxeles entre exposiciones: es lo \u00fanico que \u00abse mueve\u00bb a ojo en SPHEREx.",
+    "en": "Bright asteroid (V \u2248 9.1) observed by SPHEREx 83\u00b0 from the Sun. Within a visit it moves several pixels between exposures: the only thing that visibly \u2018moves\u2019 in SPHEREx."
+   },
+   "default_det": 1,
+   "ra": 56.318250759992786,
+   "dec": 2.0972459039977,
+   "epoch": 2026.0,
+   "fov_deg": 0.15,
+   "n_visits": 0,
+   "n_exposures": 0,
+   "detectors": [],
+   "releases": [],
+   "failures": 0,
+   "bytes": 2716,
+   "seconds": 25.5,
+   "thumbnail": null,
+   "asteroid": {
+    "asteroid": "1",
+    "ra": 13.90957,
+    "dec": -5.74608,
+    "mjd": 60851.0,
+    "epoch": 2025.4798,
+    "vmag": 9.07,
+    "elong": 82.9457,
+    "n_exp": 24,
+    "detectors": [
+     1,
+     4
+    ],
+    "mjd_min": 60850.8018955,
+    "mjd_max": 60852.368957
+   }
+  },
+  {
+   "id": "asteroid-2",
+   "kind": "asteroid",
+   "title": {
+    "es": "Asteroide (2)",
+    "en": "Asteroid (2)"
+   },
+   "blurb": {
+    "es": "Asteroide brillante (V \u2248 10.4) observado por SPHEREx a 84\u00b0 del Sol. Dentro de una visita se desplaza varios p\u00edxeles entre exposiciones: es lo \u00fanico que \u00abse mueve\u00bb a ojo en SPHEREx.",
+    "en": "Bright asteroid (V \u2248 10.4) observed by SPHEREx 84\u00b0 from the Sun. Within a visit it moves several pixels between exposures: the only thing that visibly \u2018moves\u2019 in SPHEREx."
+   },
+   "default_det": 1,
+   "ra": 344.4047896321887,
+   "dec": 40.28755280600223,
+   "epoch": 2026.0,
+   "fov_deg": 0.15,
+   "n_visits": 0,
+   "n_exposures": 0,
+   "detectors": [],
+   "releases": [],
+   "failures": 0,
+   "bytes": 2735,
+   "seconds": 9.1,
+   "thumbnail": null,
+   "asteroid": {
+    "asteroid": "2",
+    "ra": 314.91288,
+    "dec": 13.1573,
+    "mjd": 60801.0,
+    "epoch": 2025.3429,
+    "vmag": 10.357,
+    "elong": 84.4296,
+    "n_exp": 24,
+    "detectors": [
+     1,
+     2,
+     4,
+     5
+    ],
+    "mjd_min": 60800.938123,
+    "mjd_max": 60802.165732
+   }
   }
  ]
 }
