@@ -8,7 +8,7 @@ export const parseAsFlag = createParser({
 
 /** Estado completo del visor en la URL: ?field&ra&dec&epoch&pmra&pmdec&fov&det&visit&frame&mode&stretch&clip&cmap&embed&a&b */
 export const viewerParsers = {
-  field: parseAsString.withDefault("wise0855"),
+  field: parseAsString.withDefault(""), // vacío + ra/dec = modo en vivo; vacío sin ra/dec = showcase wise0855
   ra: parseAsFloat,
   dec: parseAsFloat,
   epoch: parseAsFloat.withDefault(2016),

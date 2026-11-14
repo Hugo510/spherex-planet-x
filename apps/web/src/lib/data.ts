@@ -35,9 +35,38 @@ export function liveFieldUrl(q: LiveQuery): string {
   return `${API_URL}/api/visits?${p}`;
 }
 
-export function loadLiveField(q: LiveQuery): Promise<ShowcaseField> {
+export type BuildProgress = { status: "building" | "ready" | "error"; field_key: string; stage?: string | null; done?: number | null; total?: number | null; started_at?: number | null; message?: string | null };
+
+/** GET con construcción en segundo plano: mientras el API responde 202 (progreso) vuelve a preguntar cada 2 s. */
+export async function fetchBuilt<T>(url: string, onProgress?: (p: BuildProgress) => void, maxMs = 15 * 60 * 1000): Promise<T> {
+  const t0 = Date.now();
+  for (;;) {
+    const r = await fetch(url);
+    if (r.status === 202) {
+      const p = (await r.json()) as BuildProgress;
+      onProgress?.(p);
+      if (Date.now() - t0 > maxMs) throw new Error("live-timeout");
+      await new Promise((res) => setTimeout(res, 2000));
+      continue;
+    }
+    if (r.status === 503) {
+      const p = (await r.json()) as BuildProgress;
+      throw new Error(`live-error: ${p.message ?? ""}`);
+    }
+    if (!r.ok) throw new Error(`${r.status} ${url}`);
+    return (await r.json()) as T;
+  }
+}
+
+export function loadLiveField(q: LiveQuery, onProgress?: (p: BuildProgress) => void): Promise<ShowcaseField> {
   if (!LIVE_AVAILABLE) return Promise.reject(new Error("live-unavailable"));
-  return getJson<ShowcaseField>(liveFieldUrl(q));
+  const url = liveFieldUrl(q);
+  const hit = jsonCache.get(url);
+  if (hit) return hit as Promise<ShowcaseField>;
+  const p = fetchBuilt<ShowcaseField>(url, onProgress);
+  jsonCache.set(url, p);
+  p.catch(() => jsonCache.delete(url));
+  return p;
 }
 
 /** Base para los PNG: en showcase son rutas absolutas del sitio; en vivo cuelgan del API. */
@@ -60,7 +89,7 @@ export function loadSpectrum(field: ShowcaseField): Promise<SpectrumResponse> {
   const t = field.target;
   const p = new URLSearchParams({ ra: String(t.ra), dec: String(t.dec), epoch: String(t.epoch), pmra: String(t.pmra),
     pmdec: String(t.pmdec), fov: String(t.fov_deg), det: "all" });
-  return getJson<SpectrumResponse>(`${API_URL}/api/spectrum?${p}`);
+  return fetchBuilt<SpectrumResponse>(`${API_URL}/api/spectrum?${p}`);
 }
 
 export function mjdToIso(mjd: number): string {

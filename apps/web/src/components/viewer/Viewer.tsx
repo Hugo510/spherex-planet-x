@@ -2,7 +2,9 @@
 import { useQueryStates } from "nuqs";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { frameBase, loadLiveField, loadShowcaseField, LIVE_AVAILABLE } from "@/lib/data";
+import { Link } from "@/i18n/navigation";
+import { frameBase, loadLiveField, loadShowcaseField, LIVE_AVAILABLE, type BuildProgress } from "@/lib/data";
+import { LiveProgress } from "./LiveProgress";
 import { loadFrame } from "@/lib/png16";
 import { diffFrames, maxStack, percentiles, robustSigma, type StretchParams } from "@/lib/stretch";
 import type { ExposureOut, Frame, ShowcaseField, VisitOut } from "@/lib/types";
@@ -30,6 +32,7 @@ export function Viewer() {
   const [loaded, setLoaded] = useState<Map<string, Frame>>(new Map());
   const [reduced, setReduced] = useState(false);
   const [abExposures, setAbExposures] = useState(false);
+  const [progress, setProgress] = useState<BuildProgress | null>(null);
   const loadedRef = useRef(loaded);
   loadedRef.current = loaded;
 
@@ -39,9 +42,12 @@ export function Viewer() {
     setField(null);
     setError(null);
     setLoaded(new Map());
-    const p = q.ra != null && q.dec != null && !q.field
-      ? loadLiveField({ ra: q.ra, dec: q.dec, epoch: q.epoch, pmra: q.pmra, pmdec: q.pmdec, fov: q.fov, det: q.det })
+    setProgress(null);
+    const live = q.ra != null && q.dec != null && !q.field;
+    const p = live
+      ? loadLiveField({ ra: q.ra!, dec: q.dec!, epoch: q.epoch, pmra: q.pmra, pmdec: q.pmdec, fov: q.fov, det: q.det }, (pr) => alive && setProgress(pr))
       : loadShowcaseField(q.field || "wise0855");
+    if (live && LIVE_AVAILABLE) setProgress({ status: "building", field_key: "", stage: "connect" });
     p.then((f) => alive && setField(f)).catch((e: Error) => alive && setError(e.message));
     return () => { alive = false; };
   }, [q.field, q.ra, q.dec, q.epoch, q.pmra, q.pmdec, q.fov, q.det]);
@@ -212,14 +218,20 @@ export function Viewer() {
   };
 
   if (error) {
+    const live = error === "live-unavailable" || !LIVE_AVAILABLE;
+    const irsa = error.startsWith("live-error") || error === "live-timeout";
     return (
       <div className="glass border-[var(--block)] p-5">
-        <p className="font-semibold">{error === "live-unavailable" || !LIVE_AVAILABLE ? t("liveUnavailable") : t("loadError")}</p>
-        <p className="mt-1 text-sm text-[var(--muted)]">{error}</p>
+        <p className="font-semibold">{live ? t("liveUnavailable") : irsa ? t("liveFailed") : t("loadError")}</p>
+        <p className="mt-1 text-sm text-[var(--muted)]">{irsa ? t("liveFailedHint") : error}</p>
+        <Link href="/view?field=wise0855&det=5" className="btn mt-3 text-xs">{t("backToShowcase")} →</Link>
       </div>
     );
   }
-  if (!field || !visit) return <div className="glass p-6 text-[var(--muted)]" aria-busy="true">{t("loading")}…</div>;
+  if (!field || !visit) {
+    if (progress) return <LiveProgress progress={progress} />;
+    return <div className="glass p-6 text-[var(--muted)]" aria-busy="true">{t("loading")}…</div>;
+  }
 
   const showFrame = q.mode === "diff" ? diff : q.mode === "trail" ? trail : showRef && ref ? loaded.get(ref.key) ?? null : current?.frame ?? null;
   const title = field.showcase?.title[locale] ?? field.target.name;

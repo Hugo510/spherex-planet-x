@@ -110,6 +110,31 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * BuildProgress
+         * @description Estado de construcción de un campo en vivo (202 mientras se construye; 503 si falló).
+         */
+        BuildProgress: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "building" | "ready" | "error";
+            /** Field Key */
+            field_key: string;
+            /** Stage */
+            stage?: string | null;
+            /** Done */
+            done?: number | null;
+            /** Total */
+            total?: number | null;
+            /** Started At */
+            started_at?: number | null;
+            /** Updated At */
+            updated_at?: number | null;
+            /** Message */
+            message?: string | null;
+        };
         /** DiffResponse */
         DiffResponse: {
             /** Png16 */
@@ -651,6 +676,8 @@ export interface operations {
                 release?: string | null;
                 /** @description tope de exposiciones por visita y detector */
                 max_per_visit?: number | null;
+                /** @description true: bloquear hasta construir; false: 202 con progreso mientras se construye */
+                wait?: boolean;
             };
             header?: never;
             path?: never;
@@ -667,6 +694,15 @@ export interface operations {
                     "application/json": components["schemas"]["VisitsResponse"];
                 };
             };
+            /** @description Accepted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BuildProgress"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -674,6 +710,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BuildProgress"];
                 };
             };
         };
@@ -692,6 +737,7 @@ export interface operations {
                 det?: string;
                 release?: string | null;
                 max_per_visit?: number | null;
+                wait?: boolean;
             };
             header?: never;
             path?: never;
@@ -706,6 +752,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SpectrumResponse"];
+                };
+            };
+            /** @description Accepted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BuildProgress"];
                 };
             };
             /** @description Validation Error */
@@ -734,6 +789,7 @@ export interface operations {
                 release?: string | null;
                 max_per_visit?: number | null;
                 detector?: number | null;
+                wait?: boolean;
             };
             header?: never;
             path?: never;
@@ -748,6 +804,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LightcurveResponse"];
+                };
+            };
+            /** @description Accepted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BuildProgress"];
                 };
             };
             /** @description Validation Error */

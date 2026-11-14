@@ -17,7 +17,9 @@ pip install modal && modal token new          # abre el navegador; guarda ~/.mod
 cd apps/api && modal deploy modal_app.py      # imagen con astropy/reproject/photutils; Volume "spherex-cache" en /cache
 ```
 La URL impresa (`https://<workspace>--spherex-api-fastapi-app.modal.run`) va en `NEXT_PUBLIC_API_URL`.
-Prueba: `curl "$URL/api/health"` y `curl "$URL/api/visits?name=wise0855&det=5"` (la primera llamada tarda ~30 s: baja cutouts).
+Prueba: `curl "$URL/api/health"` y `curl "$URL/api/visits?name=wise0855&det=5"`: la primera respuesta es **202 con progreso**
+(`{"status":"building","stage":"cutouts","done":12,"total":48}`); repite la llamada hasta recibir 200 (o usa `&wait=true`).
+Recomendado en Modal: `min_containers=1` en `modal_app.py` para evitar el arranque en frío durante la evaluación.
 
 Alternativa Docker: `docker build -t spherex-api apps/api && docker run -p 8000:8000 -v spherex-cache:/cache spherex-api`.
 

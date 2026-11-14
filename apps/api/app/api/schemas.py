@@ -238,3 +238,16 @@ class HealthResponse(BaseModel):
     mode: str
     cache_dir: str
     targets: list[str]
+
+
+class BuildProgress(BaseModel):
+    """Estado de construcción de un campo en vivo (202 mientras se construye; 503 si falló)."""
+
+    status: Literal["building", "ready", "error"]
+    field_key: str
+    stage: str | None = None
+    done: int | None = None
+    total: int | None = None
+    started_at: float | None = None
+    updated_at: float | None = None
+    message: str | None = None

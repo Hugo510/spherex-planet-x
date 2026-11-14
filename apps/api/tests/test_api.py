@@ -47,6 +47,21 @@ def test_diff_verdict_via_store(tmp_path):
     assert (tmp_path / "diffs" / "d.png").exists()
 
 
+def test_visits_building_returns_202(tmp_path, monkeypatch):
+    """Sin cache y sin esperar, /api/visits responde 202 con progreso (el cliente vuelve a preguntar)."""
+    import app.adapters.cache as c
+    import app.api.routes as routes
+
+    monkeypatch.setenv("SPHEREX_CACHE_DIR", str(tmp_path))
+    monkeypatch.setenv("SPHEREX_OFFLINE", "1")
+    monkeypatch.setattr(c, "cache_dir", lambda: tmp_path)
+    routes._progress.clear()
+    r = client.get("/api/visits", params={"ra": 10.0, "dec": 10.0, "det": "3"})
+    assert r.status_code in (202, 503)
+    body = r.json()
+    assert body["status"] in ("building", "error") and body["field_key"]
+
+
 def test_visits_validation_errors():
     assert client.get("/api/visits", params={"name": "nope"}).status_code == 404
     assert client.get("/api/visits").status_code == 422
@@ -55,7 +70,7 @@ def test_visits_validation_errors():
 
 @pytest.mark.network
 def test_visits_diff_spectrum_known_live():
-    r = client.get("/api/visits", params={"name": "wise0855", "det": "5", "max_per_visit": 6})
+    r = client.get("/api/visits", params={"name": "wise0855", "det": "5", "max_per_visit": 6, "wait": "true"})
     assert r.status_code == 200, r.text[:300]
     d = r.json()
     assert d["mode"] == "live" and len(d["visits"]) >= 5 and d["visits"][0]["lambda_um"]["mean"] > 3.8
@@ -67,7 +82,7 @@ def test_visits_diff_spectrum_known_live():
     assert e["lambda_um"] and e["release"] in ("qr2", "qr3", "dr1") and e["source_url"].startswith("https://irsa")
     dd = client.get("/api/diff", params={"a": v0["key"], "b": d["visits"][1]["key"]}).json()
     assert dd["verdict"]["verdict"] in ("ok", "warn", "block") and dd["png16"].endswith(".png")
-    sp = client.get("/api/spectrum", params={"name": "wise0855", "det": "5", "max_per_visit": 6}).json()
+    sp = client.get("/api/spectrum", params={"name": "wise0855", "det": "5", "max_per_visit": 6, "wait": "true"}).json()
     assert len(sp["points"]) == d["n_exposures"]
     kn = client.get("/api/known", params={"ra": d["target"]["ra"], "dec": d["target"]["dec"], "r_arcsec": 20,
                                          "mjd": d["visits"][-1]["mjd_mean"]}).json()

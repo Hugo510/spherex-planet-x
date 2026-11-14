@@ -120,7 +120,10 @@
     "trailTitle": "Trail · max of {n} frames (visits + current ladder)",
     "trailNote": "Visual aid: mixes different mean λ; not photometry.",
     "sameLambda": "same λ",
-    "sameLambdaHint": "Pick as B the exposure from another visit with the channel closest to A"
+    "sameLambdaHint": "Pick as B the exposure from another visit with the channel closest to A",
+    "liveFailed": "The server could not build this field.",
+    "liveFailedHint": "Usually IRSA (TAP or S3) is not answering; try again in a few minutes or open one of the precomputed fields.",
+    "backToShowcase": "Go to the showcase"
   },
   "known": {
     "at": "Point",
@@ -319,5 +322,16 @@
       "known_sso": "asteroid",
       "candidate": "candidate"
     }
+  },
+  "live": {
+    "title": "Live mode · building the field",
+    "connect": "Connecting to the server",
+    "queued": "Queued",
+    "tap": "Querying the IRSA TAP (which exposures contain this position)",
+    "cutouts": "Downloading exposures from IRSA by HTTP Range: {done} of {total}",
+    "coadd": "Reprojecting and stacking visits (detector D{det})",
+    "serialize": "Photometry and PNG frames",
+    "coldStart": "The first request may take 10–20 s while the container starts. After that each new field takes 30 s to 2 min depending on its exposures; fields seen before are instant.",
+    "hint": "Each exposure is ~2 MB read straight from the public SPHEREx bucket. If IRSA is slow the bar moves slowly but does not stop."
   }
 }

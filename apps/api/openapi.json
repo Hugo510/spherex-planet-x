@@ -179,6 +179,18 @@
        "title": "Max Per Visit"
       },
       "description": "tope de exposiciones por visita y detector"
+     },
+     {
+      "name": "wait",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "description": "true: bloquear hasta construir; false: 202 con progreso mientras se construye",
+       "default": false,
+       "title": "Wait"
+      },
+      "description": "true: bloquear hasta construir; false: 202 con progreso mientras se construye"
      }
     ],
     "responses": {
@@ -191,6 +203,26 @@
         }
        }
       }
+     },
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BuildProgress"
+        }
+       }
+      },
+      "description": "Accepted"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BuildProgress"
+        }
+       }
+      },
+      "description": "Service Unavailable"
      },
      "422": {
       "description": "Validation Error",
@@ -346,6 +378,16 @@
        "default": 8,
        "title": "Max Per Visit"
       }
+     },
+     {
+      "name": "wait",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": false,
+       "title": "Wait"
+      }
      }
     ],
     "responses": {
@@ -358,6 +400,16 @@
         }
        }
       }
+     },
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BuildProgress"
+        }
+       }
+      },
+      "description": "Accepted"
      },
      "422": {
       "description": "Validation Error",
@@ -531,6 +583,16 @@
        ],
        "title": "Detector"
       }
+     },
+     {
+      "name": "wait",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": false,
+       "title": "Wait"
+      }
      }
     ],
     "responses": {
@@ -543,6 +605,16 @@
         }
        }
       }
+     },
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BuildProgress"
+        }
+       }
+      },
+      "description": "Accepted"
      },
      "422": {
       "description": "Validation Error",
@@ -706,6 +778,96 @@
  },
  "components": {
   "schemas": {
+   "BuildProgress": {
+    "properties": {
+     "status": {
+      "type": "string",
+      "enum": [
+       "building",
+       "ready",
+       "error"
+      ],
+      "title": "Status"
+     },
+     "field_key": {
+      "type": "string",
+      "title": "Field Key"
+     },
+     "stage": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stage"
+     },
+     "done": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Done"
+     },
+     "total": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total"
+     },
+     "started_at": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Started At"
+     },
+     "updated_at": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Updated At"
+     },
+     "message": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Message"
+     }
+    },
+    "type": "object",
+    "required": [
+     "status",
+     "field_key"
+    ],
+    "title": "BuildProgress",
+    "description": "Estado de construcción de un campo en vivo (202 mientras se construye; 503 si falló)."
+   },
    "DiffResponse": {
     "properties": {
      "png16": {

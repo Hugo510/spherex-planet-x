@@ -182,3 +182,12 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   12 campos más una intro, y la voz en off en inglés del guion de 30 s. Generados en build por `scripts/narration.py` con la
   clave en `ELEVENLABS_API_KEY` (secreto del entorno; nunca en el repo ni en el navegador). Voz Sarah (multilingüe) para el
   aula y Daniel para el video; modelo `eleven_multilingual_v2`. Declarado en «Use of AI» y README.
+
+## Modo en vivo: estados de carga (tarde del 14 nov)
+
+- **2026-11-14 18:50 UTC** — `/api/visits`, `/api/spectrum` y `/api/lightcurve` ya no bloquean: si el campo no está en cache
+  arrancan la construcción en un hilo y responden **202 con progreso** (`BuildProgress`: etapa tap → cutouts n/total → coadd
+  por detector → serialize; 503 con mensaje si falló). `?wait=true` conserva el comportamiento bloqueante para tests y scripts.
+  El cliente vuelve a preguntar cada 2 s (hasta 15 min) y muestra una tarjeta con etapa, barra, segundos y aviso de arranque
+  en frío; si IRSA falla, un mensaje claro y un botón al showcase. En Modal, el hilo vive dentro de la función ASGI con
+  `@modal.concurrent`, así que el contenedor sigue respondiendo a las consultas de progreso mientras construye.

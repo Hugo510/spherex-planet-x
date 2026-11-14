@@ -7,6 +7,7 @@ Pipeline: TAP → cutouts por Range (paralelo) → λ, máscaras → reproyecci�
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 
@@ -122,10 +123,14 @@ def build_visits(
     max_visits: int | None = None,
     query_epoch: float | None = None,
     refs: list | None = None,
+    progress: Callable[[str, int, int], None] | None = None,
 ) -> FieldResult:
+    """`progress(stage, done, total)` se llama en: tap, cutouts (por exposición), coadd (por visita), done."""
+    report = progress or (lambda *_: None)
     # posición de consulta al TAP: a `query_epoch` si se da (asteroides: pm enorme), si no a 2026.0 (footprint de 3.5°).
     # `refs` permite saltarse el TAP (p. ej. reconstruir un campo del showcase con los cutouts en cache).
     if refs is None:
+        report("tap", 0, 0)
         ra_q, dec_q = target.at(query_epoch or epoch_ref or 2026.0)
         refs = irsa_tap.find_exposures(ra_q, dec_q, releases=releases)
     refs = [r for r in refs if r.detector in detectors]
@@ -153,15 +158,17 @@ def build_visits(
     grid = make_grid(target, ep, size_deg)
     frames: list[GridFrame] = []
     failures: list[str] = []
+    report("cutouts", 0, len(refs))
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {ex.submit(_fetch_one, r, target, size_deg, grid, use_omega): r for r in refs}
-        for fut in as_completed(futs):
+        for i, fut in enumerate(as_completed(futs), 1):
             r = futs[fut]
             try:
                 frames.append(fut.result())
             except Exception as e:  # noqa: BLE001
                 failures.append(f"{r.obsid} D{r.detector}: {str(e)[:200]}")
                 log.warning("fallo %s D%s: %s", r.obsid, r.detector, e)
+            report("cutouts", i, len(refs))
     frames.sort(key=lambda f: f.native.mjd_avg)
     out = FieldResult(target, grid, ep, failures=failures, stats={"n_refs": len(refs), "n_frames": len(frames)})
     wcs = grid_wcs(grid)
@@ -170,6 +177,7 @@ def build_visits(
         if not det_frames:
             continue
         visits: list[Visit] = []
+        report("coadd", det, 6)
         for vf in group_visits(det_frames, key=lambda f: f.native.mjd_avg):
             img, var, depth = coadd([f.img_phot for f in vf], [f.var for f in vf])
             # saturación del coadd: píxeles saturados en la MAYORÍA de las exposiciones (un OVERFLOW aislado en una sola
@@ -200,6 +208,7 @@ def build_visits(
             v.meta.lo, v.meta.hi = lo, hi
         out.visits.extend(visits)
     out.visits.sort(key=lambda v: (v.meta.detector, v.meta.mjd_mean))
+    report("done", len(out.visits), len(out.visits))
     return out
 
 

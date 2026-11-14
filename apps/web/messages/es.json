@@ -120,7 +120,10 @@
     "trailTitle": "Traza · máximo de {n} cuadros (visitas + escalera actual)",
     "trailNote": "Ayuda visual: mezcla λ medias distintas; no es fotometría.",
     "sameLambda": "misma λ",
-    "sameLambdaHint": "Elige como B la exposición de otra visita con el canal más cercano al de A"
+    "sameLambdaHint": "Elige como B la exposición de otra visita con el canal más cercano al de A",
+    "liveFailed": "El servidor no pudo construir este campo.",
+    "liveFailedHint": "Normalmente es IRSA (TAP o S3) sin responder; vuelve a intentarlo en unos minutos o abre uno de los campos precomputados.",
+    "backToShowcase": "Ir al showcase"
   },
   "known": {
     "at": "Punto",
@@ -320,5 +323,16 @@
       "known_sso": "asteroide",
       "candidate": "candidato"
     }
+  },
+  "live": {
+    "title": "Modo en vivo · construyendo el campo",
+    "connect": "Conectando con el servidor",
+    "queued": "En cola",
+    "tap": "Consultando el TAP de IRSA (qué exposiciones contienen esta posición)",
+    "cutouts": "Bajando exposiciones de IRSA por HTTP Range: {done} de {total}",
+    "coadd": "Reproyectando y apilando visitas (detector D{det})",
+    "serialize": "Fotometría y cuadros PNG",
+    "coldStart": "La primera petición puede tardar 10–20 s mientras arranca el contenedor. Después, cada campo nuevo tarda entre 30 s y 2 min según cuántas exposiciones tenga; los campos ya vistos son inmediatos.",
+    "hint": "Cada exposición son ~2 MB leídos directamente del bucket público de SPHEREx. Si IRSA está lento, la barra avanza despacio pero no se detiene."
   }
 }
