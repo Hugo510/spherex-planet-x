@@ -3,7 +3,8 @@
 ## Web (Vercel, sitio estático)
 
 1. En Vercel (equipo del proyecto) → *Add New → Project* → importar `Hugo510/spherex-planet-x`.
-2. Root directory: `/` (el `vercel.json` ya fija `pnpm --filter web build` y `apps/web/out`). Framework: Next.js. Node 22.
+2. Root directory: `apps/web` (Vercel detecta el workspace de pnpm e instala desde la raíz; `apps/web/vercel.json` solo
+   añade cabeceras de caché). Framework: Next.js (export estático a `out`). Node 22.
 3. Variables: `NEXT_PUBLIC_API_URL` (vacía = solo showcase; URL de Modal para el modo en vivo), `NEXT_PUBLIC_SITE_URL` (para OG).
 4. Production branch: la rama con el producto (`main` tras el merge). Deploy.
 5. Producción (14 nov 2026): `https://spherex-honest.vercel.app` (proyecto `spherex-honest`, equipo Hugo510). Comprobar en ventana privada: `/es/view/?field=wise0855&det=5` carga en < 2 s; `/es/limits/`; `/es/status/`.
