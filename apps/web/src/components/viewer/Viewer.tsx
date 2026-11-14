@@ -145,8 +145,11 @@ export function Viewer() {
     return maxStack(keys.map((k) => loaded.get(k)).filter((f): f is Frame => !!f));
   }, [q.mode, visits, visit, loaded]);
 
+  const trailLimits = useMemo(() => (trail ? percentiles([trail], clo, chi) : null), [trail, clo, chi]);
   const params: StretchParams = q.mode === "diff"
     ? { a: 0, lo: -4 * diffSigma, hi: 4 * diffSigma, cmap: q.cmap, invert: q.invert }
+    : q.mode === "trail" && trailLimits
+      ? { a: q.stretch, lo: trailLimits.lo, hi: trailLimits.hi, cmap: q.cmap, invert: q.invert }
     : showRef && ref && q.mode !== "trail"
       ? { a: q.stretch, lo: ref.stretch.lo, hi: ref.stretch.hi, cmap: q.cmap, invert: q.invert }
       : { a: q.stretch, lo: limits.lo, hi: limits.hi, cmap: q.cmap, invert: q.invert };

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:45:40+00:00",
+ "generated_at": "2026-11-14T16:12:10+00:00",
  "injection": [
   {
    "field": "wise0855",
@@ -303,6 +303,46 @@
    "detector": 5,
    "n_visits": 5,
    "span_yr": 1.02,
+   "field_control": {
+    "n_stars": 4,
+    "median_pm_px_yr": 0.04,
+    "max_pm_px_yr": 0.074,
+    "mad_px_yr": 0.007,
+    "stars": [
+     {
+      "id": "Gaia DR3 5756955785394371328",
+      "G": 13.3,
+      "n_visits": 5,
+      "pm_px_yr": 0.038,
+      "pmra_cat_mas_yr": -2.083,
+      "pmdec_cat_mas_yr": -17.433
+     },
+     {
+      "id": "Gaia DR3 5756956163351495168",
+      "G": 15.14,
+      "n_visits": 5,
+      "pm_px_yr": 0.074,
+      "pmra_cat_mas_yr": 9.829,
+      "pmdec_cat_mas_yr": -6.597
+     },
+     {
+      "id": "Gaia DR3 5756956163351495040",
+      "G": 15.34,
+      "n_visits": 5,
+      "pm_px_yr": 0.041,
+      "pmra_cat_mas_yr": 19.266,
+      "pmdec_cat_mas_yr": -31.5
+     },
+     {
+      "id": "Gaia DR3 5756956541308616832",
+      "G": 15.36,
+      "n_visits": 5,
+      "pm_px_yr": 0.032,
+      "pmra_cat_mas_yr": null,
+      "pmdec_cat_mas_yr": null
+     }
+    ]
+   },
    "pm_px_yr": 1.16,
    "pm_err_px_yr": 0.31,
    "pm_arcsec_yr": 7.16,
@@ -321,6 +361,46 @@
    "detector": 6,
    "n_visits": 8,
    "span_yr": 1.01,
+   "field_control": {
+    "n_stars": 4,
+    "median_pm_px_yr": 0.113,
+    "max_pm_px_yr": 0.147,
+    "mad_px_yr": 0.044,
+    "stars": [
+     {
+      "id": "Gaia DR3 5756955785394371328",
+      "G": 13.3,
+      "n_visits": 8,
+      "pm_px_yr": 0.054,
+      "pmra_cat_mas_yr": -2.083,
+      "pmdec_cat_mas_yr": -17.433
+     },
+     {
+      "id": "Gaia DR3 5756956163351495168",
+      "G": 15.14,
+      "n_visits": 8,
+      "pm_px_yr": 0.138,
+      "pmra_cat_mas_yr": 9.829,
+      "pmdec_cat_mas_yr": -6.597
+     },
+     {
+      "id": "Gaia DR3 5756956163351495040",
+      "G": 15.34,
+      "n_visits": 8,
+      "pm_px_yr": 0.147,
+      "pmra_cat_mas_yr": 19.266,
+      "pmdec_cat_mas_yr": -31.5
+     },
+     {
+      "id": "Gaia DR3 5756956541308616832",
+      "G": 15.36,
+      "n_visits": 8,
+      "pm_px_yr": 0.087,
+      "pmra_cat_mas_yr": null,
+      "pmdec_cat_mas_yr": null
+     }
+    ]
+   },
    "pm_px_yr": 1.67,
    "pm_err_px_yr": 0.19,
    "pm_arcsec_yr": 10.25,
@@ -339,6 +419,38 @@
    "detector": 2,
    "n_visits": 10,
    "span_yr": 1.43,
+   "field_control": {
+    "n_stars": 3,
+    "median_pm_px_yr": 0.025,
+    "max_pm_px_yr": 0.042,
+    "mad_px_yr": 0.012,
+    "stars": [
+     {
+      "id": "Gaia DR3 6412596458823395328",
+      "G": 12.95,
+      "n_visits": 10,
+      "pm_px_yr": 0.025,
+      "pmra_cat_mas_yr": -26.604,
+      "pmdec_cat_mas_yr": -18.587
+     },
+     {
+      "id": "Gaia DR3 6412596183945494144",
+      "G": 15.77,
+      "n_visits": 10,
+      "pm_px_yr": 0.017,
+      "pmra_cat_mas_yr": -7.959,
+      "pmdec_cat_mas_yr": -8.984
+     },
+     {
+      "id": "Gaia DR3 6412595973491218944",
+      "G": 15.81,
+      "n_visits": 10,
+      "pm_px_yr": 0.042,
+      "pmra_cat_mas_yr": -0.057,
+      "pmdec_cat_mas_yr": 0.2
+     }
+    ]
+   },
    "pm_px_yr": 0.72,
    "pm_err_px_yr": 0.04,
    "pm_arcsec_yr": 4.4,
@@ -357,6 +469,94 @@
    "detector": 2,
    "n_visits": 9,
    "span_yr": 0.99,
+   "field_control": {
+    "n_stars": 10,
+    "median_pm_px_yr": 0.035,
+    "max_pm_px_yr": 0.144,
+    "mad_px_yr": 0.017,
+    "stars": [
+     {
+      "id": "Gaia DR3 4472836292758713216",
+      "G": 11.86,
+      "n_visits": 9,
+      "pm_px_yr": 0.044,
+      "pmra_cat_mas_yr": -6.159,
+      "pmdec_cat_mas_yr": 0.513
+     },
+     {
+      "id": "Gaia DR3 4472832508888391168",
+      "G": 13.03,
+      "n_visits": 9,
+      "pm_px_yr": 0.018,
+      "pmra_cat_mas_yr": -8.944,
+      "pmdec_cat_mas_yr": -2.012
+     },
+     {
+      "id": "Gaia DR3 4472836327118455552",
+      "G": 13.45,
+      "n_visits": 9,
+      "pm_px_yr": 0.021,
+      "pmra_cat_mas_yr": -2.678,
+      "pmdec_cat_mas_yr": -5.26
+     },
+     {
+      "id": "Gaia DR3 4472837495349546240",
+      "G": 13.47,
+      "n_visits": 9,
+      "pm_px_yr": 0.03,
+      "pmra_cat_mas_yr": -1.998,
+      "pmdec_cat_mas_yr": -7.904
+     },
+     {
+      "id": "Gaia DR3 4472836047939582592",
+      "G": 13.6,
+      "n_visits": 9,
+      "pm_px_yr": 0.144,
+      "pmra_cat_mas_yr": -0.7,
+      "pmdec_cat_mas_yr": -6.046
+     },
+     {
+      "id": "Gaia DR3 4472837770227463680",
+      "G": 13.9,
+      "n_visits": 9,
+      "pm_px_yr": 0.043,
+      "pmra_cat_mas_yr": -0.97,
+      "pmdec_cat_mas_yr": -6.099
+     },
+     {
+      "id": "Gaia DR3 4472835846082110464",
+      "G": 14.44,
+      "n_visits": 9,
+      "pm_px_yr": 0.041,
+      "pmra_cat_mas_yr": -3.685,
+      "pmdec_cat_mas_yr": -4.716
+     },
+     {
+      "id": "Gaia DR3 4472832513187484544",
+      "G": 14.49,
+      "n_visits": 9,
+      "pm_px_yr": 0.006,
+      "pmra_cat_mas_yr": -4.2,
+      "pmdec_cat_mas_yr": -2.287
+     },
+     {
+      "id": "Gaia DR3 4472835846082111232",
+      "G": 14.53,
+      "n_visits": 9,
+      "pm_px_yr": 0.04,
+      "pmra_cat_mas_yr": 3.663,
+      "pmdec_cat_mas_yr": -1.98
+     },
+     {
+      "id": "Gaia DR3 4472832959864074752",
+      "G": 14.79,
+      "n_visits": 9,
+      "pm_px_yr": 0.02,
+      "pmra_cat_mas_yr": 0.645,
+      "pmdec_cat_mas_yr": -3.799
+     }
+    ]
+   },
    "pm_px_yr": 2.69,
    "pm_err_px_yr": 0.44,
    "pm_arcsec_yr": 16.57,
@@ -375,6 +575,94 @@
    "detector": 3,
    "n_visits": 9,
    "span_yr": 1.0,
+   "field_control": {
+    "n_stars": 10,
+    "median_pm_px_yr": 0.041,
+    "max_pm_px_yr": 0.118,
+    "mad_px_yr": 0.04,
+    "stars": [
+     {
+      "id": "Gaia DR3 4472836292758713216",
+      "G": 11.86,
+      "n_visits": 9,
+      "pm_px_yr": 0.045,
+      "pmra_cat_mas_yr": -6.159,
+      "pmdec_cat_mas_yr": 0.513
+     },
+     {
+      "id": "Gaia DR3 4472832508888391168",
+      "G": 13.03,
+      "n_visits": 9,
+      "pm_px_yr": 0.037,
+      "pmra_cat_mas_yr": -8.944,
+      "pmdec_cat_mas_yr": -2.012
+     },
+     {
+      "id": "Gaia DR3 4472836327118455552",
+      "G": 13.45,
+      "n_visits": 9,
+      "pm_px_yr": 0.058,
+      "pmra_cat_mas_yr": -2.678,
+      "pmdec_cat_mas_yr": -5.26
+     },
+     {
+      "id": "Gaia DR3 4472837495349546240",
+      "G": 13.47,
+      "n_visits": 9,
+      "pm_px_yr": 0.074,
+      "pmra_cat_mas_yr": -1.998,
+      "pmdec_cat_mas_yr": -7.904
+     },
+     {
+      "id": "Gaia DR3 4472836047939582592",
+      "G": 13.6,
+      "n_visits": 9,
+      "pm_px_yr": 0.118,
+      "pmra_cat_mas_yr": -0.7,
+      "pmdec_cat_mas_yr": -6.046
+     },
+     {
+      "id": "Gaia DR3 4472837770227463680",
+      "G": 13.9,
+      "n_visits": 9,
+      "pm_px_yr": 0.038,
+      "pmra_cat_mas_yr": -0.97,
+      "pmdec_cat_mas_yr": -6.099
+     },
+     {
+      "id": "Gaia DR3 4472835846082110464",
+      "G": 14.44,
+      "n_visits": 9,
+      "pm_px_yr": 0.004,
+      "pmra_cat_mas_yr": -3.685,
+      "pmdec_cat_mas_yr": -4.716
+     },
+     {
+      "id": "Gaia DR3 4472832513187484544",
+      "G": 14.49,
+      "n_visits": 9,
+      "pm_px_yr": 0.092,
+      "pmra_cat_mas_yr": -4.2,
+      "pmdec_cat_mas_yr": -2.287
+     },
+     {
+      "id": "Gaia DR3 4472835846082111232",
+      "G": 14.53,
+      "n_visits": 9,
+      "pm_px_yr": 0.004,
+      "pmra_cat_mas_yr": 3.663,
+      "pmdec_cat_mas_yr": -1.98
+     },
+     {
+      "id": "Gaia DR3 4472832959864074752",
+      "G": 14.79,
+      "n_visits": 9,
+      "pm_px_yr": 0.02,
+      "pmra_cat_mas_yr": 0.645,
+      "pmdec_cat_mas_yr": -3.799
+     }
+    ]
+   },
    "pm_px_yr": 2.07,
    "pm_err_px_yr": 0.65,
    "pm_arcsec_yr": 12.76,
@@ -388,6 +676,144 @@
    "source": "Gaia DR3"
   }
  ],
+ "velocity": {
+  "field": "wise0855",
+  "detector": 5,
+  "n_visits": 5,
+  "span_yr": 1.02,
+  "search_radius_px": 3,
+  "method": "centroide a ciegas en \u00b13 px alrededor de la posici\u00f3n inicial por visita + ajuste lineal; recuperado si |\u0394pm| \u2264 max(0.3, 30 %)",
+  "rows": [
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 0.0,
+    "pm_arcsec_yr": 0.0,
+    "n": 30,
+    "recovered": 26,
+    "completeness": 0.867
+   },
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 0.3,
+    "pm_arcsec_yr": 1.8,
+    "n": 30,
+    "recovered": 19,
+    "completeness": 0.633
+   },
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 0.6,
+    "pm_arcsec_yr": 3.7,
+    "n": 30,
+    "recovered": 11,
+    "completeness": 0.367
+   },
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 1.0,
+    "pm_arcsec_yr": 6.2,
+    "n": 30,
+    "recovered": 7,
+    "completeness": 0.233
+   },
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 1.5,
+    "pm_arcsec_yr": 9.2,
+    "n": 30,
+    "recovered": 9,
+    "completeness": 0.3
+   },
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 2.0,
+    "pm_arcsec_yr": 12.3,
+    "n": 30,
+    "recovered": 7,
+    "completeness": 0.233
+   },
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 3.0,
+    "pm_arcsec_yr": 18.5,
+    "n": 30,
+    "recovered": 6,
+    "completeness": 0.2
+   },
+   {
+    "flux_ujy": 400.0,
+    "pm_px_yr": 4.0,
+    "pm_arcsec_yr": 24.6,
+    "n": 30,
+    "recovered": 2,
+    "completeness": 0.067
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 0.0,
+    "pm_arcsec_yr": 0.0,
+    "n": 30,
+    "recovered": 30,
+    "completeness": 1.0
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 0.3,
+    "pm_arcsec_yr": 1.8,
+    "n": 30,
+    "recovered": 27,
+    "completeness": 0.9
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 0.6,
+    "pm_arcsec_yr": 3.7,
+    "n": 30,
+    "recovered": 27,
+    "completeness": 0.9
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 1.0,
+    "pm_arcsec_yr": 6.2,
+    "n": 30,
+    "recovered": 21,
+    "completeness": 0.7
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 1.5,
+    "pm_arcsec_yr": 9.2,
+    "n": 30,
+    "recovered": 22,
+    "completeness": 0.733
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 2.0,
+    "pm_arcsec_yr": 12.3,
+    "n": 30,
+    "recovered": 24,
+    "completeness": 0.8
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 3.0,
+    "pm_arcsec_yr": 18.5,
+    "n": 30,
+    "recovered": 23,
+    "completeness": 0.767
+   },
+   {
+    "flux_ujy": 1200.0,
+    "pm_px_yr": 4.0,
+    "pm_arcsec_yr": 24.6,
+    "n": 30,
+    "recovered": 3,
+    "completeness": 0.1
+   }
+  ]
+ },
  "delta_lambda": {
   "source": "PoC 9 nov 2026 (docs/06 \u00a78): visita 2025-11-07 de WISE 0855 en D5, 18 exposiciones en 17 canales (3.815\u21924.402 \u00b5m), malla 0.2\u00b0 (117 px), 153 pares, 5 estrellas Gaia G 10.2\u201313.9 con S/N > 5",
   "rows": [
@@ -507,15 +933,15 @@
     "DICHROIC"
    ],
    "png": "/limits/fieldguide/dichroic.png",
-   "n_px": 1568,
-   "obsid": "2025W34_2B_0064_4",
+   "n_px": 4936,
+   "obsid": "2025W26_1A_0618_1",
    "detector": 4,
-   "lambda_um": 2.438,
-   "mjd": 60908.835874175,
+   "lambda_um": 2.446,
+   "mjd": 60852.227779314,
    "color": "#ffb454",
    "shape": [
-    86,
-    86
+    158,
+    157
    ]
   },
   {
@@ -541,15 +967,15 @@
     "STREAK"
    ],
    "png": "/limits/fieldguide/streak.png",
-   "n_px": 574,
-   "obsid": "2025W19_1B_0165_3",
+   "n_px": 617,
+   "obsid": "2025W26_1A_0618_3",
    "detector": 1,
-   "lambda_um": 0.776,
-   "mjd": 60801.010017439,
+   "lambda_um": 0.788,
+   "mjd": 60852.230763817,
    "color": "#43d17a",
    "shape": [
-    147,
-    148
+    157,
+    158
    ]
   },
   {
