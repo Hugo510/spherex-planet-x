@@ -8,7 +8,8 @@
     "limits": "Límites y método",
     "status": "Estado",
     "lang": "English",
-    "brand": "comparador honesto"
+    "brand": "comparador honesto",
+    "limitsShort": "Límites"
   },
   "home": {
     "cta": "Abrir el visor",
@@ -18,7 +19,13 @@
     "deep": "Campo profundo del polo norte eclíptico",
     "random": "Campo aleatorio",
     "thesis": "SPHEREx fotografía todo el cielo en 102 colores infrarrojos, pero cada píxel ve un color distinto: un simple «antes y después» miente. Aquí cada cuadro muestra su λ real, cada visita se colapsa en un coadd con su varianza, cada resta pasa un veredicto espectral y cada punto se cruza con Gaia DR3, CatWISE2020, AllWISE, SIMBAD y los asteroides conocidos. No prometemos encontrar el Planeta X: lo que no se puede ver, lo decimos con números.",
-    "precomputedAt": "Showcase precomputado el"
+    "precomputedAt": "Showcase precomputado el",
+    "heroA": "Cada cuadro con su λ real.",
+    "heroB": "Cada resta, un veredicto.",
+    "statFields": "campos",
+    "statVisits": "visitas",
+    "statExposures": "exposiciones",
+    "heroCaption": "coadd por visita · datos reales"
   },
   "viewer": {
     "timeline": "Línea de tiempo",
@@ -46,7 +53,7 @@
     "loadError": "No se pudo cargar el campo.",
     "loading": "Cargando cuadros",
     "allWarning": "Aviso: «todos los detectores» mezcla λ de 0.75 a 5 µm en una misma línea de tiempo; el brillo cambia por color, no por variabilidad.",
-    "keys": "Teclado: ← → visita · ↑ ↓ escalera de λ · espacio reproducir/pausar. El estado completo está en la URL (permalink).",
+    "keys": "Teclado: ← → visita · ↑ ↓ escalera de λ · espacio reproducir/pausar · con el cuadro enfocado, Shift+flechas mueve el punto y Enter abre «¿qué hay aquí?». El estado completo está en la URL (permalink).",
     "mean": "media",
     "visitOf": "visita de",
     "channels": "canales",
@@ -68,11 +75,20 @@
       "class": "Aula",
       "knownSoon": "Haz clic en el visor para listar vecinos (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
       "spectrumSoon": "Espectro y curva de luz en µJy.",
-      "aladinSoon": "Contexto con Aladin Lite (unWISE, 2MASS, Gaia DR3)."
+      "aladinSoon": "Contexto con Aladin Lite (unWISE, 2MASS, Gaia DR3).",
+      "hint": "Elige una pestaña. Haz clic en el cuadro (o Shift+flechas y Enter) para preguntar qué hay en un píxel."
     },
     "refEpoch": "época media",
     "refNote": "Cuadro de 2010 (AllWISE W2, 15 años antes) reproyectado a la misma malla: compara estrellas de campo y la posición del objeto.",
-    "refTitle": "Referencia de 2010 alineada píxel a píxel"
+    "refTitle": "Referencia de 2010 alineada píxel a píxel",
+    "abExposures": "incluir exposiciones",
+    "liveField": "campo en vivo",
+    "kind": {
+      "object": "objeto de prueba",
+      "asteroid": "asteroide",
+      "deepfield": "campo profundo",
+      "random": "campo aleatorio"
+    }
   },
   "known": {
     "at": "Punto",
@@ -105,7 +121,7 @@
     "points": "puntos",
     "satOmitted": "saturados omitidos",
     "current": "actual",
-    "lcTitle": "Curva de luz: flujo del coadd por visita,",
+    "lcTitle": "Curva de luz · coadd por visita ·",
     "lcNote": "cada visita tiene una λ media distinta (ver escalera)",
     "thisVisit": "Esta visita",
     "saturated": "saturación en la apertura: no fiable"
@@ -114,7 +130,9 @@
     "survey": "Fondo",
     "error": "Aladin Lite no pudo cargar (requiere acceso a CDS).",
     "arrow": "Flecha verde = movimiento propio",
-    "credit": "Aladin Lite (CDS, LGPL-3.0); Gaia DR3 vía VizieR I/355/gaiadr3."
+    "credit": "Aladin Lite (CDS, LGPL-3.0); Gaia DR3 vía VizieR I/355/gaiadr3.",
+    "slow": "Aladin tarda en responder: los mosaicos vienen de CDS (Estrasburgo). Si no carga, usa el enlace externo.",
+    "open": "Abrir en Aladin Lite (CDS)"
   },
   "classroom": {
     "pixel": "Un píxel de SPHEREx mide 6.15″: una estrella con movimiento propio de 10″/año se mueve menos de 2 píxeles por año.",

@@ -15,21 +15,23 @@ export function SidePanel({ field, current, pick, panel, setPanel }: {
   const t = useTranslations("viewer");
   const tabs: PanelId[] = ["known", "spectrum", "aladin", "class"];
   return (
-    <aside className="w-full lg:w-[400px]">
-      <div role="tablist" className="flex gap-1 text-sm">
+    <aside className="glass w-full p-2 lg:w-[400px] lg:shrink-0">
+      <div role="tablist" className="flex gap-1 overflow-x-auto">
         {tabs.map((p) => (
-          <button key={p} role="tab" aria-selected={panel === p} aria-controls={`panel-${p}`} className={`rounded-t px-3 py-1 ${panel === p ? "bg-[#2b3140]" : "bg-[#15171e]"}`} onClick={() => setPanel(panel === p ? "none" : p)}>
+          <button key={p} role="tab" aria-selected={panel === p} aria-controls={`panel-${p}`} className="tab whitespace-nowrap" onClick={() => setPanel(panel === p ? "none" : p)}>
             {t(`panel.${p}` as "panel.known")}
           </button>
         ))}
       </div>
-      {panel !== "none" && current && (
-        <div id={`panel-${panel}`} role="tabpanel" className="rounded-b rounded-tr bg-[#2b3140] p-3">
+      {panel !== "none" && current ? (
+        <div id={`panel-${panel}`} role="tabpanel" className="mt-2 border-t border-[var(--line)] px-1 pt-3">
           {panel === "known" && <KnownPanel field={field} visit={current.visit} pick={pick} />}
           {panel === "spectrum" && <SpectrumPanel field={field} visit={current.visit} currentExposureId={current.exposure?.id ?? null} detector={current.visit.detector} />}
           {panel === "aladin" && <AladinPanel field={field} visit={current.visit} />}
           {panel === "class" && <ClassroomPanel field={field} visit={current.visit} detector={current.visit.detector} />}
         </div>
+      ) : (
+        <p className="px-2 pb-1 pt-3 text-xs text-[var(--muted)]">{t("panel.hint")}</p>
       )}
     </aside>
   );

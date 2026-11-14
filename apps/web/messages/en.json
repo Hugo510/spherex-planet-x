@@ -8,7 +8,8 @@
     "limits": "Limits & method",
     "status": "Status",
     "lang": "Español",
-    "brand": "honest comparator"
+    "brand": "honest comparator",
+    "limitsShort": "Limits"
   },
   "home": {
     "cta": "Open the viewer",
@@ -18,7 +19,13 @@
     "deep": "North Ecliptic Pole deep field",
     "random": "Random field",
     "thesis": "SPHEREx images the whole sky in 102 infrared colours, but every pixel sees a different colour: a naive ‘before and after’ lies. Here every frame shows its real λ, every visit collapses into a variance-weighted coadd, every subtraction passes a spectral verdict, and every point is cross-matched with Gaia DR3, CatWISE2020, AllWISE, SIMBAD and known asteroids. We do not promise to find Planet X: what cannot be seen, we state with numbers.",
-    "precomputedAt": "Showcase precomputed on"
+    "precomputedAt": "Showcase precomputed on",
+    "heroA": "Every frame with its real λ.",
+    "heroB": "Every subtraction, a verdict.",
+    "statFields": "fields",
+    "statVisits": "visits",
+    "statExposures": "exposures",
+    "heroCaption": "visit coadd · real data"
   },
   "viewer": {
     "timeline": "Timeline",
@@ -46,7 +53,7 @@
     "loadError": "Could not load the field.",
     "loading": "Loading frames",
     "allWarning": "Warning: “all detectors” mixes λ from 0.75 to 5 µm on one timeline; brightness changes with color, not variability.",
-    "keys": "Keys: ← → visit · ↑ ↓ λ ladder · space play/pause. The full state lives in the URL (permalink).",
+    "keys": "Keys: ← → visit · ↑ ↓ λ ladder · space play/pause · with the frame focused, Shift+arrows move the point and Enter opens “what is here?”. The full state lives in the URL (permalink).",
     "mean": "mean",
     "visitOf": "visit of",
     "channels": "channels",
@@ -68,11 +75,20 @@
       "class": "Classroom",
       "knownSoon": "Click on the viewer to list neighbours (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
       "spectrumSoon": "Spectrum and light curve in µJy.",
-      "aladinSoon": "Context with Aladin Lite (unWISE, 2MASS, Gaia DR3)."
+      "aladinSoon": "Context with Aladin Lite (unWISE, 2MASS, Gaia DR3).",
+      "hint": "Pick a tab. Click the frame (or Shift+arrows and Enter) to ask what is at a pixel."
     },
     "refEpoch": "mean epoch",
     "refNote": "2010 frame (AllWISE W2, 15 years earlier) reprojected onto the same grid: compare field stars and the object position.",
-    "refTitle": "2010 reference aligned pixel by pixel"
+    "refTitle": "2010 reference aligned pixel by pixel",
+    "abExposures": "include exposures",
+    "liveField": "live field",
+    "kind": {
+      "object": "test object",
+      "asteroid": "asteroid",
+      "deepfield": "deep field",
+      "random": "random field"
+    }
   },
   "known": {
     "at": "Point",
@@ -104,7 +120,7 @@
     "points": "points",
     "satOmitted": "saturated omitted",
     "current": "current",
-    "lcTitle": "Light curve: visit-coadd flux,",
+    "lcTitle": "Light curve · visit coadd ·",
     "lcNote": "each visit has a different mean λ (see ladder)",
     "thisVisit": "This visit",
     "saturated": "saturation in aperture: unreliable"
@@ -113,7 +129,9 @@
     "survey": "Background",
     "error": "Aladin Lite could not load (needs access to CDS).",
     "arrow": "Green arrow = proper motion",
-    "credit": "Aladin Lite (CDS, LGPL-3.0); Gaia DR3 via VizieR I/355/gaiadr3."
+    "credit": "Aladin Lite (CDS, LGPL-3.0); Gaia DR3 via VizieR I/355/gaiadr3.",
+    "slow": "Aladin is slow to respond: tiles come from CDS (Strasbourg). If it does not load, use the external link.",
+    "open": "Open in Aladin Lite (CDS)"
   },
   "classroom": {
     "pixel": "A SPHEREx pixel is 6.15″: a star with a proper motion of 10″/yr moves less than 2 pixels per year.",

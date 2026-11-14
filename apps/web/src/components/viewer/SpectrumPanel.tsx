@@ -1,24 +1,31 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import uPlot from "uplot";
 import "uplot/dist/uPlot.min.css";
 import { loadSpectrum } from "@/lib/data";
 import type { ShowcaseField, SpectrumResponse, VisitOut } from "@/lib/types";
 
-function errorBars(seriesIdx: number, errs: number[]) {
+/** Paleta categórica (color por visita): separa forma espectral de variabilidad. */
+const PALETTE = ["#7cc4ff", "#ffd166", "#43d17a", "#ff8fab", "#b28dff", "#ffa94d", "#5ee7df", "#f06595", "#9775fa", "#a9e34b", "#ff6b6b", "#74c0fc"];
+
+const AXES = { stroke: "#8f9ab0", grid: { stroke: "rgba(255,255,255,0.08)" }, ticks: { stroke: "rgba(255,255,255,0.15)" }, font: "11px ui-monospace, monospace" };
+
+type Pt = { x: number; y: number; e: number; color: string; current: boolean; sat: boolean };
+
+function drawPoints(pts: Pt[]) {
   return (u: uPlot) => {
     const ctx = u.ctx;
-    const xs = u.data[0] as number[], ys = u.data[seriesIdx] as (number | null)[];
     ctx.save();
-    ctx.strokeStyle = "rgba(230,232,238,0.5)";
-    ctx.lineWidth = 1;
-    for (let i = 0; i < xs.length; i++) {
-      const y = ys[i];
-      if (y == null) continue;
-      const x = u.valToPos(xs[i], "x", true);
-      const y0 = u.valToPos(y - errs[i], "y", true), y1 = u.valToPos(y + errs[i], "y", true);
+    for (const p of pts) {
+      const x = u.valToPos(p.x, "x", true), y = u.valToPos(p.y, "y", true);
+      const y0 = u.valToPos(p.y - p.e, "y", true), y1 = u.valToPos(p.y + p.e, "y", true);
+      ctx.strokeStyle = "rgba(233,237,245,0.35)";
+      ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1); ctx.stroke();
+      ctx.fillStyle = p.sat ? "rgba(255,47,168,0.6)" : p.color;
+      ctx.beginPath(); ctx.arc(x, y, p.current ? 6 : 3, 0, Math.PI * 2); ctx.fill();
+      if (p.current) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.stroke(); }
     }
     ctx.restore();
   };
@@ -37,54 +44,77 @@ export function SpectrumPanel({ field, visit, currentExposureId, detector }: { f
     return () => { alive = false; };
   }, [field]);
 
-  // espectro: todas las exposiciones (µJy vs λ), punto actual resaltado
+  // color por visita (fecha), ordenadas en el tiempo
+  const visitColors = useMemo(() => {
+    const ids = Array.from(new Set((sp?.points ?? []).map((p) => p.visit_id)));
+    const byDate = ids.map((id) => ({ id, mjd: field.visits.find((v) => v.id === id)?.mjd_mean ?? 0 })).sort((a, b) => a.mjd - b.mjd);
+    const dates = Array.from(new Set(byDate.map((v) => v.id.slice(3))));
+    const m = new Map<string, string>();
+    for (const v of byDate) m.set(v.id, PALETTE[dates.indexOf(v.id.slice(3)) % PALETTE.length]);
+    return { map: m, dates };
+  }, [sp, field]);
+
   useEffect(() => {
     if (!sp || !specRef.current) return;
-    const pts = sp.points.filter((p) => (p.saturated_px ?? 0) === 0);
-    const xs = pts.map((p) => p.lambda_um), ys = pts.map((p) => p.flux_ujy), es = pts.map((p) => p.err_ujy);
-    const cur = pts.map((p) => (p.exposure_id === currentExposureId || (!currentExposureId && p.visit_id === visit.id) ? p.flux_ujy : null));
+    const pts: Pt[] = sp.points.map((p) => ({
+      x: p.lambda_um, y: p.flux_ujy, e: p.err_ujy, color: visitColors.map.get(p.visit_id) ?? "#7cc4ff",
+      current: p.exposure_id === currentExposureId || (!currentExposureId && p.visit_id === visit.id), sat: (p.saturated_px ?? 0) > 0,
+    }));
+    const clean = pts.filter((p) => !p.sat);
+    const xs = clean.map((p) => p.x), ys = clean.map((p) => p.y);
     const u = new uPlot({
-      width: specRef.current.clientWidth || 360, height: 220,
+      width: specRef.current.clientWidth || 360, height: 230,
       scales: { x: { time: false }, y: {} },
-      axes: [{ label: "λ (µm)", stroke: "#9aa3b2", grid: { stroke: "#2b3140" } }, { label: "µJy", stroke: "#9aa3b2", grid: { stroke: "#2b3140" }, size: 60 }],
-      series: [{ label: "λ" }, { label: "µJy", stroke: "#7cc4ff", paths: () => null, points: { show: true, size: 5, fill: "#7cc4ff" } },
-        { label: t("current"), stroke: "#ffd166", paths: () => null, points: { show: true, size: 11, fill: "#ffd166" } }],
-      hooks: { draw: [errorBars(1, es)] },
-      legend: { show: false },
-    }, [xs, ys, cur], specRef.current);
+      axes: [{ ...AXES, label: "λ (µm)" }, { ...AXES, label: "µJy", size: 62 }],
+      series: [{ label: "λ" }, { label: "µJy", paths: () => null, points: { show: false } }],
+      hooks: { draw: [drawPoints(clean)] },
+      legend: { show: false }, cursor: { show: false },
+    }, [xs, ys], specRef.current);
     return () => u.destroy();
-  }, [sp, currentExposureId, visit.id, t]);
+  }, [sp, currentExposureId, visit.id, visitColors]);
 
-  // curva de luz: flujo del coadd por visita del detector actual
   useEffect(() => {
     if (!lcRef.current) return;
-    const vs = field.visits.filter((v) => v.detector === detector && v.flux_ujy != null && (v.saturated_px_aperture ?? 0) === 0).sort((a, b) => a.mjd_mean - b.mjd_mean);
+    const vs = field.visits.filter((v) => v.detector === detector && v.flux_ujy != null).sort((a, b) => a.mjd_mean - b.mjd_mean);
     if (!vs.length) return;
-    const xs = vs.map((v) => (v.mjd_mean - 40587) * 86400), ys = vs.map((v) => v.flux_ujy as number), es = vs.map((v) => v.flux_err_ujy ?? 0);
-    const cur = vs.map((v) => (v.id === visit.id ? (v.flux_ujy as number) : null));
+    const pts: Pt[] = vs.map((v) => ({
+      x: (v.mjd_mean - 40587) * 86400, y: v.flux_ujy as number, e: v.flux_err_ujy ?? 0, color: visitColors.map.get(v.id) ?? "#7cc4ff",
+      current: v.id === visit.id, sat: (v.saturated_px_aperture ?? 0) > 0,
+    }));
     const u = new uPlot({
-      width: lcRef.current.clientWidth || 360, height: 180,
+      width: lcRef.current.clientWidth || 360, height: 190,
       scales: { x: { time: true }, y: {} },
-      axes: [{ stroke: "#9aa3b2", grid: { stroke: "#2b3140" } }, { label: "µJy", stroke: "#9aa3b2", grid: { stroke: "#2b3140" }, size: 60 }],
-      series: [{ label: "t" }, { label: `D${detector}`, stroke: "#7cc4ff", width: 1, points: { show: true, size: 5, fill: "#7cc4ff" } },
-        { label: t("current"), stroke: "#ffd166", paths: () => null, points: { show: true, size: 11, fill: "#ffd166" } }],
-      hooks: { draw: [errorBars(1, es)] },
-      legend: { show: false },
-    }, [xs, ys, cur], lcRef.current);
+      axes: [{ ...AXES }, { ...AXES, label: "µJy", size: 62 }],
+      series: [{ label: "t" }, { label: `D${detector}`, stroke: "rgba(124,196,255,0.45)", width: 1, points: { show: false } }],
+      hooks: { draw: [drawPoints(pts)] },
+      legend: { show: false }, cursor: { show: false },
+    }, [pts.map((p) => p.x), pts.map((p) => p.y)], lcRef.current);
     return () => u.destroy();
-  }, [field, detector, visit.id, t]);
+  }, [field, detector, visit.id, visitColors]);
 
   const n = sp?.points.length ?? 0;
   const nSat = sp?.points.filter((p) => (p.saturated_px ?? 0) > 0).length ?? 0;
   return (
-    <div className="space-y-2 text-sm">
-      <div className="text-xs text-[var(--muted)]">{t("spectrumTitle")} · r = 2.5 px · {n} {t("points")}{nSat ? ` · ${nSat} ${t("satOmitted")}` : ""}</div>
+    <div className="space-y-3 text-sm">
+      <div>
+        <p className="kicker">{t("spectrumTitle")}</p>
+        <p className="mono mt-0.5 text-[11px] text-[var(--muted)]">r = 2.5 px · {n} {t("points")}{nSat ? ` · ${nSat} ${t("satOmitted")}` : ""}</p>
+      </div>
       {err && <p className="text-xs text-[var(--block)]">{err}</p>}
       <div ref={specRef} />
-      <div className="text-xs text-[var(--muted)]">{t("lcTitle")} D{detector} · {t("lcNote")}</div>
+      <div className="flex flex-wrap gap-x-3 gap-y-1">
+        {visitColors.dates.slice(0, 12).map((d, i) => (
+          <span key={d} className="mono flex items-center gap-1 text-[10px] text-[var(--muted)]"><span className="inline-block h-2 w-2 rounded-full" style={{ background: PALETTE[i % PALETTE.length] }} />{d}</span>
+        ))}
+        {visitColors.dates.length > 12 && <span className="mono text-[10px] text-[var(--muted)]">+{visitColors.dates.length - 12}</span>}
+      </div>
+      <div className="border-t border-[var(--line)] pt-3">
+        <p className="kicker">{t("lcTitle")} D{detector}</p>
+        <p className="mono mt-0.5 text-[11px] text-[var(--muted)]">{t("lcNote")}</p>
+      </div>
       <div ref={lcRef} />
       {visit.flux_ujy != null && (
-        <p className="text-xs">
+        <p className="mono text-xs">
           {t("thisVisit")}: {visit.flux_ujy.toFixed(0)} ± {visit.flux_err_ujy?.toFixed(0)} µJy @ {visit.lambda_um.mean.toFixed(2)} µm
           {(visit.saturated_px_aperture ?? 0) > 0 && <span className="text-[var(--sat)]"> · {t("saturated")}</span>}
         </p>

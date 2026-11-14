@@ -124,3 +124,18 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
 - **2026-11-14 11:55 UTC** — Showcase final: 11 campos, 25.2 MB, 0 fallos; `limits.json` regenerado; suite completa verde
   (18 tests de API con red, 12 de web, ruff/eslint/tsc). Demo grabada con `scripts/record_demo.py` (GIF de 0.9 MB en
   `docs/demo/`; el WebM requiere el ffmpeg de Playwright, opcional con `--no-video`). Capturas en `docs/demo/shot_*.png`.
+
+## Rediseño de UI (tarde del 14 nov)
+
+- **2026-11-14 13:10 UTC** — Nuevo sistema de diseño sin tocar lógica ni contrato: fondo espacial con gradientes CSS (sin imágenes),
+  tipografías Space Grotesk / Inter / JetBrains Mono autoalojadas por `next/font`, paneles translúcidos (`.glass`), etiquetas en
+  mayúsculas con tracking, acentos de esquina en el cuadro, header compartido fijo con cambio de idioma; landing con héroe de
+  datos reales (coadd D5 de WISE 0855) y estadísticas del showcase; Limits y Status con el mismo lenguaje.
+- **2026-11-14 13:15 UTC** — Mejoras 1–6: (1) Aladin verificado en Chromium: la librería inicializa y dibuja la flecha de pm; los
+  mosaicos de CDS no llegan desde esta red, así que el panel avisa a los 8 s y ofrece el enlace externo a Aladin Lite;
+  (2) móvil: canvas fluido (hasta 640 px), controles con salto de línea, nav corto, panel debajo; (3) selector A−B filtrado por
+  detector, solo coadds por defecto, casilla para incluir exposiciones, agrupado por visita; (4) espectro y curva de luz
+  coloreados por visita con leyenda de fechas; (5) selección de píxel por teclado: canvas enfocable, Shift+flechas y Enter;
+  (6) en «todos los detectores» el stretch es el del detector de la visita actual (y el recorte manual se calcula por detector).
+- **2026-11-14 13:20 UTC** — Lighthouse accesibilidad 96 (quedan avisos de tamaño de chips de la escalera de λ); vitest 12/12,
+  tsc y eslint limpios. GIF de la demo regrabado con la nueva interfaz.

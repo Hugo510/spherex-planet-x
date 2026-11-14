@@ -17,6 +17,8 @@ export function AladinPanel({ field, visit }: { field: ShowcaseField; visit: Vis
   const ref = useRef<HTMLDivElement>(null);
   const [survey, setSurvey] = useState(SURVEYS[0].id);
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
+  const [slow, setSlow] = useState(false);
+  useEffect(() => { const id = window.setTimeout(() => setSlow(true), 8000); return () => window.clearTimeout(id); }, []);
   const aladinRef = useRef<{ setImageSurvey: (s: string) => void } | null>(null);
 
   useEffect(() => {
@@ -65,8 +67,10 @@ export function AladinPanel({ field, visit }: { field: ShowcaseField; visit: Vis
       <select className="sel" value={survey} onChange={(e) => setSurvey(e.target.value)} aria-label={t("survey")}>
         {SURVEYS.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
       </select>
-      <div ref={ref} className="h-[340px] w-full rounded bg-black" aria-label="Aladin Lite" />
+      <div ref={ref} className="h-[340px] w-full overflow-hidden rounded-lg border border-[var(--line)] bg-black" aria-label="Aladin Lite" />
       {status === "error" && <p className="text-xs text-[var(--block)]">{t("error")}</p>}
+      {status !== "error" && slow && <p className="text-xs text-[var(--warn)]">{t("slow")}</p>}
+      <a className="btn text-xs" target="_blank" rel="noreferrer" href={`https://aladin.cds.unistra.fr/AladinLite/?target=${now.ra.toFixed(5)}%20${now.dec.toFixed(5)}&fov=${(field.target.fov_deg * 1.5).toFixed(2)}&survey=CDS%2FP%2FunWISE%2Fcolor-W2-W1W2-W1`}>{t("open")} ↗</a>
       <p className="text-xs text-[var(--muted)]">
         {t("arrow")}: 2010.4 → {yr.toFixed(2)} = {sepArcsec(p2010.ra, p2010.dec, now.ra, now.dec).toFixed(1)}″ ({(sepArcsec(p2010.ra, p2010.dec, now.ra, now.dec) / 6.15).toFixed(1)} px). {t("credit")}
       </p>
