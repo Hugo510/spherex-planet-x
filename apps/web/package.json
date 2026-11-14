@@ -13,8 +13,8 @@
   "dependencies": {
     "@spherex/shared": "workspace:*",
     "aladin-lite": "3.8.2",
-    "fast-png": "^7.0.0",
-    "next": "15.5.29",
+    "fast-png": "^8.0.0",
+    "next": "16.4.6",
     "next-intl": "^4.15.1",
     "nuqs": "^2.10.3",
     "react": "^19.2.0",
@@ -24,15 +24,15 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
     "@tailwindcss/postcss": "^4.3.5",
-    "@types/node": "^22.19.0",
+    "@types/node": "^26.6.6",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "eslint": "^9.39.0",
-    "eslint-config-next": "15.5.29",
+    "eslint": "^10.14.0",
+    "eslint-config-next": "16.4.6",
     "postcss": "^8.5.0",
     "tailwindcss": "^4.3.5",
-    "typescript": "^5.9.0",
-    "vitest": "^3.2.0"
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
   },
   "license": "MIT"
 }
