@@ -49,7 +49,7 @@ def post(url: str, data: dict, *, retries: int = 5) -> httpx.Response:
     last: Exception | None = None
     for i in range(retries):
         try:
-            r = client().post(url, data=data)
+            r = client().post(url, data=data, timeout=httpx.Timeout(300.0, connect=30.0))  # el TAP tarda > 2 min en campos densos
             if r.status_code == 200:
                 return r
             last = RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
