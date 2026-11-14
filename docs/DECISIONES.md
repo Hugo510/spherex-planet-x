@@ -154,3 +154,24 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   (0 errores de catálogo). Showcase total 33 MB.
 - **2026-11-14 14:35 UTC** — Lighthouse landing: accesibilidad 100, buenas prácticas 96, rendimiento 73 en servidor sin
   compresión. Títulos de página en serif; GIF y capturas de `docs/demo` regrabados.
+
+## Mejoras frente a la competencia (noche del 14 nov)
+
+- **2026-11-14 16:10 UTC** — (1) Control con estrellas de campo en Limits: el mismo ajuste de centroides por visita aplicado a
+  3–10 estrellas Gaia (G < 16) del campo tras quitar su pm de catálogo da |pm| residual mediano de 0.03–0.11 px/año frente a
+  0.7–1.7 px/año de los objetos: el piso sistemático queda 10× por debajo de la señal; en Barnard confirma que el sesgo es
+  del núcleo saturado, no de la astrometría.
+- **2026-11-14 16:15 UTC** — (2) Botón «misma λ» en A−B: elige en otra visita la exposición del canal más cercano. (6) Modo traza:
+  máximo píxel a píxel de visitas + escalera actual con su propio recorte por percentiles; Ceres muestra sus dos posiciones.
+- **2026-11-14 16:25 UTC** — (3) «Qué mirar primero» (`scripts/find_changes.py`): cada exposición menos la mediana de las del
+  mismo canal en otras visitas (|Δ| = 0 → veredicto ok), S/N ≥ 6, ≥ 2 px, lejos de saturación, cruce con los catálogos y
+  marca de «una sola exposición: posible artefacto». 24 por campo; los asteroides dan 0 (una visita por canal). R Dra da 17
+  «candidatos» que son residuos alrededor del núcleo saturado: la etiqueta de artefacto y la Field Guide lo explican.
+  Cuando el TAP de IRSA cayó (502, timeouts > 5 min en el polo eclíptico) el script pasó a reconstruir cada campo desde
+  `index.json` con los cutouts en cache (`build_visits(refs=…)`), sin red.
+- **2026-11-14 16:30 UTC** — (4) Completitud por velocidad con movers sintéticos a ciegas (caja ±3 px, 5 visitas, 1.02 años):
+  a 400 µJy limita la S/N del centroide (87 % en reposo → 25–35 % a ≥ 1 px/año); a 1 200 µJy se mantiene en 70–80 % hasta
+  3 px/año y cae a 10 % a 4 px/año al salir de la caja. (5) Variable roja del campo profundo: Gaia DR3 2257667121267351296
+  (G 14.1, K 10.4, BP−RP 2.7) elegida con una consulta Gaia×2MASS a 1.5° del polo; 362 visitas en el showcase, sin saturar,
+  45–55 mJy; curva de luz a λ fija (±1 canal) en el panel de espectro para cualquier campo.
+- **2026-11-14 16:35 UTC** — Showcase final: 12 campos, 36.4 MB (≤ 60 MB); suite verde; capturas y GIF regrabados.

@@ -40,10 +40,13 @@ una variable roja no saturada del campo profundo (Gaia DR3 2257667121267351296, 
 
 ## Resultados que respaldan la tesis (datos reales, 14 nov 2026)
 
-- WISE 0855 en D5: 6 visitas, 430–510 µJy por coadd (W2 = 13.9 ⇒ ≈ 430 µJy), movimiento 1.2–1.7 ± 0.3 px/año vs 1.33 esperado.
+- WISE 0855 en D5: 6 visitas, 430–510 µJy por coadd (W2 = 13.9 ⇒ ≈ 430 µJy), movimiento 1.2–1.7 ± 0.3 px/año vs 1.33 esperado;
+  estrellas de campo de control: 0.03–0.11 px/año.
 - ε Indi Ba/Bb en D2: 14 visitas sin saturación, 0.72 ± 0.04 px/año vs 0.76; su espectro muestra la banda de agua a 1.39 µm.
 - Residuo de la resta (PoC 9 nov): fondo 0.80–0.87 del ruido; estrellas 4 % + 1.4 %/canal; 25 % a 16 canales.
-- Completitud 50 % por inyección: AB 17.7 (WISE 0855 D5, n = 8), 18.5 (ε Indi B D2 y Barnard D3).
+- Completitud 50 % por inyección: AB 17.7 (WISE 0855 D5, n = 8), 18.5 (ε Indi B D2 y Barnard D3). Por velocidad (a ciegas):
+  70–80 % hasta 3 px/año a 1 200 µJy; cae a 4 px/año al salir de la caja de búsqueda.
+- Variable roja del campo profundo: 362 visitas, 45–55 mJy sin saturar, curva de luz a λ fija.
 - Paralaje: 0.07–0.09 px, no medible. Planeta Nueve: 3–5 mag por debajo del límite de una visita.
 
 ## Estructura
