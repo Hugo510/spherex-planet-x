@@ -90,17 +90,34 @@ def asteroid_fields() -> list[dict]:
     for rec in sorted(best.values(), key=lambda r: -r["n_exp"]):
         name = f"asteroid-{rec['asteroid']}"
         pmra, pmdec = asteroid_rate(rec["asteroid"], rec["mjd"])  # arcsec/año: el Target «persigue» al asteroide
+        window = best_window(rec["ra"], rec["dec"], rec["mjd_min"], rec["mjd_max"])
         out.append({
             "id": name, "kind": "asteroid",
             "target": Target(rec["ra"], rec["dec"], rec["epoch"], pmra, pmdec, 0, f"({rec['asteroid']}) {rec['epoch']:.3f}"),
-            # malla fija en el cielo: el asteroide (~0.2°/día) debe quedar dentro de 0.2° → ventana de 0.6 d desde la primera exposición
-            "fov": 0.2, "max_per_visit": 12, "mjd_range": (rec["mjd_min"] - 0.01, rec["mjd_min"] + 0.6), "query_epoch": rec["epoch"],
+            # malla fija en el cielo: el asteroide (~0.2°/día) debe quedar dentro de 0.2° → ventana de 0.6 d con más exposiciones
+            "fov": 0.2, "max_per_visit": 16, "mjd_range": window, "query_epoch": rec["epoch"],
             "title": {"es": f"Asteroide ({rec['asteroid']})", "en": f"Asteroid ({rec['asteroid']})"},
             "blurb": {"es": f"Asteroide brillante (V ≈ {rec['vmag']:.1f}) observado por SPHEREx a {rec['elong']:.0f}° del Sol. Dentro de una visita se desplaza varios píxeles entre exposiciones: es lo único que «se mueve» a ojo en SPHEREx.",
                       "en": f"Bright asteroid (V ≈ {rec['vmag']:.1f}) observed by SPHEREx {rec['elong']:.0f}° from the Sun. Within a visit it moves several pixels between exposures: the only thing that visibly ‘moves’ in SPHEREx."},
             "default_det": 1, "asteroid": rec,
         })
     return out[:3]
+
+
+def best_window(ra: float, dec: float, mjd_min: float, mjd_max: float, width: float = 0.6) -> tuple[float, float]:
+    """Ventana de `width` días con más exposiciones (y, a igualdad, más grupos separados ≥ 1 h) en la posición del asteroide."""
+    from app.adapters import irsa_tap
+
+    mjds = sorted(r.mjd for r in irsa_tap.find_exposures(ra, dec) if mjd_min - 0.01 <= r.mjd <= mjd_max + 0.01)
+    if not mjds:
+        return (mjd_min - 0.01, mjd_min + width)
+    best, score = (mjds[0] - 0.01, mjds[0] + width), (-1, -1)
+    for t in mjds:
+        sel = [m for m in mjds if t - 0.01 <= m <= t - 0.01 + width]
+        groups = 1 + sum(1 for a, b in zip(sel, sel[1:], strict=False) if b - a > 1 / 24)
+        if (len(sel), groups) > score:
+            score, best = (len(sel), groups), (t - 0.01, t - 0.01 + width)
+    return best
 
 
 def asteroid_rate(ast: str, mjd: float) -> tuple[float, float]:
