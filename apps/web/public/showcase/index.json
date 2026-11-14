@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:36:07+00:00",
+ "generated_at": "2026-11-14T09:36:39+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -371,6 +371,47 @@
     ],
     "mjd_min": 60800.938123,
     "mjd_max": 60802.165732
+   }
+  },
+  {
+   "id": "asteroid-7",
+   "kind": "asteroid",
+   "title": {
+    "es": "Asteroide (7)",
+    "en": "Asteroid (7)"
+   },
+   "blurb": {
+    "es": "Asteroide brillante (V \u2248 10.3) observado por SPHEREx a 83\u00b0 del Sol. Dentro de una visita se desplaza varios p\u00edxeles entre exposiciones: es lo \u00fanico que \u00abse mueve\u00bb a ojo en SPHEREx.",
+    "en": "Bright asteroid (V \u2248 10.3) observed by SPHEREx 83\u00b0 from the Sun. Within a visit it moves several pixels between exposures: the only thing that visibly \u2018moves\u2019 in SPHEREx."
+   },
+   "default_det": 1,
+   "ra": 168.99629455599947,
+   "dec": -2.024763330001957,
+   "epoch": 2026.0,
+   "fov_deg": 0.15,
+   "n_visits": 0,
+   "n_exposures": 0,
+   "detectors": [],
+   "releases": [],
+   "failures": 0,
+   "bytes": 16269,
+   "seconds": 31.4,
+   "thumbnail": null,
+   "asteroid": {
+    "asteroid": "7",
+    "ra": 159.38818,
+    "dec": 3.61401,
+    "mjd": 61004.0,
+    "epoch": 2025.8987,
+    "vmag": 10.296,
+    "elong": 83.0286,
+    "n_exp": 14,
+    "detectors": [
+     1,
+     4
+    ],
+    "mjd_min": 61004.173016500004,
+    "mjd_max": 61005.464101
    }
   }
  ]
