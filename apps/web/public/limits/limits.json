@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T08:57:51+00:00",
+ "generated_at": "2026-11-14T09:37:59+00:00",
  "injection": [
   {
    "field": "wise0855",
@@ -507,15 +507,15 @@
     "DICHROIC"
    ],
    "png": "/limits/fieldguide/dichroic.png",
-   "n_px": 1212,
-   "obsid": "2025W42_1A_0549_1",
+   "n_px": 1568,
+   "obsid": "2025W34_2B_0064_4",
    "detector": 4,
-   "lambda_um": 2.437,
-   "mjd": 60963.168071247,
+   "lambda_um": 2.438,
+   "mjd": 60908.835874175,
    "color": "#ffb454",
    "shape": [
-    76,
-    76
+    86,
+    86
    ]
   },
   {
@@ -541,14 +541,14 @@
     "STREAK"
    ],
    "png": "/limits/fieldguide/streak.png",
-   "n_px": 411,
-   "obsid": "2026W39_2A_0682_2",
-   "detector": 6,
-   "lambda_um": 4.528,
-   "mjd": 61310.794535819,
+   "n_px": 422,
+   "obsid": "2026W09_1A_0091_2",
+   "detector": 1,
+   "lambda_um": 0.743,
+   "mjd": 61094.424247775,
    "color": "#43d17a",
    "shape": [
-    84,
+    85,
     84
    ]
   },
@@ -558,14 +558,14 @@
     "PERSIST"
    ],
    "png": "/limits/fieldguide/persist.png",
-   "n_px": 1090,
+   "n_px": 1104,
    "obsid": "2026W13_1A_0129_2",
    "detector": 3,
    "lambda_um": 1.662,
    "mjd": 61122.656283979,
    "color": "#ffd666",
    "shape": [
-    64,
+    65,
     64
    ]
   },
