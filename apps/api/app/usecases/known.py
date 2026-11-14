@@ -130,14 +130,15 @@ def what_is_here(ra: float, dec: float, r_arcsec: float = R_DEFAULT_ARCSEC, mjd:
             errors["jpl"] = str(e)[:200]
     sources.sort(key=lambda s: s["sep_arcsec"])
     match_r = 2.0 * 6.15  # 2 px
+    sso_r = 3.0 * 6.15  # 3 px: la efeméride de sb_ident con nuestro xobs y la posición media de la visita difieren ~1–2 px
     close = [s for s in sources if s["sep_arcsec"] <= match_r]
     # Un asteroide dentro del radio gana (se mueve); si no, manda la fuente MÁS CERCANA (p. ej. para WISE 0855 en 2026:
     # CatWISE a 4" = known_ir_source con pm 7.9"/año, aunque la estrella Gaia G = 16.3 esté a 7").
-    if any(s["verdict"] == "known_sso" for s in close):
+    if any(s["verdict"] == "known_sso" and s["sep_arcsec"] <= sso_r for s in sources):
         verdict = "known_sso"
     elif close:
         verdict = close[0]["verdict"]
     else:
         verdict = "candidate"
-    return {"query": {"ra": ra, "dec": dec, "r_arcsec": r_arcsec, "mjd": mjd, "match_radius_arcsec": match_r},
+    return {"query": {"ra": ra, "dec": dec, "r_arcsec": r_arcsec, "mjd": mjd, "match_radius_arcsec": match_r, "sso_radius_arcsec": sso_r},
             "verdict": verdict, "n_sources": len(sources), "sources": sources, "errors": errors}

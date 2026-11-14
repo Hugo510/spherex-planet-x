@@ -10,20 +10,26 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import os
 import sys
 from pathlib import Path
 
 from PIL import Image
 
 
-async def run(base: str, out: Path) -> None:
+async def run(base: str, out: Path, video: bool = True) -> None:
     from playwright.async_api import async_playwright
 
     out.mkdir(parents=True, exist_ok=True)
     frames: list[Path] = []
     async with async_playwright() as p:
-        browser = await p.chromium.launch()
-        ctx = await browser.new_context(viewport={"width": 1280, "height": 800}, record_video_dir=str(out), record_video_size={"width": 1280, "height": 800})
+        # Chromium preinstalado (p. ej. /opt/pw-browsers/chromium) o el que instale `playwright install chromium`
+        exe = os.environ.get("PW_CHROMIUM", "/opt/pw-browsers/chromium")
+        browser = await p.chromium.launch(executable_path=exe if Path(exe).exists() else None)
+        opts: dict = {"viewport": {"width": 1280, "height": 800}}
+        if video:  # WebM (requiere el ffmpeg de Playwright); el GIF se arma siempre a partir de capturas
+            opts |= {"record_video_dir": str(out), "record_video_size": {"width": 1280, "height": 800}}
+        ctx = await browser.new_context(**opts)
         page = await ctx.new_page()
         i = 0
 
@@ -73,8 +79,9 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", default="http://localhost:3000")
     ap.add_argument("--out", default="docs/demo")
+    ap.add_argument("--no-video", action="store_true", help="solo GIF (sin ffmpeg)")
     a = ap.parse_args()
-    asyncio.run(run(a.base, Path(a.out)))
+    asyncio.run(run(a.base, Path(a.out), video=not a.no_video))
     return 0
 
 

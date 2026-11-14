@@ -46,7 +46,7 @@ export function KnownPanel({ field, visit, pick }: { field: ShowcaseField; visit
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [all, pos.ra, pos.dec, year]);
   const close = sources.filter((s) => s.sep <= MATCH_ARCSEC);
-  const verdict = close.some((s) => s.verdict === "known_sso") ? "known_sso" : close[0]?.verdict ?? "candidate";
+  const verdict = sources.some((s) => s.verdict === "known_sso" && s.sep <= 3 * 6.15) ? "known_sso" : close[0]?.verdict ?? "candidate";
   const m = measurementFrom(field, visit, pos.ra, pos.dec, verdict);
 
   return (

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:48:18+00:00",
+ "generated_at": "2026-11-14T09:48:56+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -315,8 +315,8 @@
     "dr1"
    ],
    "failures": 0,
-   "bytes": 465123,
-   "seconds": 146.6,
+   "bytes": 465158,
+   "seconds": 1.8,
    "thumbnail": "/showcase/asteroid-1/visits/4e580fae436e5e29_D1_2025-06-26.png",
    "asteroid": {
     "asteroid": "1",
@@ -363,7 +363,7 @@
     "dr1"
    ],
    "failures": 0,
-   "bytes": 577906,
+   "bytes": 577946,
    "seconds": 1.8,
    "thumbnail": "/showcase/asteroid-2/visits/6cb2072c62bc3233_D1_2025-05-06.png",
    "asteroid": {
@@ -411,8 +411,8 @@
     "dr1"
    ],
    "failures": 0,
-   "bytes": 381099,
-   "seconds": 0.8,
+   "bytes": 381140,
+   "seconds": 0.9,
    "thumbnail": "/showcase/asteroid-7/visits/03306f3e11229ff5_D1_2025-11-25.png",
    "asteroid": {
     "asteroid": "7",

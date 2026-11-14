@@ -116,3 +116,11 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   queda listo y documentado; el front funciona solo con showcase y muestra "modo en vivo no disponible".
 - **2026-11-14 11:30 UTC** — Showcase final regenerado con la regla de saturación por mayoría, vecinos de todo el campo y
   referencia AllWISE 2010 en los 11 campos (se corre encadenado tras el primer precómputo); Limits y OG se regeneran después.
+- **2026-11-14 11:50 UTC** — Asteroides: los dos primeros campos salieron vacíos porque `build_visits` consultaba el TAP en la
+  posición propagada a 2026.0 (con 300 000″/año eso cae a 50° del asteroide). Arreglado con `query_epoch`, recorte centrado
+  en la malla fija del cielo (no en el objeto) y posición esperada **por exposición**. Ventana = los 0.6 días con más
+  exposiciones y grupos separados ≥ 1 h: Ceres cruza 18 px entre dos grupos a 3.3 h; JPL identifica (1) Ceres, (2) Palas y
+  (7) Iris en el panel «¿qué hay aquí?» (radio de asteroides 3 px: la efeméride con nuestro `xobs` difiere 1–2 px).
+- **2026-11-14 11:55 UTC** — Showcase final: 11 campos, 25.2 MB, 0 fallos; `limits.json` regenerado; suite completa verde
+  (18 tests de API con red, 12 de web, ruff/eslint/tsc). Demo grabada con `scripts/record_demo.py` (GIF de 0.9 MB en
+  `docs/demo/`; el WebM requiere el ffmpeg de Playwright, opcional con `--no-video`). Capturas en `docs/demo/shot_*.png`.

@@ -10,6 +10,9 @@
 
 - Demo pública: **ver `docs/DEPLOY.md`** (Vercel, sitio estático; el proyecto se crea desde la cuenta del equipo).
 - Textos de la plataforma: `docs/SUBMISSION.md`. Guion del video y slides: `docs/DEMO.md`. Decisiones con hora UTC: `docs/DECISIONES.md`.
+- Demo grabada: `docs/demo/demo.gif`; capturas en `docs/demo/shot_*.png`.
+
+![Ceres cruzando el campo en 3.3 h](docs/demo/shot_ceres_1.png)
 
 ## Qué hace
 
