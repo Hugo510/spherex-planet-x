@@ -38,3 +38,22 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
 - **2026-11-14 08:30 UTC** — Criterio F1 cumplido en vivo: WISE 0855 D5 → 6 visitas, 1.48 px/año medido (esperado 1.33),
   440–520 µJy (≈ 430 esperado); ε Indi B D2 → ≥ 5 visitas, 0 px saturados, > 2 mJy. 12 tests (2 de red, se saltan con
   `SPHEREX_OFFLINE=1`); fixtures reales de 176 KB en `apps/api/tests/fixtures/`.
+
+## F2 · Endpoints (contrato v2)
+
+- **2026-11-14 08:45 UTC** — Cuadros como **PNG-16 gris + PNG de máscara de 8 bits** (0 dato, 1 sin dato, 2 saturado) con
+  `png_scale {lo, hi}` para reconstruir el valor físico y `stretch {lo, hi}` compartido por detector. En modo vivo se sirven
+  desde el cache de disco por `/api/frame/{frames|diffs}/{key}.png` (inmutables); en showcase son archivos estáticos.
+- **2026-11-14 08:47 UTC** — `/api/diff?a&b` opera sobre claves de cuadros ya construidos (visita o exposición) y guarda el
+  array .npy junto al PNG; el veredicto usa λ y ancho de banda medios de ambos cuadros.
+- **2026-11-14 08:55 UTC** — SIMBAD: el TAP de CDS devuelve HTML desde esta red; **Harvard primero**, CDS de respaldo.
+  Consulta sin `allfluxes` (la unión daba 400). Radio + 5′ y propagación de pm desde J2000: así WISE 0855 (BD*, Y2) sale a 1.9″.
+- **2026-11-14 09:00 UTC** — JPL `sb_ident`: centro del FOV en `hh-mm-ss` / `dd-mm-ss` (signo `M`), `mpc-code=500` no se
+  admite; se usa `xobs` = vector geocéntrico de SPHEREx (Horizons −163182, VECTORS, km, km/s) y, si Horizons falla,
+  `lat=lon=0` (paralaje LEO↔geocentro ≲ 2″, irrelevante a 6.15″/px). Verificado: 133 asteroides en 1° sobre la eclíptica, 49 s;
+  en radios de 20″ es más rápido.
+- **2026-11-14 09:02 UTC** — Veredicto global de `/api/known`: un asteroide dentro de 2 px gana; si no, la fuente **más cercana**
+  dentro de 2 px (12.3″). Para WISE 0855 en 2026: CatWISE (pm 7.9″/año) a 4.5″ → `known_ir_source`; la estrella Gaia
+  G = 16.3 queda listada a 7.2″ como `known_star`.
+- **2026-11-14 09:05 UTC** — OpenAPI exportado a `apps/api/openapi.json` y tipos TS generados en `packages/shared/src/api.d.ts`
+  (`pnpm gen:types`); un test comprueba que el JSON comprometido coincide con las rutas de la app.

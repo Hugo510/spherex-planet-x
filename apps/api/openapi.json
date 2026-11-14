@@ -1,0 +1,2061 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "SPHEREx honest comparator API",
+  "description": "Visitas, coadds, restas con veredicto espectral, espectros y cruce con catálogos sobre SPHEREx QR2/QR3.",
+  "version": "0.1.0"
+ },
+ "paths": {
+  "/api/health": {
+   "get": {
+    "summary": "Health",
+    "operationId": "health_api_health_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HealthResponse"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/visits": {
+   "get": {
+    "summary": "Visitas (coadd por visita) + escalera de λ",
+    "operationId": "visits_api_visits_get",
+    "parameters": [
+     {
+      "name": "name",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "Preset: wise0855, barnard, epsindib, rwaur, rdra",
+       "title": "Name"
+      },
+      "description": "Preset: wise0855, barnard, epsindib, rwaur, rdra"
+     },
+     {
+      "name": "ra",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Ra"
+      }
+     },
+     {
+      "name": "dec",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Dec"
+      }
+     },
+     {
+      "name": "epoch",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "description": "Época (año decimal) de ra/dec",
+       "default": 2016.0,
+       "title": "Epoch"
+      },
+      "description": "Época (año decimal) de ra/dec"
+     },
+     {
+      "name": "pmra",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "description": "pm en RA·cos δ, arcsec/año",
+       "default": 0.0,
+       "title": "Pmra"
+      },
+      "description": "pm en RA·cos δ, arcsec/año"
+     },
+     {
+      "name": "pmdec",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "description": "pm en Dec, arcsec/año",
+       "default": 0.0,
+       "title": "Pmdec"
+      },
+      "description": "pm en Dec, arcsec/año"
+     },
+     {
+      "name": "fov",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "maximum": 0.5,
+       "minimum": 0.03,
+       "description": "lado del campo en grados (0.1° = 59 px)",
+       "default": 0.1,
+       "title": "Fov"
+      },
+      "description": "lado del campo en grados (0.1° = 59 px)"
+     },
+     {
+      "name": "det",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "description": "Detectores: '5', '5,6' o 'all'",
+       "default": "all",
+       "title": "Det"
+      },
+      "description": "Detectores: '5', '5,6' o 'all'"
+     },
+     {
+      "name": "release",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "qr2,qr3,dr1 (vacío = todos)",
+       "title": "Release"
+      },
+      "description": "qr2,qr3,dr1 (vacío = todos)"
+     },
+     {
+      "name": "max_per_visit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer",
+         "maximum": 40,
+         "minimum": 1
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "tope de exposiciones por visita y detector",
+       "default": 8,
+       "title": "Max Per Visit"
+      },
+      "description": "tope de exposiciones por visita y detector"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VisitsResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/spectrum": {
+   "get": {
+    "summary": "Fotometría de apertura por exposición (µJy)",
+    "operationId": "spectrum_api_spectrum_get",
+    "parameters": [
+     {
+      "name": "name",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Name"
+      }
+     },
+     {
+      "name": "ra",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Ra"
+      }
+     },
+     {
+      "name": "dec",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Dec"
+      }
+     },
+     {
+      "name": "epoch",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "default": 2016.0,
+       "title": "Epoch"
+      }
+     },
+     {
+      "name": "pmra",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "default": 0.0,
+       "title": "Pmra"
+      }
+     },
+     {
+      "name": "pmdec",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "default": 0.0,
+       "title": "Pmdec"
+      }
+     },
+     {
+      "name": "fov",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "maximum": 0.5,
+       "minimum": 0.03,
+       "default": 0.1,
+       "title": "Fov"
+      }
+     },
+     {
+      "name": "det",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "description": "Detectores: '5', '5,6' o 'all'",
+       "default": "all",
+       "title": "Det"
+      },
+      "description": "Detectores: '5', '5,6' o 'all'"
+     },
+     {
+      "name": "release",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Release"
+      }
+     },
+     {
+      "name": "max_per_visit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer",
+         "maximum": 40,
+         "minimum": 1
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": 8,
+       "title": "Max Per Visit"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/SpectrumResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/lightcurve": {
+   "get": {
+    "summary": "Flujo del coadd por visita (µJy)",
+    "operationId": "lightcurve_api_lightcurve_get",
+    "parameters": [
+     {
+      "name": "name",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Name"
+      }
+     },
+     {
+      "name": "ra",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Ra"
+      }
+     },
+     {
+      "name": "dec",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Dec"
+      }
+     },
+     {
+      "name": "epoch",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "default": 2016.0,
+       "title": "Epoch"
+      }
+     },
+     {
+      "name": "pmra",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "default": 0.0,
+       "title": "Pmra"
+      }
+     },
+     {
+      "name": "pmdec",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "default": 0.0,
+       "title": "Pmdec"
+      }
+     },
+     {
+      "name": "fov",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "maximum": 0.5,
+       "minimum": 0.03,
+       "default": 0.1,
+       "title": "Fov"
+      }
+     },
+     {
+      "name": "det",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "description": "Detectores: '5', '5,6' o 'all'",
+       "default": "all",
+       "title": "Det"
+      },
+      "description": "Detectores: '5', '5,6' o 'all'"
+     },
+     {
+      "name": "release",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Release"
+      }
+     },
+     {
+      "name": "max_per_visit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer",
+         "maximum": 40,
+         "minimum": 1
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": 8,
+       "title": "Max Per Visit"
+      }
+     },
+     {
+      "name": "detector",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer",
+         "maximum": 6,
+         "minimum": 1
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Detector"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LightcurveResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/diff": {
+   "get": {
+    "summary": "A − B con veredicto espectral",
+    "operationId": "diff_api_diff_get",
+    "parameters": [
+     {
+      "name": "a",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "description": "key de un cuadro (visita o exposición)",
+       "title": "A"
+      },
+      "description": "key de un cuadro (visita o exposición)"
+     },
+     {
+      "name": "b",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "B"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DiffResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/known": {
+   "get": {
+    "summary": "¿Qué hay aquí? Gaia DR3, CatWISE2020, AllWISE, SIMBAD, JPL",
+    "operationId": "known_api_known_get",
+    "parameters": [
+     {
+      "name": "ra",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "number",
+       "title": "Ra"
+      }
+     },
+     {
+      "name": "dec",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "number",
+       "title": "Dec"
+      }
+     },
+     {
+      "name": "r_arcsec",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "maximum": 300,
+       "minimum": 1,
+       "default": 20.0,
+       "title": "R Arcsec"
+      }
+     },
+     {
+      "name": "mjd",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Mjd"
+      }
+     },
+     {
+      "name": "simbad",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": true,
+       "title": "Simbad"
+      }
+     },
+     {
+      "name": "sso",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": true,
+       "title": "Sso"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/KnownResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "components": {
+  "schemas": {
+   "DiffResponse": {
+    "properties": {
+     "png16": {
+      "type": "string",
+      "title": "Png16"
+     },
+     "mask_png": {
+      "type": "string",
+      "title": "Mask Png"
+     },
+     "png_scale": {
+      "$ref": "#/components/schemas/PngScale"
+     },
+     "key": {
+      "type": "string",
+      "title": "Key"
+     },
+     "a": {
+      "$ref": "#/components/schemas/DiffSide"
+     },
+     "b": {
+      "$ref": "#/components/schemas/DiffSide"
+     },
+     "verdict": {
+      "$ref": "#/components/schemas/VerdictOut"
+     },
+     "same_detector": {
+      "type": "boolean",
+      "title": "Same Detector"
+     },
+     "stats": {
+      "$ref": "#/components/schemas/DiffStats"
+     },
+     "stretch": {
+      "$ref": "#/components/schemas/Stretch"
+     }
+    },
+    "type": "object",
+    "required": [
+     "png16",
+     "mask_png",
+     "png_scale",
+     "key",
+     "a",
+     "b",
+     "verdict",
+     "same_detector",
+     "stats",
+     "stretch"
+    ],
+    "title": "DiffResponse"
+   },
+   "DiffSide": {
+    "properties": {
+     "key": {
+      "type": "string",
+      "title": "Key"
+     },
+     "id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Id"
+     },
+     "detector": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Detector"
+     },
+     "lambda_um": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lambda Um"
+     },
+     "bandwidth_um": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bandwidth Um"
+     },
+     "mjd": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mjd"
+     },
+     "kind": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Kind"
+     }
+    },
+    "type": "object",
+    "required": [
+     "key"
+    ],
+    "title": "DiffSide"
+   },
+   "DiffStats": {
+    "properties": {
+     "rms": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rms"
+     },
+     "robust_sigma": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Robust Sigma"
+     },
+     "n_px": {
+      "type": "integer",
+      "title": "N Px"
+     }
+    },
+    "type": "object",
+    "required": [
+     "rms",
+     "robust_sigma",
+     "n_px"
+    ],
+    "title": "DiffStats"
+   },
+   "ExposureOut": {
+    "properties": {
+     "flux_ujy": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Flux Ujy"
+     },
+     "flux_err_ujy": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Flux Err Ujy"
+     },
+     "measured_xy": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Measured Xy"
+     },
+     "saturated_px_aperture": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Saturated Px Aperture"
+     },
+     "bad_px_aperture": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bad Px Aperture"
+     },
+     "recentered": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Recentered"
+     },
+     "omega_arcsec2": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Omega Arcsec2"
+     },
+     "snr": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Snr"
+     },
+     "png16": {
+      "type": "string",
+      "title": "Png16"
+     },
+     "mask_png": {
+      "type": "string",
+      "title": "Mask Png"
+     },
+     "png_scale": {
+      "$ref": "#/components/schemas/PngScale"
+     },
+     "key": {
+      "type": "string",
+      "title": "Key"
+     },
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "obsid": {
+      "type": "string",
+      "title": "Obsid"
+     },
+     "detector": {
+      "type": "integer",
+      "title": "Detector"
+     },
+     "mjd": {
+      "type": "number",
+      "title": "Mjd"
+     },
+     "iso": {
+      "type": "string",
+      "title": "Iso"
+     },
+     "lambda_um": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lambda Um"
+     },
+     "bandwidth_um": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bandwidth Um"
+     },
+     "release": {
+      "type": "string",
+      "title": "Release"
+     },
+     "doi": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Doi"
+     },
+     "l2b_version": {
+      "type": "string",
+      "title": "L2B Version"
+     },
+     "pipeline_version": {
+      "type": "string",
+      "title": "Pipeline Version"
+     },
+     "flag_fraction": {
+      "type": "number",
+      "title": "Flag Fraction"
+     },
+     "saturated_px": {
+      "type": "integer",
+      "title": "Saturated Px"
+     },
+     "artifact_bits": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Artifact Bits"
+     },
+     "source_url": {
+      "type": "string",
+      "title": "Source Url"
+     }
+    },
+    "type": "object",
+    "required": [
+     "png16",
+     "mask_png",
+     "png_scale",
+     "key",
+     "id",
+     "obsid",
+     "detector",
+     "mjd",
+     "iso",
+     "lambda_um",
+     "bandwidth_um",
+     "release",
+     "doi",
+     "l2b_version",
+     "pipeline_version",
+     "flag_fraction",
+     "saturated_px",
+     "artifact_bits",
+     "source_url"
+    ],
+    "title": "ExposureOut"
+   },
+   "GridOut": {
+    "properties": {
+     "naxis": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Naxis"
+     },
+     "wcs": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Wcs"
+     }
+    },
+    "type": "object",
+    "required": [
+     "naxis",
+     "wcs"
+    ],
+    "title": "GridOut"
+   },
+   "HTTPValidationError": {
+    "properties": {
+     "detail": {
+      "items": {
+       "$ref": "#/components/schemas/ValidationError"
+      },
+      "type": "array",
+      "title": "Detail"
+     }
+    },
+    "type": "object",
+    "title": "HTTPValidationError"
+   },
+   "HealthResponse": {
+    "properties": {
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "releases": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Releases"
+     },
+     "pixscale_arcsec": {
+      "type": "number",
+      "title": "Pixscale Arcsec"
+     },
+     "mode": {
+      "type": "string",
+      "title": "Mode"
+     },
+     "cache_dir": {
+      "type": "string",
+      "title": "Cache Dir"
+     },
+     "targets": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Targets"
+     }
+    },
+    "type": "object",
+    "required": [
+     "status",
+     "releases",
+     "pixscale_arcsec",
+     "mode",
+     "cache_dir",
+     "targets"
+    ],
+    "title": "HealthResponse"
+   },
+   "KnownResponse": {
+    "properties": {
+     "query": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Query"
+     },
+     "verdict": {
+      "type": "string",
+      "enum": [
+       "known_star",
+       "known_ir_source",
+       "known_sso",
+       "candidate"
+      ],
+      "title": "Verdict"
+     },
+     "n_sources": {
+      "type": "integer",
+      "title": "N Sources"
+     },
+     "sources": {
+      "items": {
+       "$ref": "#/components/schemas/KnownSource"
+      },
+      "type": "array",
+      "title": "Sources"
+     },
+     "errors": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Errors",
+      "default": {}
+     }
+    },
+    "type": "object",
+    "required": [
+     "query",
+     "verdict",
+     "n_sources",
+     "sources"
+    ],
+    "title": "KnownResponse"
+   },
+   "KnownSource": {
+    "properties": {
+     "catalog": {
+      "type": "string",
+      "title": "Catalog"
+     },
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "ra": {
+      "type": "number",
+      "title": "Ra"
+     },
+     "dec": {
+      "type": "number",
+      "title": "Dec"
+     },
+     "epoch": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Epoch"
+     },
+     "sep_arcsec": {
+      "type": "number",
+      "title": "Sep Arcsec"
+     },
+     "mag": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mag"
+     },
+     "mag_band": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mag Band"
+     },
+     "pmra_mas_yr": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pmra Mas Yr"
+     },
+     "pmdec_mas_yr": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pmdec Mas Yr"
+     },
+     "parallax_mas": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Parallax Mas"
+     },
+     "extra": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Extra",
+      "default": {}
+     },
+     "verdict": {
+      "type": "string",
+      "enum": [
+       "known_star",
+       "known_ir_source",
+       "known_sso",
+       "candidate"
+      ],
+      "title": "Verdict"
+     }
+    },
+    "type": "object",
+    "required": [
+     "catalog",
+     "id",
+     "ra",
+     "dec",
+     "sep_arcsec",
+     "verdict"
+    ],
+    "title": "KnownSource"
+   },
+   "LambdaRange": {
+    "properties": {
+     "min": {
+      "type": "number",
+      "title": "Min"
+     },
+     "max": {
+      "type": "number",
+      "title": "Max"
+     },
+     "mean": {
+      "type": "number",
+      "title": "Mean"
+     }
+    },
+    "type": "object",
+    "required": [
+     "min",
+     "max",
+     "mean"
+    ],
+    "title": "LambdaRange"
+   },
+   "LightcurvePoint": {
+    "properties": {
+     "mjd": {
+      "type": "number",
+      "title": "Mjd"
+     },
+     "iso": {
+      "type": "string",
+      "title": "Iso"
+     },
+     "flux_ujy": {
+      "type": "number",
+      "title": "Flux Ujy"
+     },
+     "err_ujy": {
+      "type": "number",
+      "title": "Err Ujy"
+     },
+     "lambda_mean_um": {
+      "type": "number",
+      "title": "Lambda Mean Um"
+     },
+     "lambda_min_um": {
+      "type": "number",
+      "title": "Lambda Min Um"
+     },
+     "lambda_max_um": {
+      "type": "number",
+      "title": "Lambda Max Um"
+     },
+     "n_exp": {
+      "type": "integer",
+      "title": "N Exp"
+     },
+     "visit_id": {
+      "type": "string",
+      "title": "Visit Id"
+     },
+     "detector": {
+      "type": "integer",
+      "title": "Detector"
+     },
+     "saturated_px": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Saturated Px"
+     }
+    },
+    "type": "object",
+    "required": [
+     "mjd",
+     "iso",
+     "flux_ujy",
+     "err_ujy",
+     "lambda_mean_um",
+     "lambda_min_um",
+     "lambda_max_um",
+     "n_exp",
+     "visit_id",
+     "detector"
+    ],
+    "title": "LightcurvePoint"
+   },
+   "LightcurveResponse": {
+    "properties": {
+     "target": {
+      "$ref": "#/components/schemas/TargetOut"
+     },
+     "detector": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Detector"
+     },
+     "points": {
+      "items": {
+       "$ref": "#/components/schemas/LightcurvePoint"
+      },
+      "type": "array",
+      "title": "Points"
+     },
+     "attribution": {
+      "type": "string",
+      "title": "Attribution"
+     }
+    },
+    "type": "object",
+    "required": [
+     "target",
+     "detector",
+     "points",
+     "attribution"
+    ],
+    "title": "LightcurveResponse"
+   },
+   "PngScale": {
+    "properties": {
+     "lo": {
+      "type": "number",
+      "title": "Lo"
+     },
+     "hi": {
+      "type": "number",
+      "title": "Hi"
+     }
+    },
+    "type": "object",
+    "required": [
+     "lo",
+     "hi"
+    ],
+    "title": "PngScale"
+   },
+   "SpectrumPoint": {
+    "properties": {
+     "lambda_um": {
+      "type": "number",
+      "title": "Lambda Um"
+     },
+     "bandwidth_um": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bandwidth Um"
+     },
+     "flux_ujy": {
+      "type": "number",
+      "title": "Flux Ujy"
+     },
+     "err_ujy": {
+      "type": "number",
+      "title": "Err Ujy"
+     },
+     "mjd": {
+      "type": "number",
+      "title": "Mjd"
+     },
+     "iso": {
+      "type": "string",
+      "title": "Iso"
+     },
+     "visit_id": {
+      "type": "string",
+      "title": "Visit Id"
+     },
+     "detector": {
+      "type": "integer",
+      "title": "Detector"
+     },
+     "exposure_id": {
+      "type": "string",
+      "title": "Exposure Id"
+     },
+     "saturated_px": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Saturated Px"
+     },
+     "bad_px": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bad Px"
+     }
+    },
+    "type": "object",
+    "required": [
+     "lambda_um",
+     "bandwidth_um",
+     "flux_ujy",
+     "err_ujy",
+     "mjd",
+     "iso",
+     "visit_id",
+     "detector",
+     "exposure_id"
+    ],
+    "title": "SpectrumPoint"
+   },
+   "SpectrumResponse": {
+    "properties": {
+     "target": {
+      "$ref": "#/components/schemas/TargetOut"
+     },
+     "aperture": {
+      "additionalProperties": {
+       "type": "number"
+      },
+      "type": "object",
+      "title": "Aperture",
+      "default": {
+       "r_px": 2.5,
+       "annulus_in_px": 5.0,
+       "annulus_out_px": 8.0
+      }
+     },
+     "points": {
+      "items": {
+       "$ref": "#/components/schemas/SpectrumPoint"
+      },
+      "type": "array",
+      "title": "Points"
+     },
+     "attribution": {
+      "type": "string",
+      "title": "Attribution"
+     }
+    },
+    "type": "object",
+    "required": [
+     "target",
+     "points",
+     "attribution"
+    ],
+    "title": "SpectrumResponse"
+   },
+   "Stretch": {
+    "properties": {
+     "lo": {
+      "type": "number",
+      "title": "Lo"
+     },
+     "hi": {
+      "type": "number",
+      "title": "Hi"
+     }
+    },
+    "type": "object",
+    "required": [
+     "lo",
+     "hi"
+    ],
+    "title": "Stretch"
+   },
+   "TargetOut": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "title": "Name",
+      "default": ""
+     },
+     "ra": {
+      "type": "number",
+      "title": "Ra"
+     },
+     "dec": {
+      "type": "number",
+      "title": "Dec"
+     },
+     "epoch": {
+      "type": "number",
+      "title": "Epoch"
+     },
+     "pmra": {
+      "type": "number",
+      "title": "Pmra",
+      "default": 0.0
+     },
+     "pmdec": {
+      "type": "number",
+      "title": "Pmdec",
+      "default": 0.0
+     },
+     "parallax": {
+      "type": "number",
+      "title": "Parallax",
+      "default": 0.0
+     },
+     "fov_deg": {
+      "type": "number",
+      "title": "Fov Deg"
+     },
+     "pixscale_arcsec": {
+      "type": "number",
+      "title": "Pixscale Arcsec",
+      "default": 6.15
+     }
+    },
+    "type": "object",
+    "required": [
+     "ra",
+     "dec",
+     "epoch",
+     "fov_deg"
+    ],
+    "title": "TargetOut"
+   },
+   "ValidationError": {
+    "properties": {
+     "loc": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "integer"
+        }
+       ]
+      },
+      "type": "array",
+      "title": "Location"
+     },
+     "msg": {
+      "type": "string",
+      "title": "Message"
+     },
+     "type": {
+      "type": "string",
+      "title": "Error Type"
+     },
+     "input": {
+      "title": "Input"
+     },
+     "ctx": {
+      "type": "object",
+      "title": "Context"
+     }
+    },
+    "type": "object",
+    "required": [
+     "loc",
+     "msg",
+     "type"
+    ],
+    "title": "ValidationError"
+   },
+   "VerdictOut": {
+    "properties": {
+     "verdict": {
+      "type": "string",
+      "enum": [
+       "ok",
+       "warn",
+       "block"
+      ],
+      "title": "Verdict"
+     },
+     "delta_channels": {
+      "type": "number",
+      "title": "Delta Channels"
+     },
+     "delta_lambda_um": {
+      "type": "number",
+      "title": "Delta Lambda Um"
+     },
+     "expected_residual": {
+      "type": "number",
+      "title": "Expected Residual",
+      "description": "Residuo fraccional esperado del flujo estelar: 0.04 + 0.014·|Δcanal|"
+     },
+     "message_key": {
+      "type": "string",
+      "title": "Message Key"
+     }
+    },
+    "type": "object",
+    "required": [
+     "verdict",
+     "delta_channels",
+     "delta_lambda_um",
+     "expected_residual",
+     "message_key"
+    ],
+    "title": "VerdictOut"
+   },
+   "VisitOut": {
+    "properties": {
+     "flux_ujy": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Flux Ujy"
+     },
+     "flux_err_ujy": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Flux Err Ujy"
+     },
+     "measured_xy": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Measured Xy"
+     },
+     "saturated_px_aperture": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Saturated Px Aperture"
+     },
+     "bad_px_aperture": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bad Px Aperture"
+     },
+     "recentered": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Recentered"
+     },
+     "omega_arcsec2": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Omega Arcsec2"
+     },
+     "snr": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Snr"
+     },
+     "png16": {
+      "type": "string",
+      "title": "Png16"
+     },
+     "mask_png": {
+      "type": "string",
+      "title": "Mask Png"
+     },
+     "png_scale": {
+      "$ref": "#/components/schemas/PngScale"
+     },
+     "key": {
+      "type": "string",
+      "title": "Key"
+     },
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "detector": {
+      "type": "integer",
+      "title": "Detector"
+     },
+     "mjd_mean": {
+      "type": "number",
+      "title": "Mjd Mean"
+     },
+     "iso": {
+      "type": "string",
+      "title": "Iso"
+     },
+     "mjd_min": {
+      "type": "number",
+      "title": "Mjd Min"
+     },
+     "mjd_max": {
+      "type": "number",
+      "title": "Mjd Max"
+     },
+     "n_exp": {
+      "type": "integer",
+      "title": "N Exp"
+     },
+     "lambda_um": {
+      "$ref": "#/components/schemas/LambdaRange"
+     },
+     "bandwidth_um": {
+      "type": "number",
+      "title": "Bandwidth Um"
+     },
+     "releases": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Releases"
+     },
+     "doi": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "type": "array",
+      "title": "Doi"
+     },
+     "l2b_versions": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "L2B Versions"
+     },
+     "pipeline_versions": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Pipeline Versions"
+     },
+     "median_depth": {
+      "type": "number",
+      "title": "Median Depth"
+     },
+     "saturated_px": {
+      "type": "integer",
+      "title": "Saturated Px"
+     },
+     "stretch": {
+      "$ref": "#/components/schemas/Stretch"
+     },
+     "expected_xy": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "title": "Expected Xy"
+     },
+     "exposures": {
+      "items": {
+       "$ref": "#/components/schemas/ExposureOut"
+      },
+      "type": "array",
+      "title": "Exposures"
+     }
+    },
+    "type": "object",
+    "required": [
+     "png16",
+     "mask_png",
+     "png_scale",
+     "key",
+     "id",
+     "detector",
+     "mjd_mean",
+     "iso",
+     "mjd_min",
+     "mjd_max",
+     "n_exp",
+     "lambda_um",
+     "bandwidth_um",
+     "releases",
+     "doi",
+     "l2b_versions",
+     "pipeline_versions",
+     "median_depth",
+     "saturated_px",
+     "stretch",
+     "expected_xy",
+     "exposures"
+    ],
+    "title": "VisitOut"
+   },
+   "VisitsResponse": {
+    "properties": {
+     "target": {
+      "$ref": "#/components/schemas/TargetOut"
+     },
+     "grid": {
+      "$ref": "#/components/schemas/GridOut"
+     },
+     "visits": {
+      "items": {
+       "$ref": "#/components/schemas/VisitOut"
+      },
+      "type": "array",
+      "title": "Visits"
+     },
+     "detectors_available": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Detectors Available"
+     },
+     "releases_present": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Releases Present"
+     },
+     "n_exposures": {
+      "type": "integer",
+      "title": "N Exposures"
+     },
+     "failures": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Failures"
+     },
+     "field_key": {
+      "type": "string",
+      "title": "Field Key"
+     },
+     "mode": {
+      "type": "string",
+      "enum": [
+       "live",
+       "showcase"
+      ],
+      "title": "Mode"
+     },
+     "generated_at": {
+      "type": "string",
+      "title": "Generated At"
+     },
+     "attribution": {
+      "type": "string",
+      "title": "Attribution"
+     }
+    },
+    "type": "object",
+    "required": [
+     "target",
+     "grid",
+     "visits",
+     "detectors_available",
+     "releases_present",
+     "n_exposures",
+     "failures",
+     "field_key",
+     "mode",
+     "generated_at",
+     "attribution"
+    ],
+    "title": "VisitsResponse"
+   }
+  }
+ }
+}
