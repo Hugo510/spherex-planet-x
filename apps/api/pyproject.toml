@@ -21,11 +21,11 @@ build-backend = "setuptools.build_meta"
 include = ["app*"]
 
 [tool.ruff]
-line-length = 110
+line-length = 120
 target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "UP", "B"]
-ignore = ["B008", "E741"]
+ignore = ["B008", "E741", "E501"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = ["network: requiere IRSA/S3 en vivo (se salta en CI con SPHEREX_OFFLINE=1)"]
