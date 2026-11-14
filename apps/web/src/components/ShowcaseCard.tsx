@@ -9,24 +9,23 @@ export function ShowcaseCard({ f, locale }: { f: ShowcaseSummary; locale: "es" |
   return (
     <Link
       href={`/view?field=${f.id}&det=${f.default_det}`}
-      className="glass group flex gap-4 p-3 transition-colors hover:border-[var(--line-strong)] hover:bg-[var(--surface-2)]"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-[var(--line)] bg-black transition-colors hover:border-[var(--line-strong)]"
     >
-      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-black" aria-hidden="true">
+      <div className="relative aspect-[16/9] w-full overflow-hidden bg-black" aria-hidden="true">
         {f.thumbnail && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={f.thumbnail} alt="" width={96} height={96} className="h-24 w-24 object-cover [image-rendering:pixelated] opacity-90 transition-transform duration-300 group-hover:scale-105" />
+          <img src={f.thumbnail} alt="" loading="lazy" className="thumb h-full w-full object-cover [image-rendering:pixelated] transition-transform duration-500 group-hover:scale-105" />
         )}
-        <span className="absolute bottom-1 left-1 rounded bg-black/70 px-1 font-[family-name:var(--font-mono)] text-[9px] text-[var(--muted)]">D{f.default_det}</span>
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black to-transparent" />
+        <span className="chip absolute left-3 top-3 bg-black/60">{KIND[f.kind][locale]}</span>
+        <span className="mono absolute right-3 top-3 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-[var(--muted)]">D{f.default_det} · {f.releases.join("+").toUpperCase()}</span>
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <span className="chip">{KIND[f.kind][locale]}</span>
-          <span className="kicker">{f.releases.join("+")}</span>
-        </div>
-        <div className="display mt-1.5 text-[17px] font-semibold leading-tight">{f.title[locale]}</div>
-        <div className="mt-1 line-clamp-2 text-xs leading-relaxed text-[var(--muted)]">{f.blurb[locale]}</div>
-        <div className="mono mt-2 text-[10.5px] tracking-wider text-[var(--muted)]">
-          {f.n_visits} {locale === "es" ? "VISITAS" : "VISITS"} · {f.n_exposures} EXP · D{f.detectors.join("–D")}
+      <div className="p-4">
+        <div className="font-[family-name:var(--font-serif)] text-2xl leading-none">{f.title[locale]}</div>
+        <div className="mt-2 line-clamp-2 text-xs leading-relaxed text-[var(--muted)]">{f.blurb[locale]}</div>
+        <div className="mono mt-3 flex items-center justify-between text-[10.5px] tracking-wider text-[var(--muted)]">
+          <span>{f.n_visits} {locale === "es" ? "VISITAS" : "VISITS"} · {f.n_exposures} EXP</span>
+          <span className="transition-transform group-hover:translate-x-1">→</span>
         </div>
       </div>
     </Link>

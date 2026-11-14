@@ -65,7 +65,8 @@ def find_exposures(ra: float, dec: float, *, releases: tuple[str, ...] | None = 
     return sorted(refs, key=lambda r: (r.mjd_start, r.detector))
 
 
-def cone(table: str, columns: str, ra: float, dec: float, radius_deg: float, *, extra_where: str = "", top: int = 200) -> list[dict]:
+def cone(table: str, columns: str, ra: float, dec: float, radius_deg: float, *, extra_where: str = "", top: int = 3000) -> list[dict]:
+    """Cono ADQL. `top` alto a propósito: sin ORDER BY (IRSA lo rechaza con expresiones) un tope bajo recorta fuentes cercanas."""
     adql = (
         f"SELECT TOP {top} {columns} FROM {table} "
         f"WHERE 1 = CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', {ra:.6f}, {dec:.6f}, {radius_deg:.6f})){extra_where}"

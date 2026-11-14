@@ -25,7 +25,32 @@
     "statFields": "campos",
     "statVisits": "visitas",
     "statExposures": "exposiciones",
-    "heroCaption": "coadd por visita · datos reales"
+    "heroCaption": "coadd por visita · datos reales",
+    "quick": {
+      "aria": "Arranque rápido",
+      "field": "Campo",
+      "detector": "Detector",
+      "mode": "Modo",
+      "blink": "Blink por visita",
+      "open": "Abrir visor"
+    },
+    "heroCredit": "Imagen",
+    "limitsKicker": "Lo que no se ve",
+    "limitsTitle": "Honestidad con números.",
+    "limitsText": "Paralaje, Planeta Nueve y saturación tienen cifras medidas sobre coadds reales. Lo que SPHEREx no puede ver, lo decimos antes de que lo busques.",
+    "limParallax": "Paralaje",
+    "limParallaxSub": "WISE 0855: 0.44″ a 6.15″/px, no medible",
+    "limP9": "Planeta Nueve",
+    "limP9Sub": "por debajo del límite de una visita",
+    "limDepth": "Completitud 50 %",
+    "limDepthSub": "inyección-recuperación en coadds reales",
+    "proofKicker": "pm medido · WISE 0855 D6",
+    "proofPm": "esperado {expected} px/yr (Kirkpatrick+2021)",
+    "proofResidual": "residuo al restar",
+    "proofResidualSub": "medido en 153 pares reales; 25 % a 16 canales",
+    "proofKnown": "¿qué hay aquí?",
+    "proofCatalogs": "catálogos",
+    "imagesCredit": "Imágenes: NASA/JPL-Caltech (PIA26531, PIA26352)"
   },
   "viewer": {
     "timeline": "Línea de tiempo",

@@ -202,7 +202,7 @@ export function Viewer() {
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
               <p className="kicker">{field.showcase ? t(`kind.${field.showcase.kind}` as "kind.object") : t("liveField")}</p>
-              <h1 className="display mt-1 text-2xl font-semibold leading-tight md:text-3xl">{title}</h1>
+              <h1 className="mt-1 text-3xl leading-tight md:text-4xl">{title}</h1>
             </div>
             <div className="mono flex flex-wrap gap-1.5 text-[11px] text-[var(--muted)]">
               <span className="chip">{field.target.ra.toFixed(5)}, {field.target.dec.toFixed(5)}</span>

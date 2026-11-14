@@ -18,7 +18,7 @@ export default async function StatusPage({ params }: { params: Promise<{ locale:
     <main className="mx-auto max-w-7xl px-3 pb-16 text-sm md:px-6">
       <Suspense fallback={null}><SiteHeader /></Suspense>
       <div className="mx-auto max-w-5xl">
-      <h1 className="display mt-6 text-3xl font-semibold tracking-tight">{t("title")}</h1>
+      <h1 className="mt-6 text-4xl">{t("title")}</h1>
       <dl className="glass mt-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 p-4">
         <dt className="kicker self-center">{t("releases")}</dt><dd>{releases.map((r) => r.toUpperCase()).join(", ")} ({t("releaseNote")})</dd>
         <dt className="kicker self-center">{t("fields")}</dt><dd>{idx.fields.length} · {idx.fields.reduce((a, f) => a + f.n_visits, 0)} {t("visits")} · {idx.fields.reduce((a, f) => a + f.n_exposures, 0)} {t("exposures")} · {(bytes / 1e6).toFixed(1)} MB</dd>

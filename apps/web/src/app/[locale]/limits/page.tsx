@@ -18,7 +18,7 @@ export default async function LimitsPage({ params }: { params: Promise<{ locale:
       <Suspense fallback={null}><SiteHeader /></Suspense>
       <div className="mx-auto max-w-5xl">
       <p className="kicker mt-6">{es ? "método y límites medidos" : "measured method and limits"}</p>
-      <h1 className="display mt-2 text-4xl font-semibold tracking-tight">{t("title")}</h1>
+      <h1 className="mt-2 text-5xl">{t("title")}</h1>
       <p className="mt-3 max-w-3xl leading-relaxed text-[var(--muted)]">{t("intro")}</p>
       {!L && <p className="mt-6 text-[var(--warn)]">{t("missing")}</p>}
 

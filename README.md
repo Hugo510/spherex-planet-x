@@ -100,6 +100,9 @@ Sin API, el front muestra "modo en vivo no disponible" y sirve solo el showcase.
 - Gaia DR3 (ESA/Gaia/DPAC); CatWISE2020 (Marocco et al. 2021); AllWISE (Cutri et al. 2013); SIMBAD y Aladin Lite (CDS,
   Estrasburgo; Aladin Lite LGPL-3.0); JPL Solar System Dynamics (Horizons, sb_ident).
 - Software: astropy, reproject, photutils, scipy, numpy, pyvo, FastAPI, Next.js, uPlot, fast-png, Pillow, Playwright, Modal.
+- Imágenes de la interfaz: NASA/JPL-Caltech, biblioteca de imágenes de NASA (dominio público): PIA26531 «SPHEREx in Orbit (Artist's Concept)»
+  y PIA26352 «SPHEREx's Dust Cloud Reveal»; recortadas y convertidas a WebP en `apps/web/public/img/`. Tipografías Instrument Serif,
+  Space Grotesk, Inter y JetBrains Mono (Google Fonts, OFL) autoalojadas por `next/font`.
 - Funciones reutilizadas de la PoC previa (`poc/`): consulta TAP (`01_find_epochs.py`), cutout por Range (`04_s3_range.py`),
   λ por píxel, coadd 1/VARIANCE y fotometría (`02_fetch_cutouts.py`); marcadas con "Origen: poc/..." en el código.
 

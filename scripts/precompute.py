@@ -258,7 +258,24 @@ def main() -> int:
     ap.add_argument("ids", nargs="*")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--skip-known", action="store_true")
+    ap.add_argument("--known-only", action="store_true", help="solo regenerar known.json de los campos ya precomputados")
     args = ap.parse_args()
+    if args.known_only:
+        for d in sorted(OUT.iterdir()):
+            idx = d / "index.json"
+            if not idx.exists():
+                continue
+            data = json.loads(idx.read_text())
+            if not data["visits"]:
+                continue
+            last = max(data["visits"], key=lambda v: v["mjd_mean"])
+            r_field = data["target"]["fov_deg"] * 3600 * 0.71 + 10
+            known = known_uc.what_is_here(data["target"]["ra"], data["target"]["dec"], r_field, last["mjd_mean"])
+            if data.get("showcase", {}).get("asteroid"):
+                known["asteroid_hint"] = data["showcase"]["asteroid"]
+            (d / "known.json").write_text(json.dumps(known))
+            print(f"  {d.name}: known {known['verdict']}, {known['n_sources']} fuentes, errores {list(known['errors'])}")
+        return 0
     fields = FIELDS + asteroid_fields()
     if args.list:
         for f in fields:

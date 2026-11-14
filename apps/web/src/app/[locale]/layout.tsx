@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Instrument_Serif, Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -11,6 +11,7 @@ import "../globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-grotesk", display: "swap", weight: ["400", "500", "600", "700"] });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap", weight: ["400", "500"] });
+const serif = Instrument_Serif({ subsets: ["latin"], variable: "--font-serif-display", display: "swap", weight: "400", style: ["normal", "italic"] });
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://spherex-honest.vercel.app";
 
@@ -40,7 +41,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   return (
-    <html lang={locale} className={`${inter.variable} ${grotesk.variable} ${mono.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${grotesk.variable} ${mono.variable} ${serif.variable}`}>
       <body className="min-h-screen antialiased">
         <div className="starfield" aria-hidden="true" />
         <NextIntlClientProvider>

@@ -139,3 +139,18 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   (6) en «todos los detectores» el stretch es el del detector de la visita actual (y el recorte manual se calcula por detector).
 - **2026-11-14 13:20 UTC** — Lighthouse accesibilidad 96 (quedan avisos de tamaño de chips de la escalera de λ); vitest 12/12,
   tsc y eslint limpios. GIF de la demo regrabado con la nueva interfaz.
+
+## Rediseño inmersivo (noche del 14 nov)
+
+- **2026-11-14 14:10 UTC** — Paleta a negro puro con contrastes mínimos (blanco, gris, un acento cian reservado a datos), titulares
+  en Instrument Serif (itálica para la segunda línea), retícula de líneas verticales en el héroe, numeración «01 ——» por sección.
+  Imágenes reales de NASA/JPL-Caltech (dominio público, biblioteca images.nasa.gov): PIA26531 (nave SPHEREx en órbita) como héroe
+  con fundido a negro, y PIA26352 (nube de polvo captada por SPHEREx) en la banda «lo que no se ve». Recortadas a WebP de 37 y 106 KB.
+- **2026-11-14 14:15 UTC** — Barra de arranque rápido en la landing (campo · detector · modo → abrir visor) que solo construye la URL
+  del visor; sin lógica nueva ni llamadas. Animación de deriva de 10 px en el héroe, desactivada con `prefers-reduced-motion`.
+- **2026-11-14 14:30 UTC** — Bug encontrado al revisar el panel «¿qué hay aquí?» del showcase: el cono ADQL tenía `TOP 200` sin
+  ORDER BY (IRSA rechaza ordenar por expresión) y en campos densos recortaba fuentes cercanas (faltaban la estrella Gaia G = 16.3
+  y CatWISE de WISE 0855). Tope subido a 3000 y `known.json` regenerado en los 11 campos con `precompute.py --known-only`
+  (0 errores de catálogo). Showcase total 33 MB.
+- **2026-11-14 14:35 UTC** — Lighthouse landing: accesibilidad 100, buenas prácticas 96, rendimiento 73 en servidor sin
+  compresión. Títulos de página en serif; GIF y capturas de `docs/demo` regrabados.

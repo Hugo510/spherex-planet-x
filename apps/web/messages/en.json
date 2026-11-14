@@ -25,7 +25,32 @@
     "statFields": "fields",
     "statVisits": "visits",
     "statExposures": "exposures",
-    "heroCaption": "visit coadd · real data"
+    "heroCaption": "visit coadd · real data",
+    "quick": {
+      "aria": "Quick start",
+      "field": "Field",
+      "detector": "Detector",
+      "mode": "Mode",
+      "blink": "Blink by visit",
+      "open": "Open viewer"
+    },
+    "heroCredit": "Image",
+    "limitsKicker": "What cannot be seen",
+    "limitsTitle": "Honesty, with numbers.",
+    "limitsText": "Parallax, Planet Nine and saturation have figures measured on real coadds. What SPHEREx cannot see, we say before you go looking.",
+    "limParallax": "Parallax",
+    "limParallaxSub": "WISE 0855: 0.44″ at 6.15″/px, not measurable",
+    "limP9": "Planet Nine",
+    "limP9Sub": "below the single-visit limit",
+    "limDepth": "50 % completeness",
+    "limDepthSub": "injection–recovery on real coadds",
+    "proofKicker": "measured pm · WISE 0855 D6",
+    "proofPm": "expected {expected} px/yr (Kirkpatrick+2021)",
+    "proofResidual": "subtraction residual",
+    "proofResidualSub": "measured on 153 real pairs; 25 % at 16 channels",
+    "proofKnown": "what is here?",
+    "proofCatalogs": "catalogues",
+    "imagesCredit": "Images: NASA/JPL-Caltech (PIA26531, PIA26352)"
   },
   "viewer": {
     "timeline": "Timeline",
