@@ -138,10 +138,12 @@ export function Viewer() {
     return fa && fb && fa.width === fb.width ? diffFrames(fa, fb) : null;
   }, [q.mode, verdict, loaded, aKey, bKey]);
   const diffSigma = diff ? robustSigma(diff) : 1;
+  // traza: coadds de todas las visitas del detector + exposiciones de la visita actual (asteroides se mueven dentro de la visita)
   const trail = useMemo(() => {
     if (q.mode !== "trail") return null;
-    return maxStack(visits.map((v) => loaded.get(v.key)).filter((f): f is Frame => !!f));
-  }, [q.mode, visits, loaded]);
+    const keys = [...visits.map((v) => v.key), ...(visit?.exposures.map((e) => e.key) ?? [])];
+    return maxStack(keys.map((k) => loaded.get(k)).filter((f): f is Frame => !!f));
+  }, [q.mode, visits, visit, loaded]);
 
   const params: StretchParams = q.mode === "diff"
     ? { a: 0, lo: -4 * diffSigma, hi: 4 * diffSigma, cmap: q.cmap, invert: q.invert }
@@ -219,6 +221,7 @@ export function Viewer() {
   const showFrame = q.mode === "diff" ? diff : q.mode === "trail" ? trail : showRef && ref ? loaded.get(ref.key) ?? null : current?.frame ?? null;
   const title = field.showcase?.title[locale] ?? field.target.name;
   const abVisits = visits.filter((v) => det === "all" || v.detector === visit.detector);
+  const abWithExposures = abExposures || (A ? "obsid" in A.png : false) || (B ? "obsid" in B.png : false);
   return (
     <div className="flex flex-col gap-3 lg:flex-row lg:items-start">
       <div className="flex min-w-0 flex-1 flex-col gap-3">
@@ -258,7 +261,7 @@ export function Viewer() {
             {q.mode === "trail" && (
               <div className="pointer-events-none absolute left-0 top-0 max-w-full p-2 text-xs leading-tight" aria-live="polite">
                 <div className="mono inline-block rounded-md bg-black/70 px-2 py-1.5">
-                  <div className="text-[13px] font-semibold">{t("trailTitle", { n: visits.length })}</div>
+                  <div className="text-[13px] font-semibold">{t("trailTitle", { n: visits.length + (visit?.exposures.length ?? 0) })}</div>
                   <div className="text-[var(--warn)]">{t("trailNote")}</div>
                 </div>
               </div>
@@ -286,11 +289,11 @@ export function Viewer() {
             {q.mode === "diff" && (
               <div className="glass flex flex-wrap items-center gap-3 px-3 py-2.5 text-sm">
                 <span className="kicker">A − B</span>
-                <label className="flex items-center gap-1.5"><span className="mono text-xs">A</span><select className="sel max-w-[16rem]" value={aKey} onChange={(e) => setQ({ a: e.target.value })} aria-label="A">{keyOptions(abVisits, abExposures)}</select></label>
-                <label className="flex items-center gap-1.5"><span className="mono text-xs">B</span><select className="sel max-w-[16rem]" value={bKey} onChange={(e) => setQ({ b: e.target.value })} aria-label="B">{keyOptions(abVisits, abExposures)}</select></label>
+                <label className="flex items-center gap-1.5"><span className="mono text-xs">A</span><select className="sel max-w-[16rem]" value={aKey} onChange={(e) => setQ({ a: e.target.value })} aria-label="A">{keyOptions(abVisits, abWithExposures)}</select></label>
+                <label className="flex items-center gap-1.5"><span className="mono text-xs">B</span><select className="sel max-w-[16rem]" value={bKey} onChange={(e) => setQ({ b: e.target.value })} aria-label="B">{keyOptions(abVisits, abWithExposures)}</select></label>
                 <button className="btn btn-icon text-xs" onClick={() => setQ({ a: bKey, b: aKey })}>A ⇄ B</button>
                 <button className="btn text-xs" onClick={sameLambda} title={t("sameLambdaHint")}>λ= {t("sameLambda")}</button>
-                <label className="flex items-center gap-1.5 text-xs text-[var(--muted)]"><input type="checkbox" checked={abExposures} onChange={(e) => setAbExposures(e.target.checked)} />{t("abExposures")}</label>
+                <label className="flex items-center gap-1.5 text-xs text-[var(--muted)]"><input type="checkbox" checked={abWithExposures} onChange={(e) => setAbExposures(e.target.checked)} />{t("abExposures")}</label>
                 <span className="text-xs text-[var(--muted)]">{abVisits.length} {t("visits")}{det !== "all" ? ` · D${visit.detector}` : ""}</span>
               </div>
             )}

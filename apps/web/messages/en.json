@@ -117,7 +117,7 @@
     },
     "trail": "Trail",
     "trailHint": "Pixel-wise maximum of all visits of the detector",
-    "trailTitle": "Trail · max of {n} visits",
+    "trailTitle": "Trail · max of {n} frames (visits + current ladder)",
     "trailNote": "Visual aid: mixes different mean λ; not photometry.",
     "sameLambda": "same λ",
     "sameLambdaHint": "Pick as B the exposure from another visit with the channel closest to A"

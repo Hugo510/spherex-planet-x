@@ -18,7 +18,7 @@ export function SidePanel({ field, current, pick, panel, setPanel, onGo }: {
   const tabs: PanelId[] = ["changes", "known", "spectrum", "aladin", "class"];
   return (
     <aside className="glass w-full p-2 lg:w-[400px] lg:shrink-0">
-      <div role="tablist" className="flex gap-1 overflow-x-auto">
+      <div role="tablist" className="flex flex-wrap gap-1">
         {tabs.map((p) => (
           <button key={p} role="tab" aria-selected={panel === p} aria-controls={`panel-${p}`} className="tab whitespace-nowrap" onClick={() => setPanel(panel === p ? "none" : p)}>
             {t(`panel.${p}` as "panel.known")}

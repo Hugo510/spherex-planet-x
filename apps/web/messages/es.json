@@ -117,7 +117,7 @@
     },
     "trail": "Traza",
     "trailHint": "Máximo píxel a píxel de todas las visitas del detector",
-    "trailTitle": "Traza · máximo de {n} visitas",
+    "trailTitle": "Traza · máximo de {n} cuadros (visitas + escalera actual)",
     "trailNote": "Ayuda visual: mezcla λ medias distintas; no es fotometría.",
     "sameLambda": "misma λ",
     "sameLambdaHint": "Elige como B la exposición de otra visita con el canal más cercano al de A"

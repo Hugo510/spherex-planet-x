@@ -27,10 +27,16 @@
 | **Espectro y curva de luz** | Fotometría de apertura por exposición y por visita en µJy con barras de error (uPlot) | panel lateral |
 | **Limits & Method** | Residuo por Δλ, pm medido vs Gaia, inyección-recuperación en coadds reales, lo que no se ve, Field Guide de artefactos reales | `/limits` |
 | **Aula** | Explicación por objeto en ES/EN | panel lateral |
+| **Qué mirar primero** | Cambios detectados solo entre exposiciones del mismo canal (|Δ| = 0, veredicto ok por construcción), S/N ≥ 6, cruzados con los catálogos; cada uno marca si se repite o si es una sola exposición (posible artefacto) | panel lateral |
+| **Misma λ** | Un clic elige como B la exposición de otra visita con el canal más cercano al de A | modo A − B |
+| **Traza** | Máximo píxel a píxel de visitas y escalera actual: Ceres aparece en sus dos posiciones | modo |
+| **Curva de luz a λ fija** | Exposiciones del mismo canal (±1) a lo largo del tiempo: la curva honesta frente a la «por visita» | panel espectro |
+| **Control con estrellas de campo** | El mismo ajuste de pm aplicado a estrellas Gaia del campo: su |pm| residual es el piso sistemático | `/limits` |
+| **Completitud por velocidad** | Movers sintéticos recuperados a ciegas en los coadds reales de WISE 0855 D5 | `/limits` |
 
 Objetos del showcase (precomputados, < 2 s): WISE 0855−0714, ε Indi Ba/Bb, estrella de Barnard, RW Aur, R Dra,
-asteroides (1) Ceres, (2) Palas y (7) Iris en cuadratura, dos posiciones del campo profundo del polo norte eclíptico
-y un campo aleatorio.
+asteroides (1) Ceres, (2) Palas y (7) Iris en cuadratura, dos posiciones del campo profundo del polo norte eclíptico,
+una variable roja no saturada del campo profundo (Gaia DR3 2257667121267351296, 48 de sus ~150 visitas) y un campo aleatorio.
 
 ## Resultados que respaldan la tesis (datos reales, 14 nov 2026)
 
@@ -48,7 +54,7 @@ apps/api        Python 3.12 + FastAPI, Clean Architecture: domain/ (modelos, fla
                 reproyección, serialización, diff, known) · adapters/ (irsa_tap, s3_range, spherex_fits, allwise_ref, simbad, jpl,
                 frame_store, png16) · api/ (rutas + esquemas Pydantic). modal_app.py para el modo en vivo.
 packages/shared Tipos TS generados del OpenAPI (openapi-typescript) y constantes.
-scripts/        precompute.py (showcase) · find_asteroid_fields.py · limits_analysis.py · og_image.py · record_demo.py
+scripts/        precompute.py (showcase) · find_asteroid_fields.py · find_changes.py (cambios a λ igual) · limits_analysis.py · og_image.py · record_demo.py
 docs/           DECISIONES.md · SUBMISSION.md · DEMO.md · DEPLOY.md · investigación previa 01–15 (8–9 nov)
 poc/            PoC de acceso a datos previa al evento (ver "Hackathon Journey")
 ```
