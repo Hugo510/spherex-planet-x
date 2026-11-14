@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:36:39+00:00",
+ "generated_at": "2026-11-14T09:40:17+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -301,18 +301,23 @@
     "en": "Bright asteroid (V \u2248 9.1) observed by SPHEREx 83\u00b0 from the Sun. Within a visit it moves several pixels between exposures: the only thing that visibly \u2018moves\u2019 in SPHEREx."
    },
    "default_det": 1,
-   "ra": 56.318250759992786,
-   "dec": 2.0972459039977,
-   "epoch": 2026.0,
-   "fov_deg": 0.15,
-   "n_visits": 0,
-   "n_exposures": 0,
-   "detectors": [],
-   "releases": [],
+   "ra": 13.866536426200078,
+   "dec": -5.754038897519985,
+   "epoch": 2025.4793,
+   "fov_deg": 0.2,
+   "n_visits": 2,
+   "n_exposures": 8,
+   "detectors": [
+    1,
+    4
+   ],
+   "releases": [
+    "dr1"
+   ],
    "failures": 0,
-   "bytes": 14765,
-   "seconds": 15.9,
-   "thumbnail": null,
+   "bytes": 370467,
+   "seconds": 129.3,
+   "thumbnail": "/showcase/asteroid-1/visits/04978b8ab2ddbbe0_D1_2025-06-24.png",
    "asteroid": {
     "asteroid": "1",
     "ra": 13.90957,
