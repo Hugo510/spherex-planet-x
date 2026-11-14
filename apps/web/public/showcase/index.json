@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:48:56+00:00",
+ "generated_at": "2026-11-14T15:52:53+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -251,6 +251,42 @@
    "bytes": 4687360,
    "seconds": 134.4,
    "thumbnail": "/showcase/nep-deep-2/visits/fb050f2988f162d6_D3_2025-04-26.png",
+   "asteroid": null
+  },
+  {
+   "id": "nep-variable",
+   "kind": "deepfield",
+   "title": {
+    "es": "Variable roja en el campo profundo",
+    "en": "Red variable in the deep field"
+   },
+   "blurb": {
+    "es": "Gaia DR3 2257667121267351296: variable roja (BP\u2212RP = 2.7, G = 14.1, K = 10.4) a 1.4\u00b0 del polo norte ecl\u00edptico, elegida por no saturar. 143\u2013157 visitas por detector en 17 meses: se muestran 48. Su curva de luz honesta es por canal fijo, no por visita.",
+    "en": "Gaia DR3 2257667121267351296: red variable (BP\u2212RP = 2.7, G = 14.1, K = 10.4) 1.4\u00b0 from the North Ecliptic Pole, chosen because it does not saturate. 143\u2013157 visits per detector in 17 months: 48 are shown. Its honest light curve is at fixed channel, not per visit."
+   },
+   "default_det": 2,
+   "ra": 273.426319873355,
+   "dec": 66.48523307254443,
+   "epoch": 2026.0063,
+   "fov_deg": 0.1,
+   "n_visits": 362,
+   "n_exposures": 576,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 5350660,
+   "seconds": 422.5,
+   "thumbnail": "/showcase/nep-variable/visits/6b90e8857e7df830_D2_2025-04-25.png",
    "asteroid": null
   },
   {
