@@ -6,7 +6,7 @@
 2. Root directory: `/` (el `vercel.json` ya fija `pnpm --filter web build` y `apps/web/out`). Framework: Next.js. Node 22.
 3. Variables: `NEXT_PUBLIC_API_URL` (vacía = solo showcase; URL de Modal para el modo en vivo), `NEXT_PUBLIC_SITE_URL` (para OG).
 4. Production branch: la rama con el producto (`main` tras el merge). Deploy.
-5. Comprobar en ventana privada: `/es/view/?field=wise0855&det=5` carga en < 2 s; `/es/limits/`; `/es/status/`.
+5. Producción (14 nov 2026): `https://spherex-honest.vercel.app` (proyecto `spherex-honest`, equipo Hugo510). Comprobar en ventana privada: `/es/view/?field=wise0855&det=5` carga en < 2 s; `/es/limits/`; `/es/status/`.
 
 Alternativa sin cuenta: `pnpm build` y publicar `apps/web/out` en cualquier hosting estático (GitHub Pages, Cloudflare Pages).
 
@@ -16,7 +16,9 @@ Alternativa sin cuenta: `pnpm build` y publicar `apps/web/out` en cualquier host
 pip install modal && modal token new          # abre el navegador; guarda ~/.modal.toml
 cd apps/api && modal deploy modal_app.py      # imagen con astropy/reproject/photutils; Volume "spherex-cache" en /cache
 ```
-La URL impresa (`https://<workspace>--spherex-api-fastapi-app.modal.run`) va en `NEXT_PUBLIC_API_URL`.
+La URL impresa va en `NEXT_PUBLIC_API_URL`. Producción (14 nov 2026): `https://hugo510--spherex-api-fastapi-app.us-east.modal.run`.
+Detrás de un proxy corporativo instala `modal[api-proxy-support]`. Modal corta cada petición HTTP a los 150 s: **no uses `?wait=true`**
+contra Modal (el front sondea el 202 cada 2 s y la construcción continúa en el contenedor).
 Prueba: `curl "$URL/api/health"` y `curl "$URL/api/visits?name=wise0855&det=5"`: la primera respuesta es **202 con progreso**
 (`{"status":"building","stage":"cutouts","done":12,"total":48}`); repite la llamada hasta recibir 200 (o usa `&wait=true`).
 Recomendado en Modal: `min_containers=1` en `modal_app.py` para evitar el arranque en frío durante la evaluación.

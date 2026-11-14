@@ -5,6 +5,9 @@
     → URL pública https://<workspace>--spherex-api-fastapi-app.modal.run ; ponerla en NEXT_PUBLIC_API_URL del front.
 
 Cache (cutouts, mapas de ángulo sólido, cuadros derivados) en un modal.Volume montado en /cache.
+
+Modal corta las peticiones HTTP a los 150 s: no uses `?wait=true` tras Modal (el front sondea el 202 cada 2 s;
+la construcción sigue en segundo plano en el contenedor).
 """
 
 import modal
@@ -44,7 +47,7 @@ def fastapi_app():
         response = await call_next(request)
         if request.url.path.startswith("/api/") and request.url.path != "/api/health":
             try:
-                volume.commit()
+                await volume.commit.aio()
             except Exception:  # noqa: BLE001
                 pass
         return response

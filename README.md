@@ -6,6 +6,8 @@
 
 *Versión en español: [README.es.md](README.es.md).*
 
+**Live:** [https://spherex-honest.vercel.app](https://spherex-honest.vercel.app) · API: [https://hugo510--spherex-api-fastapi-app.us-east.modal.run/api/health](https://hugo510--spherex-api-fastapi-app.us-east.modal.run/api/health) · [Demo video](docs/demo/demo.mp4)
+
 A public, bilingual viewer for NASA's **SPHEREx** all-sky spectral images, built for the Space Apps 2026 challenge
 *Planet X and SPHEREx*. SPHEREx photographs the whole sky in 102 infrared colours, but every pixel sees a different
 wavelength, so a naive "before and after" lies. This viewer makes the comparison honest:

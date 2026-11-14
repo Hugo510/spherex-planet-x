@@ -2,6 +2,8 @@
 
 *English version: [README.md](README.md).*
 
+**En vivo:** [https://spherex-honest.vercel.app](https://spherex-honest.vercel.app) · API: [https://hugo510--spherex-api-fastapi-app.us-east.modal.run/api/health](https://hugo510--spherex-api-fastapi-app.us-east.modal.run/api/health) · [Video demo](docs/demo/demo.mp4)
+
 **NASA Space Apps Challenge 2026 · reto "Planet X and SPHEREx" (Advanced) · construido el 14–15 de noviembre de 2026**
 
 > SPHEREx fotografía todo el cielo en 102 colores infrarrojos, pero cada píxel ve un color distinto: un simple

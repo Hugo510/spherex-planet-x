@@ -10,6 +10,14 @@ Paste into the project page at spaceappschallenge.org. Challenge: **Planet X and
 
 SPHEREx images the entire sky in 102 infrared colours, but every pixel of every exposure sees a different wavelength. A naive "before and after" blink therefore shows colour, not change. The Honest SPHEREx Comparator is a public web viewer, built on real SPHEREx Quick Release 2/3 and Data Release 1 images from NASA/IPAC IRSA, that makes the comparison honest: every frame is printed with its real λ, detector, date, release and pipeline version; exposures taken less than a day apart are collapsed into a variance‑weighted "visit" coadd with the zodiacal model subtracted; any A − B subtraction first passes a spectral verdict (ok / warn / block) based on a residual we measured on real data (4 % + 1.4 % per spectral channel); saturation is painted and counted, never hidden; and every point can be cross‑matched with Gaia DR3, CatWISE2020, AllWISE, SIMBAD and the known asteroids (JPL, from SPHEREx's own orbit). A 2010 AllWISE frame, reprojected onto the same pixel grid, shows 15 years of proper motion. A "Limits & Method" page states with numbers what cannot be seen: parallax (0.07 px), Planet Nine (3–5 mag below our 50 % completeness, measured by injecting synthetic sources into real coadds) and saturation. Bilingual (ES/EN), embeddable, open source (MIT).
 
+## Link to Project
+
+https://spherex-honest.vercel.app
+
+## Link to Project Demo
+
+Upload `docs/demo/demo.mp4` to YouTube (unlisted is fine) and paste that URL here. Description to paste with it: "30-second demo of The Honest SPHEREx Comparator. Voice-over is AI-generated speech (ElevenLabs) from a script written by the team; all imagery is real SPHEREx data recorded from the viewer."
+
 ## Project Details (Detailed Description)
 
 **What it does.** Type coordinates (or pick one of 11 precomputed fields: WISE 0855, ε Indi Ba/Bb, Barnard's Star, RW Aur, R Dra, three bright asteroids, two North Ecliptic Pole deep‑field positions, a non‑saturated red variable in the deep field with ~150 visits per detector, and a random field) and the viewer builds a timeline of SPHEREx *visits*. Each visit is a 1/VARIANCE‑weighted coadd of the exposures taken within one day; inside a visit, the exposures form a "λ ladder" (each one is one bandwidth step along the linear variable filter) that you can walk with ↑/↓. The frame label always prints λ (min–max–mean for coadds, exact value for exposures), detector, UTC date, release (QR2/QR3/DR1 with DOI), l2b version and pipeline version. Playback (space, ← →), speed, asinh stretch with per‑detector shared percentiles, cividis/gray, inversion and reduced‑motion support are all in the URL, so any view is a permalink.

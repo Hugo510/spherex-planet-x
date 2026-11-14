@@ -216,3 +216,10 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   metadatos del contenedor. `narration.py` y `make_video.py` lo aplican al regenerar. En el formulario se marcan
   código, texto y audio (y video solo por la voz); no imágenes ni datos. `docs/SUBMISSION.md` trae las tablas de
   enlaces para «NASA Data» y «Other Data».
+
+- **2026-11-14 23:40 UTC** — Despliegue. API en Modal: `https://hugo510--spherex-api-fastapi-app.us-east.modal.run`
+  (`min_containers=1`, Volume `spherex-cache`); sitio en Vercel: `https://spherex-honest.vercel.app` (proyecto vinculado
+  al repo, rama de producción `main`, `NEXT_PUBLIC_API_URL` y `NEXT_PUBLIC_SITE_URL` definidas). Hallazgos: Modal corta
+  las peticiones a los 150 s, por lo que `?wait=true` no debe usarse tras Modal (el front sondea el 202); el `commit`
+  del Volume pasa a `await volume.commit.aio()`. Durante la prueba IRSA TAP no respondió (timeouts de 90 s también desde
+  el entorno de build): el modo en vivo devuelve 202/503 con reintento, el showcase no depende de IRSA.
