@@ -93,7 +93,8 @@ def asteroid_fields() -> list[dict]:
         out.append({
             "id": name, "kind": "asteroid",
             "target": Target(rec["ra"], rec["dec"], rec["epoch"], pmra, pmdec, 0, f"({rec['asteroid']}) {rec['epoch']:.3f}"),
-            "fov": 0.15, "max_per_visit": 12, "mjd_range": (rec["mjd"] - 0.5, rec["mjd"] + 1.5),
+            # malla fija en el cielo: el asteroide (~0.2°/día) debe quedar dentro de 0.2° → ventana de 0.6 d desde la primera exposición
+            "fov": 0.2, "max_per_visit": 12, "mjd_range": (rec["mjd_min"] - 0.01, rec["mjd_min"] + 0.6), "query_epoch": rec["epoch"],
             "title": {"es": f"Asteroide ({rec['asteroid']})", "en": f"Asteroid ({rec['asteroid']})"},
             "blurb": {"es": f"Asteroide brillante (V ≈ {rec['vmag']:.1f}) observado por SPHEREx a {rec['elong']:.0f}° del Sol. Dentro de una visita se desplaza varios píxeles entre exposiciones: es lo único que «se mueve» a ojo en SPHEREx.",
                       "en": f"Bright asteroid (V ≈ {rec['vmag']:.1f}) observed by SPHEREx {rec['elong']:.0f}° from the Sun. Within a visit it moves several pixels between exposures: the only thing that visibly ‘moves’ in SPHEREx."},
@@ -168,7 +169,7 @@ def build_field(spec: dict, *, skip_known: bool = False) -> dict:
     tgt: Target = spec["target"]
     res = build_visits(tgt, size_deg=spec["fov"], detectors=ALL_DETS, releases=spec.get("releases"),
                        max_per_visit=spec.get("max_per_visit"), max_visits=spec.get("max_visits"),
-                       mjd_range=spec.get("mjd_range"))
+                       mjd_range=spec.get("mjd_range"), query_epoch=spec.get("query_epoch"))
     fkey = field_key(tgt, spec["fov"], ALL_DETS, spec.get("releases"), spec.get("max_per_visit"))
     store = FrameStore(out_dir, f"/showcase/{fid}")
     data = serialize_field(res, store, fkey, mode="showcase", name=tgt.name)

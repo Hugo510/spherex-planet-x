@@ -53,8 +53,8 @@ def make_grid(target: Target, epoch_ref: float, size_deg: float) -> Grid:
 
 
 def _fetch_one(ref, target: Target, size_deg: float, grid: Grid, use_omega: bool) -> GridFrame:
-    ra, dec = target.at_mjd(ref.mjd)
-    hl, st = s3_range.fetch_cutout(ref, ra, dec, size_deg)
+    # el recorte se centra en la malla (fija en el cielo); la posición esperada del objeto se propaga aparte
+    hl, st = s3_range.fetch_cutout(ref, grid.ra, grid.dec, size_deg)
     try:
         omega = None
         hdr = hl["IMAGE"].header
@@ -120,8 +120,10 @@ def build_visits(
     epoch_ref: float | None = None,
     mjd_range: tuple[float, float] | None = None,
     max_visits: int | None = None,
+    query_epoch: float | None = None,
 ) -> FieldResult:
-    ra_q, dec_q = target.at(2026.0)
+    # posición de consulta al TAP: a `query_epoch` si se da (asteroides: pm enorme), si no a 2026.0 (footprint de 3.5°)
+    ra_q, dec_q = target.at(query_epoch or epoch_ref or 2026.0)
     refs = [r for r in irsa_tap.find_exposures(ra_q, dec_q, releases=releases) if r.detector in detectors]
     if mjd_range:
         refs = [r for r in refs if mjd_range[0] <= r.mjd <= mjd_range[1]]
@@ -180,8 +182,14 @@ def build_visits(
             ph = aperture_photometry(img, var, x_exp, y_exp, sat=sat, omega_arcsec2=om)
             meta.photometry = ph
             for f, em in zip(vf, meta.exposures, strict=True):
-                em.expected_xy = (round(x_exp, 3), round(y_exp, 3))
-                em.photometry = _exposure_photometry(f, ph)
+                ra_e, dec_e = target.at_mjd(em.mjd_avg)
+                xe, ye = (float(v) for v in wcs.world_to_pixel_values(ra_e, dec_e))
+                em.expected_xy = (round(xe, 3), round(ye, 3))
+                if np.hypot(xe - x_exp, ye - y_exp) > 0.5:  # se mueve dentro de la visita (asteroide): medir donde está
+                    om_e = float(np.nanmedian(f.omega))
+                    em.photometry = aperture_photometry(f.img_phot, f.var, xe, ye, sat=f.sat, omega_arcsec2=om_e)
+                else:
+                    em.photometry = _exposure_photometry(f, ph)
             visits.append(Visit(meta, img, var, sat, depth, vf))
         lo, hi = shared_limits([v.img for v in visits])
         for v in visits:
