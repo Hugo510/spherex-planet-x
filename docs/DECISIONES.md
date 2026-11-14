@@ -208,3 +208,11 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   ya anunciaba. `ruff.toml` en la raíz es la única config de lint (se quita la duplicada de `pyproject.toml`; `poc/` se
   excluye por ser histórico). Metadatos de licencia, repositorio y `engines` en los `package.json` y `pyproject.toml`.
   `.gitattributes` marca showcase, limits, audio, OpenAPI y tipos generados como `linguist-generated`.
+
+- **2026-11-14 20:25 UTC** — Regla «Use of Super Intelligence» de la plataforma: lo único generado con IA es la voz
+  (ElevenLabs). `scripts/si_metadata.py` escribe ID3 (artista «ElevenLabs text-to-speech (AI-generated voice)» y
+  comentario) en los 31 MP3, y en `demo.mp4` una marca de agua visible todo el video («AI-generated voice-over
+  (ElevenLabs) · imagery is real SPHEREx data», esquina inferior derecha, fuera del visor y de los subtítulos) más
+  metadatos del contenedor. `narration.py` y `make_video.py` lo aplican al regenerar. En el formulario se marcan
+  código, texto y audio (y video solo por la voz); no imágenes ni datos. `docs/SUBMISSION.md` trae las tablas de
+  enlaces para «NASA Data» y «Other Data».

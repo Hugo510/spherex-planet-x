@@ -22,6 +22,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import httpx
+from si_metadata import tag_mp3  # metadatos ID3: voz generada con IA (regla SI de Space Apps)
 
 ROOT = Path(__file__).resolve().parents[1]
 AUDIO = ROOT / "apps" / "web" / "public" / "audio"
@@ -43,6 +44,7 @@ def tts(key: str, voice: str, text: str, out: Path, speed: float = 1.0) -> int:
     if r.status_code != 200:
         raise RuntimeError(f"ElevenLabs {r.status_code}: {r.text[:200]}")
     out.write_bytes(r.content)
+    tag_mp3(out, f"AI-generated narration: {out.stem}")
     return len(r.content)
 
 

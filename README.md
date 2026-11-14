@@ -83,7 +83,7 @@ Builds run in the background: while a field is being built the API answers `202`
 - Access: IRSA TAP (`spherex.plane`, `spherex.artifact`, `gaia_dr3_source`, `catwise_2020`, `allwise_p3as_psd`), the public `s3://nasa-irsa-spherex` bucket (AWS Open Data) by HTTP Range, the IRSA cutout service, the AllWISE atlas via IBE.
 - Gaia DR3 (ESA/Gaia/DPAC) · CatWISE2020 (Marocco et al. 2021) · AllWISE (Cutri et al. 2013) · SIMBAD and Aladin Lite (CDS, Strasbourg; Aladin Lite is LGPL-3.0) · JPL Solar System Dynamics (Horizons, `sb_ident`).
 - UI imagery: NASA/JPL-Caltech (PIA26531, PIA26352, public domain). Fonts: Instrument Serif, Space Grotesk, Inter, JetBrains Mono (OFL).
-- Narration: ElevenLabs text-to-speech of our own texts, generated at build time; no AI-generated science.
+- Narration: ElevenLabs text-to-speech of our own texts, generated at build time; no AI-generated science. Every MP3 carries ID3 metadata saying so and the demo video shows a visible watermark (`scripts/si_metadata.py`), as the Space Apps rules on AI-generated content require.
 - Software: astropy, reproject, photutils, scipy, numpy, pyvo, FastAPI, Next.js, uPlot, fast-png, Pillow, Playwright, Modal, Vercel.
 
 Licensed under the [MIT License](LICENSE). See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [CHANGELOG.md](CHANGELOG.md) and [CITATION.cff](CITATION.cff).

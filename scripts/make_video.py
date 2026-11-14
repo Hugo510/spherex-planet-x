@@ -174,7 +174,9 @@ def assemble(plan: list[tuple[str, int, float]], fps: float, tempo: float = 1.0)
            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-r", "24", "-preset", "medium", "-crf", "20",
            "-c:a", "aac", "-b:a", "96k", "-shortest", "-movflags", "+faststart", str(out)]
     subprocess.run(cmd, check=True, capture_output=True)
-    return out
+    from si_metadata import watermark_video  # marca de agua visible + metadatos: voz generada con IA
+
+    return watermark_video(out)
 
 
 def main() -> int:
