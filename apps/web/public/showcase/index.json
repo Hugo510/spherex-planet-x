@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T08:44:53+00:00",
+ "generated_at": "2026-11-14T08:54:16+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -107,6 +107,78 @@
    "bytes": 1893249,
    "seconds": 169.7,
    "thumbnail": "/showcase/barnard/visits/ba0317fffe0f2a53_D2_2026-03-15.png",
+   "asteroid": null
+  },
+  {
+   "id": "rwaur",
+   "kind": "object",
+   "title": {
+    "es": "RW Aurigae",
+    "en": "RW Aurigae"
+   },
+   "blurb": {
+    "es": "T Tauri con eventos de oscurecimiento de 2\u20133 mag. El n\u00facleo satura (1\u20134 px OVERFLOW): la fotometr\u00eda de apertura no es fiable y el visor lo dice. Ejemplo de la Field Guide.",
+    "en": "T Tauri star with 2\u20133 mag dimming events. The core saturates (1\u20134 px OVERFLOW): aperture photometry is unreliable and the viewer says so. Field Guide example."
+   },
+   "default_det": 2,
+   "ra": 76.95608955894144,
+   "dec": 30.401127203887185,
+   "epoch": 2026.2214,
+   "fov_deg": 0.1,
+   "n_visits": 56,
+   "n_exposures": 237,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 1785390,
+   "seconds": 316.9,
+   "thumbnail": "/showcase/rwaur/visits/1e3c48e67d311b86_D2_2025-09-08.png",
+   "asteroid": null
+  },
+  {
+   "id": "rdra",
+   "kind": "object",
+   "title": {
+    "es": "R Draconis",
+    "en": "R Draconis"
+   },
+   "blurb": {
+    "es": "Mira (P = 245.6 d) en el campo profundo del polo norte ecl\u00edptico: 61\u201367 visitas por detector. Satura por completo (n\u00facleo NaN hasta r \u2248 10 px): no hay curva de luz honesta con este pipeline, y se muestra por qu\u00e9.",
+    "en": "Mira variable (P = 245.6 d) in the North Ecliptic Pole deep field: 61\u201367 visits per detector. Fully saturated (NaN core out to r \u2248 10 px): no honest light curve is possible with this pipeline, and the viewer shows why."
+   },
+   "default_det": 1,
+   "ra": 248.16723247430704,
+   "dec": 66.7550240070631,
+   "epoch": 2026.037,
+   "fov_deg": 0.1,
+   "n_visits": 117,
+   "n_exposures": 293,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 2130079,
+   "seconds": 246.4,
+   "thumbnail": "/showcase/rdra/visits/1e34768f09e1802e_D1_2025-06-06.png",
    "asteroid": null
   }
  ]

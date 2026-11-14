@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import type { VisitOut } from "@/lib/types";
 
 export function Timeline({
-  visits, current, onSelect, frameIndex, onFrame, loaded,
+  visits, current, onSelect, frameIndex, onFrame, loaded, reference,
 }: {
   visits: VisitOut[];
   current: number;
@@ -11,9 +11,10 @@ export function Timeline({
   frameIndex: number;
   onFrame: (i: number) => void;
   loaded: Set<string>;
+  reference: { label: string; loaded: boolean } | null;
 }) {
   const t = useTranslations("viewer");
-  const v = visits[current];
+  const v = visits[Math.max(current, 0)];
   if (!visits.length) return null;
   const t0 = visits[0].mjd_mean, t1 = visits[visits.length - 1].mjd_mean;
   const span = Math.max(1, t1 - t0);
@@ -22,6 +23,18 @@ export function Timeline({
       <div className="text-xs text-[var(--muted)]">
         {t("timeline")} · {visits.length} {t("visits")} · {visits[0].iso.slice(0, 10)} → {visits[visits.length - 1].iso.slice(0, 10)}
       </div>
+      <div className="flex items-center gap-2">
+        {reference && (
+          <button
+            role="tab"
+            aria-selected={current < 0}
+            onClick={() => onSelect(-1)}
+            className={`h-9 shrink-0 rounded border px-2 text-xs ${current < 0 ? "border-[var(--accent)] bg-[var(--accent)] text-black" : reference.loaded ? "border-[#5a6376] bg-[#2b3140]" : "border-[#3a3f4c]"}`}
+            title={t("refTitle")}
+          >
+            {reference.label}
+          </button>
+        )}
       <div className="relative h-9 w-full rounded bg-[#15171e]" role="tablist" aria-label={t("timeline")}>
         {visits.map((vv, i) => {
           const left = ((vv.mjd_mean - t0) / span) * 96 + 2;
@@ -39,6 +52,7 @@ export function Timeline({
             />
           );
         })}
+      </div>
       </div>
       <div className="flex flex-wrap items-center gap-1 text-xs">
         <span className="mr-1 text-[var(--muted)]">{t("ladder")}:</span>

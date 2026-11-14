@@ -100,10 +100,27 @@ class VisitOut(FrameAssets, PhotometryOut):
     exposures: list[ExposureOut]
 
 
+class ReferenceFrame(FrameAssets):
+    id: str
+    label: str
+    survey: str
+    band: str
+    lambda_um: float
+    bandwidth_um: float
+    epoch: float
+    mid_obs: str
+    mjd: float
+    source_url: str
+    coadd_id: str
+    stretch: Stretch
+    note: str
+
+
 class VisitsResponse(BaseModel):
     target: TargetOut
     grid: GridOut
     visits: list[VisitOut]
+    reference_frames: list[ReferenceFrame] = []
     detectors_available: list[int]
     releases_present: list[str]
     n_exposures: int

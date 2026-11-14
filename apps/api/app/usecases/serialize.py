@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 from datetime import UTC, datetime
 
+import numpy as np
 from astropy.time import Time
 
 from app.adapters.frame_store import FrameStore
@@ -65,10 +66,38 @@ def serialize_visit(v: Visit, store: FrameStore, fkey: str, target_epoch_xy: boo
     }
 
 
-def serialize_field(res: FieldResult, store: FrameStore, fkey: str, *, mode: str, name: str = "") -> dict:
+def reference_frames(res: FieldResult, store: FrameStore, fkey: str) -> list[dict]:
+    """Cuadros de referencia alineados a la malla (AllWISE W2 de 2010 vía IRSA). Lista vacía si no se pudo."""
+    try:
+        from app.adapters.allwise_ref import allwise_w2_on_grid
+        from app.domain.photometry import shared_limits
+
+        ref = allwise_w2_on_grid(res.grid)
+    except Exception:  # noqa: BLE001 — la referencia es opcional
+        ref = None
+    if ref is None:
+        return []
+    img = ref["img"]
+    key = f"{fkey}_ref_allwise_w2"
+    assets = store.put(key, img, np.zeros(img.shape, bool), {"kind": "reference", "id": "allwise_w2_2010", "detector": None,
+                                                            "lambda_um": 4.6, "bandwidth_um": 1.0, "mjd": 55322.0})
+    lo, hi = shared_limits([img])
+    mid = ref["mid_obs"]
+    yr = 2010.0 + (float(mid[5:7]) - 1) / 12 if len(mid) >= 7 else 2010.4
+    return [{
+        "id": "allwise_w2_2010", "label": "AllWISE W2 · 2010", "survey": "AllWISE", "band": "W2", "lambda_um": 4.6,
+        "bandwidth_um": 1.0, "epoch": round(yr, 2), "mid_obs": mid, "mjd": 55322.0, "source_url": ref["source_url"],
+        "coadd_id": ref["coadd_id"], "stretch": {"lo": lo, "hi": hi}, "note": "IRSA AllWISE atlas (DN→MJy/sr con MAGZP), reproject_exact a la malla",
+        **assets,
+    }]
+
+
+def serialize_field(res: FieldResult, store: FrameStore, fkey: str, *, mode: str, name: str = "", with_reference: bool = True) -> dict:
     t, g = res.target, res.grid
     visits = [serialize_visit(v, store, fkey) for v in res.visits]
+    refs = reference_frames(res, store, fkey) if with_reference else []
     return {
+        "reference_frames": refs,
         "target": {"name": name or t.name, "ra": g.ra, "dec": g.dec, "epoch": round(res.epoch_ref, 4), "pmra": t.pmra,
                    "pmdec": t.pmdec, "parallax": t.parallax, "fov_deg": g.size_deg, "pixscale_arcsec": g.pixscale_arcsec},
         "grid": {"naxis": [g.naxis, g.naxis], "wcs": g.header()},

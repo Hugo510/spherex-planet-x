@@ -174,7 +174,7 @@ def build_field(spec: dict, *, skip_known: bool = False) -> dict:
     data = serialize_field(res, store, fkey, mode="showcase", name=tgt.name)
     # las visitas van en visits/ (la escalera de λ en frames/): mover los PNG de las visitas
     (out_dir / "visits").mkdir(exist_ok=True)
-    for v in data["visits"]:
+    for v in data["visits"] + data.get("reference_frames", []):
         for k in ("png16", "mask_png"):
             src = out_dir / "frames" / Path(v[k]).name
             dst = out_dir / "visits" / src.name
@@ -196,7 +196,9 @@ def build_field(spec: dict, *, skip_known: bool = False) -> dict:
     (out_dir / "lightcurve.json").write_text(json.dumps({"target": data["target"], "detector": None, "points": lightcurve_points(data, None), "attribution": ATTRIBUTION}))
     if not skip_known and data["visits"]:
         last = max(data["visits"], key=lambda v: v["mjd_mean"])
-        known = known_uc.what_is_here(data["target"]["ra"], data["target"]["dec"], 30.0, last["mjd_mean"])
+        # vecinos de TODO el campo (radio = semidiagonal + 10″): el cliente filtra por distancia al clic sin llamar al API
+        r_field = spec["fov"] * 3600 * 0.71 + 10
+        known = known_uc.what_is_here(data["target"]["ra"], data["target"]["dec"], r_field, last["mjd_mean"])
         if spec["kind"] == "asteroid" and spec.get("asteroid"):
             known["asteroid_hint"] = spec["asteroid"]
         (out_dir / "known.json").write_text(json.dumps(known))

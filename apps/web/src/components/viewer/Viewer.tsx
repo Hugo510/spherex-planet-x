@@ -8,6 +8,7 @@ import { diffFrames, percentiles, robustSigma, type StretchParams } from "@/lib/
 import type { ExposureOut, Frame, ShowcaseField, VisitOut } from "@/lib/types";
 import { viewerParsers } from "@/lib/urlstate";
 import { expectedResidual, spectralVerdict } from "@/lib/verdict";
+import { propagate, skyToPixel } from "@/lib/wcs";
 import { Controls } from "./Controls";
 import { FrameCanvas } from "./FrameCanvas";
 import { Timeline } from "./Timeline";
@@ -60,6 +61,8 @@ export function Viewer() {
     const vs = det === "all" ? field.visits : field.visits.filter((v) => String(v.detector) === det);
     return [...vs].sort((a, b) => a.mjd_mean - b.mjd_mean);
   }, [field, det]);
+  const ref = field?.reference_frames?.[0] ?? null;
+  const showRef = q.visit < 0 && !!ref;
   const vi = Math.min(Math.max(q.visit, 0), Math.max(visits.length - 1, 0));
   const visit = visits[vi];
   const exposure = visit && q.frame >= 0 ? visit.exposures[Math.min(q.frame, visit.exposures.length - 1)] : null;
@@ -74,7 +77,8 @@ export function Viewer() {
   useEffect(() => {
     for (const v of visits) ensure(v.key, v.png16, v.mask_png, v.png_scale);
     if (visit) for (const e of visit.exposures) ensure(e.key, e.png16, e.mask_png, e.png_scale);
-  }, [visits, visit, ensure]);
+    if (ref) ensure(ref.key, ref.png16, ref.mask_png, ref.png_scale);
+  }, [visits, visit, ensure, ref]);
 
   const currentKey = exposure ? exposure.key : visit?.key ?? "";
   const current: Current | null = visit ? {
@@ -121,13 +125,18 @@ export function Viewer() {
 
   const params: StretchParams = q.mode === "diff"
     ? { a: 0, lo: -4 * diffSigma, hi: 4 * diffSigma, cmap: q.cmap, invert: q.invert }
-    : { a: q.stretch, lo: limits.lo, hi: limits.hi, cmap: q.cmap, invert: q.invert };
+    : showRef && ref
+      ? { a: q.stretch, lo: ref.stretch.lo, hi: ref.stretch.hi, cmap: q.cmap, invert: q.invert }
+      : { a: q.stretch, lo: limits.lo, hi: limits.hi, cmap: q.cmap, invert: q.invert };
 
   // ---- reproducción y teclado
   const step = useCallback((d: number) => {
     if (!visits.length) return;
-    setQ({ visit: (vi + d + visits.length) % visits.length });
-  }, [visits.length, vi, setQ]);
+    const lo = ref ? -1 : 0; // la referencia de 2010 es el primer cuadro de la secuencia
+    const n = visits.length - lo;
+    const cur = showRef ? -1 : vi;
+    setQ({ visit: ((cur - lo + d + n) % n) + lo, frame: -1 });
+  }, [visits.length, vi, setQ, ref, showRef]);
   const playing = q.play && !reduced;
   useEffect(() => {
     if (!playing) return;
@@ -150,11 +159,16 @@ export function Viewer() {
   // ---- marcador de posición esperada (objeto con pm) y clic
   const markers = useMemo(() => {
     if (!visit || q.mode === "diff") return [];
-    const [x, y] = visit.expected_xy;
+    let [x, y] = visit.expected_xy;
+    if (showRef && ref && field && (field.target.pmra || field.target.pmdec)) {
+      const p = propagate(field.target.ra, field.target.dec, field.target.epoch, field.target.pmra, field.target.pmdec, ref.epoch);
+      const px = skyToPixel({ naxis: field.grid.naxis[0], ra: field.target.ra, dec: field.target.dec, pixscaleArcsec: field.target.pixscale_arcsec }, p.ra, p.dec);
+      x = px.x; y = px.y;
+    }
     const ms = [{ x, y, color: "#43d17a", r: 3, label: field?.target.pmra || field?.target.pmdec ? t("expected") : undefined }];
     if (q.pick) { const [px, py] = q.pick.split(",").map(Number); ms.push({ x: px, y: py, color: "#ffd166", r: 2, label: undefined }); }
     return ms;
-  }, [visit, q.mode, q.pick, field, t]);
+  }, [visit, q.mode, q.pick, field, t, showRef, ref]);
 
   const onPick = (x: number, y: number) => setQ({ pick: `${x},${y}`, panel: q.panel === "none" ? "known" : q.panel });
 
@@ -168,7 +182,7 @@ export function Viewer() {
   }
   if (!field || !visit) return <div className="p-4 text-[var(--muted)]" aria-busy="true">{t("loading")}…</div>;
 
-  const showFrame = q.mode === "diff" ? diff : current?.frame ?? null;
+  const showFrame = q.mode === "diff" ? diff : showRef && ref ? loaded.get(ref.key) ?? null : current?.frame ?? null;
   const title = field.showcase?.title[locale] ?? field.target.name;
   return (
     <div className="flex flex-col gap-3 lg:flex-row">
@@ -187,7 +201,16 @@ export function Viewer() {
             onPick={onPick}
             ariaLabel={current ? `${current.visit.id} ${current.lambda.toFixed(3)} µm` : "frame"}
           />
-          {current && <FrameLabel current={current} field={field} mode={q.mode} verdict={verdict ? { verdict, dChan, residual: expectedResidual(dChan), aLabel: A?.label ?? "", bLabel: B?.label ?? "" } : null} />}
+          {showRef && ref && q.mode !== "diff" && (
+            <div className="pointer-events-none absolute left-0 top-0 p-2 text-xs leading-tight" aria-live="polite">
+              <div className="inline-block rounded bg-black/70 px-2 py-1 font-mono">
+                <div className="text-sm font-semibold">{ref.label} · λ ≈ {ref.lambda_um} µm (Δλ {ref.bandwidth_um})</div>
+                <div>{t("refEpoch")} {ref.mid_obs.slice(0, 10)} · {ref.survey} {ref.coadd_id} · IRSA</div>
+                <div className="text-[var(--warn)]">{t("refNote")}</div>
+              </div>
+            </div>
+          )}
+          {current && !showRef && <FrameLabel current={current} field={field} mode={q.mode} verdict={verdict ? { verdict, dChan, residual: expectedResidual(dChan), aLabel: A?.label ?? "", bLabel: B?.label ?? "" } : null} />}
           {q.mode === "diff" && verdict === "block" && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/70 p-4 text-center" role="alert">
               <div>
@@ -205,7 +228,7 @@ export function Viewer() {
               set={(p) => setQ({ ...("playing" in p ? { play: p.playing } : {}), ...("det" in p ? { det: p.det, visit: 0, frame: -1, a: "", b: "" } : {}), ...p, playing: undefined } as never)}
               onStep={step}
             />
-            <Timeline visits={visits} current={vi} onSelect={(i) => setQ({ visit: i, frame: -1 })} frameIndex={q.frame} onFrame={(i) => setQ({ frame: i })} loaded={new Set(loaded.keys())} />
+            <Timeline visits={visits} current={showRef ? -1 : vi} onSelect={(i) => setQ({ visit: i, frame: -1 })} frameIndex={q.frame} onFrame={(i) => setQ({ frame: i })} loaded={new Set(loaded.keys())} reference={ref ? { label: ref.label, loaded: loaded.has(ref.key) } : null} />
             {q.mode === "diff" && (
               <div className="flex flex-wrap items-center gap-2 text-sm">
                 <label>A <select className="sel" value={aKey} onChange={(e) => setQ({ a: e.target.value })} aria-label="A">{keyOptions(visits)}</select></label>

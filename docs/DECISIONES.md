@@ -57,3 +57,36 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   G = 16.3 queda listada a 7.2″ como `known_star`.
 - **2026-11-14 09:05 UTC** — OpenAPI exportado a `apps/api/openapi.json` y tipos TS generados en `packages/shared/src/api.d.ts`
   (`pnpm gen:types`); un test comprueba que el JSON comprometido coincide con las rutas de la app.
+
+## F3 · Precómputo
+
+- **2026-11-14 09:20 UTC** — **SPHEREx nunca apunta a la oposición** (observa a ~90° del Sol), así que los «3 asteroides
+  brillantes en oposición» se sustituyen por asteroides brillantes **en cuadratura** dentro de exposiciones reales:
+  `scripts/find_asteroid_fields.py` recorre Horizons (elongación 82–98°) y el TAP por día; hallados (1) Ceres V 9.1 (24 exp),
+  (2) Palas V 10.4 (24 exp), (7) Iris V 10.3 (14 exp) y (4) Vesta V 7.3 (4 exp; descartado por pocas exposiciones).
+  El `Target` del campo lleva la velocidad aparente de Horizons como «pm» para que la posición esperada siga al asteroide.
+- **2026-11-14 09:25 UTC** — Campo profundo NEP: ~29 400 exposiciones en el centro (5 000 por detector). `build_visits`
+  gana `max_visits` (muestreo uniforme en el tiempo) y `mjd_range`; showcase con 24 visitas × 3 exposiciones por detector.
+  R Dra: 20 visitas × 3. Campo aleatorio: semilla 2026 → (23.4617°, +8.9021°).
+- **2026-11-14 09:30 UTC** — Showcase: `visits/` (coadds) y `frames/` (escalera de λ) como PNG-16 + máscara; `diffs/` canónicos
+  (visitas consecutivas, primera−última, y Δ = 1/4/12 canales dentro de la visita más larga); `known.json` con vecinos de
+  TODO el campo (el cliente filtra por distancia al clic sin API); `.npy` eliminados al final. WISE 0855: 42 visitas, 222 exp, 2.0 MB.
+
+## F4 · Visor
+
+- **2026-11-14 09:50 UTC** — Canvas 2D con `drawImage` ×8 vecino más cercano (29–59 px nativos); PNG-16 decodificado con
+  `fast-png` (Canvas 2D solo devuelve 8 bits); stretch asinh (parámetro a) con percentiles compartidos por detector
+  (los del backend por defecto; si el usuario cambia el recorte se recalculan en cliente). La resta A−B se calcula en el
+  cliente sobre los valores físicos (no se necesita `/api/diff` para pares arbitrarios); veredicto espectral idéntico al del backend.
+- **2026-11-14 09:55 UTC** — Saturación del coadd = píxeles saturados en la MAYORÍA de las exposiciones de la visita (un
+  OVERFLOW aislado en una exposición ya sale del coadd por la máscara fatal y salpicaba de magenta el cuadro).
+- **2026-11-14 10:00 UTC** — Secuencia de reproducción: [referencia 2010] + visitas; ↑↓ recorren la escalera de λ; con
+  `prefers-reduced-motion` no hay autoplay. Todo el estado en la URL (nuqs, `history: replace`); `?embed=1` sin cromo.
+
+## F5 · ¿Qué hay aquí? + Aladin + 2010
+
+- **2026-11-14 10:05 UTC** — **hips2fits (CDS) devuelve «Page unavailable» y SkyView no puede leer WISE** desde esta red.
+  El cuadro de referencia de 2010 sale del **atlas AllWISE W2 de IRSA (IBE `p3am_cdd`, cutout service, .fits.gz)**,
+  convertido DN→MJy/sr con MAGZP y reproyectado con `reproject_exact` a la malla TAN del campo (9 s). Época media 2010-05.
+- **2026-11-14 10:10 UTC** — Veredicto en cliente: fuentes a ≤ 2 px (12.3″) del clic, re-propagadas con pm a la fecha de la
+  visita; asteroide gana, si no la más cercana. ADES: SPHEREx no tiene código MPC publicado → `stn = XXX` y el borrador lo dice.

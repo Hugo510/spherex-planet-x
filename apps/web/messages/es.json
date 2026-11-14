@@ -69,6 +69,61 @@
       "knownSoon": "Haz clic en el visor para listar vecinos (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
       "spectrumSoon": "Espectro y curva de luz en µJy.",
       "aladinSoon": "Contexto con Aladin Lite (unWISE, 2MASS, Gaia DR3)."
-    }
+    },
+    "refEpoch": "época media",
+    "refNote": "Cuadro de 2010 (AllWISE W2, 15 años antes) reproyectado a la misma malla: compara estrellas de campo y la posición del objeto.",
+    "refTitle": "Referencia de 2010 alineada píxel a píxel"
+  },
+  "known": {
+    "at": "Punto",
+    "verdict": {
+      "known_star": "Estrella conocida (Gaia DR3 / SIMBAD)",
+      "known_ir_source": "Fuente IR conocida (CatWISE2020 / AllWISE)",
+      "known_sso": "Asteroide o cometa conocido (JPL)",
+      "candidate": "Sin contraparte conocida a ≤ 2 px: candidato"
+    },
+    "kind": {
+      "known_star": "estrella",
+      "known_ir_source": "fuente IR",
+      "known_sso": "cuerpo menor",
+      "candidate": "candidato",
+      "title": "tipo"
+    },
+    "showcaseNote": "Modo showcase: los vecinos de todo el campo están precomputados a la fecha de la última visita; se filtran por distancia a tu clic.",
+    "liveNeeded": "Para otra posición hace falta el modo en vivo (API); aquí no está disponible.",
+    "partial": "Catálogos sin respuesta",
+    "catalog": "Catálogo",
+    "kind_": "",
+    "none": "Nada a ≤ 20″ en Gaia DR3, CatWISE2020, AllWISE, SIMBAD ni JPL.",
+    "csv": "Exportar CSV",
+    "ades": "Borrador ADES",
+    "attribution": "Gaia DR3 (ESA/Gaia/DPAC) · CatWISE2020 · AllWISE · SIMBAD (CDS) · JPL SSD sb_ident con el vector de estado de SPHEREx (Horizons −163182).",
+    "kindLabel": "Tipo"
+  },
+  "spectrum": {
+    "spectrumTitle": "Espectro: fotometría de apertura por exposición",
+    "points": "puntos",
+    "satOmitted": "saturados omitidos",
+    "current": "actual",
+    "lcTitle": "Curva de luz: flujo del coadd por visita,",
+    "lcNote": "cada visita tiene una λ media distinta (ver escalera)",
+    "thisVisit": "Esta visita",
+    "saturated": "saturación en la apertura: no fiable"
+  },
+  "aladin": {
+    "survey": "Fondo",
+    "error": "Aladin Lite no pudo cargar (requiere acceso a CDS).",
+    "arrow": "Flecha verde = movimiento propio",
+    "credit": "Aladin Lite (CDS, LGPL-3.0); Gaia DR3 vía VizieR I/355/gaiadr3."
+  },
+  "classroom": {
+    "pixel": "Un píxel de SPHEREx mide 6.15″: una estrella con movimiento propio de 10″/año se mueve menos de 2 píxeles por año.",
+    "visit": "Una visita son exposiciones separadas < 1 día: esta tiene {n}, de {lo} a {hi} µm. Dentro de la visita, cada exposición ve un color distinto (escalera de λ), no una época distinta.",
+    "motion": "Este objeto se mueve {arcsec}″/año = {px} px/año: en {years} años, {total} px. Por eso el coadd por visita y la referencia de 2010.",
+    "noMotion": "Este campo no tiene un objeto con movimiento propio conocido: lo que cambie entre visitas es brillo (variabilidad), color (λ) o un asteroide de paso.",
+    "verdictRule": "Restar dos cuadros solo vale si tienen la misma λ: ≤ 2 canales OK, 3–8 aviso, > 8 bloqueado (residuo medido: 4 % + 1.4 %/canal).",
+    "saturation": "Los píxeles magenta están saturados (OVERFLOW/BLOOM): se muestran y se cuentan, no se ocultan.",
+    "known": "Haz clic sobre cualquier punto para preguntar «¿qué hay aquí?» a Gaia, CatWISE, AllWISE, SIMBAD y JPL.",
+    "tryIt": "Prueba: ← → para cambiar de visita; ↑ ↓ para recorrer la escalera de λ; modo A − B para ver el veredicto."
   }
 }

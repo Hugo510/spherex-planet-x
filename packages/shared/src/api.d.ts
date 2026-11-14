@@ -351,6 +351,41 @@ export interface components {
             /** Hi */
             hi: number;
         };
+        /** ReferenceFrame */
+        ReferenceFrame: {
+            /** Png16 */
+            png16: string;
+            /** Mask Png */
+            mask_png: string;
+            png_scale: components["schemas"]["PngScale"];
+            /** Key */
+            key: string;
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /** Survey */
+            survey: string;
+            /** Band */
+            band: string;
+            /** Lambda Um */
+            lambda_um: number;
+            /** Bandwidth Um */
+            bandwidth_um: number;
+            /** Epoch */
+            epoch: number;
+            /** Mid Obs */
+            mid_obs: string;
+            /** Mjd */
+            mjd: number;
+            /** Source Url */
+            source_url: string;
+            /** Coadd Id */
+            coadd_id: string;
+            stretch: components["schemas"]["Stretch"];
+            /** Note */
+            note: string;
+        };
         /** SpectrumPoint */
         SpectrumPoint: {
             /** Lambda Um */
@@ -536,6 +571,11 @@ export interface components {
             grid: components["schemas"]["GridOut"];
             /** Visits */
             visits: components["schemas"]["VisitOut"][];
+            /**
+             * Reference Frames
+             * @default []
+             */
+            reference_frames: components["schemas"]["ReferenceFrame"][];
             /** Detectors Available */
             detectors_available: number[];
             /** Releases Present */

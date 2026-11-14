@@ -69,6 +69,60 @@
       "knownSoon": "Click on the viewer to list neighbours (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
       "spectrumSoon": "Spectrum and light curve in µJy.",
       "aladinSoon": "Context with Aladin Lite (unWISE, 2MASS, Gaia DR3)."
-    }
+    },
+    "refEpoch": "mean epoch",
+    "refNote": "2010 frame (AllWISE W2, 15 years earlier) reprojected onto the same grid: compare field stars and the object position.",
+    "refTitle": "2010 reference aligned pixel by pixel"
+  },
+  "known": {
+    "at": "Point",
+    "verdict": {
+      "known_star": "Known star (Gaia DR3 / SIMBAD)",
+      "known_ir_source": "Known IR source (CatWISE2020 / AllWISE)",
+      "known_sso": "Known asteroid or comet (JPL)",
+      "candidate": "No known counterpart within 2 px: candidate"
+    },
+    "kind": {
+      "known_star": "star",
+      "known_ir_source": "IR source",
+      "known_sso": "minor body",
+      "candidate": "candidate",
+      "title": "kind"
+    },
+    "kindLabel": "Kind",
+    "showcaseNote": "Showcase mode: neighbours of the whole field are precomputed at the date of the last visit and filtered by distance to your click.",
+    "liveNeeded": "Another position needs live mode (API), unavailable here.",
+    "partial": "Catalogs without answer",
+    "catalog": "Catalog",
+    "none": "Nothing within 20″ in Gaia DR3, CatWISE2020, AllWISE, SIMBAD or JPL.",
+    "csv": "Export CSV",
+    "ades": "ADES draft",
+    "attribution": "Gaia DR3 (ESA/Gaia/DPAC) · CatWISE2020 · AllWISE · SIMBAD (CDS) · JPL SSD sb_ident with the SPHEREx state vector (Horizons −163182)."
+  },
+  "spectrum": {
+    "spectrumTitle": "Spectrum: aperture photometry per exposure",
+    "points": "points",
+    "satOmitted": "saturated omitted",
+    "current": "current",
+    "lcTitle": "Light curve: visit-coadd flux,",
+    "lcNote": "each visit has a different mean λ (see ladder)",
+    "thisVisit": "This visit",
+    "saturated": "saturation in aperture: unreliable"
+  },
+  "aladin": {
+    "survey": "Background",
+    "error": "Aladin Lite could not load (needs access to CDS).",
+    "arrow": "Green arrow = proper motion",
+    "credit": "Aladin Lite (CDS, LGPL-3.0); Gaia DR3 via VizieR I/355/gaiadr3."
+  },
+  "classroom": {
+    "pixel": "A SPHEREx pixel is 6.15″: a star with a proper motion of 10″/yr moves less than 2 pixels per year.",
+    "visit": "A visit is a set of exposures less than 1 day apart: this one has {n}, from {lo} to {hi} µm. Within a visit each exposure sees a different colour (λ ladder), not a different epoch.",
+    "motion": "This object moves {arcsec}″/yr = {px} px/yr: {total} px in {years} years. Hence the visit coadd and the 2010 reference.",
+    "noMotion": "This field has no known proper-motion object: whatever changes between visits is brightness (variability), colour (λ) or a passing asteroid.",
+    "verdictRule": "Subtracting two frames is only valid at the same λ: ≤ 2 channels OK, 3–8 warning, > 8 blocked (measured residual: 4 % + 1.4 %/channel).",
+    "saturation": "Magenta pixels are saturated (OVERFLOW/BLOOM): they are shown and counted, never hidden.",
+    "known": "Click any point to ask “what is here?” to Gaia, CatWISE, AllWISE, SIMBAD and JPL.",
+    "tryIt": "Try: ← → to change visit; ↑ ↓ to walk the λ ladder; A − B mode to see the verdict."
   }
 }

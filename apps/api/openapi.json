@@ -1479,6 +1479,97 @@
     ],
     "title": "PngScale"
    },
+   "ReferenceFrame": {
+    "properties": {
+     "png16": {
+      "type": "string",
+      "title": "Png16"
+     },
+     "mask_png": {
+      "type": "string",
+      "title": "Mask Png"
+     },
+     "png_scale": {
+      "$ref": "#/components/schemas/PngScale"
+     },
+     "key": {
+      "type": "string",
+      "title": "Key"
+     },
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "label": {
+      "type": "string",
+      "title": "Label"
+     },
+     "survey": {
+      "type": "string",
+      "title": "Survey"
+     },
+     "band": {
+      "type": "string",
+      "title": "Band"
+     },
+     "lambda_um": {
+      "type": "number",
+      "title": "Lambda Um"
+     },
+     "bandwidth_um": {
+      "type": "number",
+      "title": "Bandwidth Um"
+     },
+     "epoch": {
+      "type": "number",
+      "title": "Epoch"
+     },
+     "mid_obs": {
+      "type": "string",
+      "title": "Mid Obs"
+     },
+     "mjd": {
+      "type": "number",
+      "title": "Mjd"
+     },
+     "source_url": {
+      "type": "string",
+      "title": "Source Url"
+     },
+     "coadd_id": {
+      "type": "string",
+      "title": "Coadd Id"
+     },
+     "stretch": {
+      "$ref": "#/components/schemas/Stretch"
+     },
+     "note": {
+      "type": "string",
+      "title": "Note"
+     }
+    },
+    "type": "object",
+    "required": [
+     "png16",
+     "mask_png",
+     "png_scale",
+     "key",
+     "id",
+     "label",
+     "survey",
+     "band",
+     "lambda_um",
+     "bandwidth_um",
+     "epoch",
+     "mid_obs",
+     "mjd",
+     "source_url",
+     "coadd_id",
+     "stretch",
+     "note"
+    ],
+    "title": "ReferenceFrame"
+   },
    "SpectrumPoint": {
     "properties": {
      "lambda_um": {
@@ -1993,6 +2084,14 @@
       },
       "type": "array",
       "title": "Visits"
+     },
+     "reference_frames": {
+      "items": {
+       "$ref": "#/components/schemas/ReferenceFrame"
+      },
+      "type": "array",
+      "title": "Reference Frames",
+      "default": []
      },
      "detectors_available": {
       "items": {
