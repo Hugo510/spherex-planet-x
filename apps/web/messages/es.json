@@ -125,5 +125,118 @@
     "saturation": "Los píxeles magenta están saturados (OVERFLOW/BLOOM): se muestran y se cuentan, no se ocultan.",
     "known": "Haz clic sobre cualquier punto para preguntar «¿qué hay aquí?» a Gaia, CatWISE, AllWISE, SIMBAD y JPL.",
     "tryIt": "Prueba: ← → para cambiar de visita; ↑ ↓ para recorrer la escalera de λ; modo A − B para ver el veredicto."
+  },
+  "limits": {
+    "home": "Inicio",
+    "viewer": "Visor",
+    "title": "Límites y método",
+    "intro": "Todo lo que este visor afirma está medido sobre datos reales de SPHEREx (QR3/DR1) y aquí se dice con números y fuente: qué se puede ver, qué no, y por qué. Los valores se regeneran con scripts/limits_analysis.py.",
+    "missing": "Aún no se ha generado limits.json.",
+    "method": {
+      "title": "Método",
+      "s1": "Exposiciones por posición vía TAP de IRSA (spherex.plane ⋈ spherex.artifact; release por obs_publisher_did).",
+      "s2": "Cutout por HTTP Range sobre el bucket público s3://nasa-irsa-spherex (IMAGE, FLAGS, VARIANCE, ZODI, WCS-WAVE; ~2 MB por exposición; FLAGS Rice de DR1 descomprimido por filas). Fallback: cutout service de IRSA.",
+      "s3": "IMAGE − ZODI; píxeles fatales rellenados con el vecino antes de reproyectar (display) y enmascarados después (fotometría); OVERFLOW/BLOOM se pintan, no se ocultan. λ de cada exposición por la WCS espectral «W».",
+      "s4": "Reproyección a una malla TAN norte-arriba de 6.15″/px común a todos los cuadros; visita = exposiciones separadas < 1 día; coadd ponderado por 1/VARIANCE.",
+      "s5": "Fotometría de apertura r = 2.5 px, anillo 5–8 px, recentrado por visita, µJy con el mapa de ángulo sólido (F = I·Ω·23.504).",
+      "s6": "Resta A−B solo tras el veredicto espectral; cruce con Gaia DR3 (propagado), CatWISE2020, AllWISE, SIMBAD y JPL sb_ident con el vector de estado de SPHEREx."
+    },
+    "dl": {
+      "title": "Residuo de la resta según Δλ",
+      "intro": "El fondo se resta limpio (RMS/ruido 0.80–0.87: la VARIANCE del pipeline es honesta). Las estrellas no: piso de {floor} % del flujo por remuestreo más {slope} % por canal de separación (Rayleigh-Jeans predice {rj} %/canal). De aquí sale la regla ok ≤ 2 / aviso 3–8 / bloqueo > 8 canales.",
+      "channels": "canales",
+      "pairs": "pares",
+      "bg": "fondo RMS/ruido",
+      "stars": "estrellas RMS/ruido (mediana)",
+      "max": "máx",
+      "residual": "residuo del flujo",
+      "verdict": "veredicto"
+    },
+    "pm": {
+      "title": "Movimiento propio medido vs catálogo",
+      "intro": "Ajuste lineal de los centroides por visita (coadd) del showcase; el error es el del ajuste. Dirección: x crece hacia el oeste.",
+      "object": "Objeto",
+      "visits": "visitas",
+      "span": "años",
+      "measured": "medido",
+      "expected": "esperado",
+      "catalog": "fuente",
+      "saturated": "núcleo saturado: centroide sesgado",
+      "note": "WISE 0855 y ε Indi B se miden; Barnard satura el núcleo en D2–D3 y su centroide (alas) sale sesgado: se muestra igual, con aviso."
+    },
+    "inj": {
+      "title": "Inyección-recuperación en coadds reales",
+      "intro": "Fuentes sintéticas con PSF gaussiana (FWHM del header PSF_FWHM = {fwhm}″) inyectadas en posiciones sin fuentes de tres coadds reales; recuperada si S/N ≥ 5 en la apertura y el centroide cae a ≤ 1 px.",
+      "field": "Campo",
+      "visit": "Visita",
+      "noise": "ruido 1σ (apertura)",
+      "half": "50 % completitud"
+    },
+    "nv": {
+      "title": "Lo que no se ve (con números)",
+      "parallax": "Paralaje",
+      "planet_nine": "Planeta Nueve",
+      "saturation": "Saturación",
+      "motion_per_visit": "Movimiento entre visitas cercanas"
+    },
+    "fg": {
+      "title": "Field Guide: artefactos de SPHEREx en recortes reales",
+      "intro": "Cada recorte es una exposición real (0.1°, ×6) con el bit de FLAGS correspondiente pintado. Antes de reportar un «candidato», compáralo con esto.",
+      "openDiff": "Abrir la resta a > 8 canales en el visor",
+      "saturation": {
+        "title": "Saturación y BLOOM",
+        "alt": "Núcleo saturado de una estrella brillante con desborde de carga",
+        "text": "OVERFLOW (bit 1) y BLOOM (bit 26): el núcleo es NaN y la carga desborda a lo largo de las columnas. R Dra y RW Aur saturan en todas sus exposiciones; la fotometría de apertura no vale."
+      },
+      "dichroic": {
+        "title": "Borde dicroico",
+        "alt": "Banda de píxeles marcados DICHROIC",
+        "text": "Bit 7: zona del dicroico donde la respuesta cae; aparece como una franja. No es una fuente."
+      },
+      "snowball": {
+        "title": "Snowball",
+        "alt": "Grupo compacto de píxeles marcados SNOWBALL",
+        "text": "Bit 27: evento de partícula de alta energía con halo; aparece en UNA exposición y no se repite en la escalera de λ."
+      },
+      "streak": {
+        "title": "Estela",
+        "alt": "Línea de píxeles marcados STREAK",
+        "text": "Bit 25: satélite o basura espacial cruzando la exposición; lineal, una sola exposición."
+      },
+      "persist": {
+        "title": "Persistencia",
+        "alt": "Píxeles marcados PERSIST tras una fuente brillante",
+        "text": "Bit 17: imagen latente de una fuente brillante de la exposición anterior; puede imitar una fuente débil que «se mueve» con el patrón de barrido."
+      },
+      "ghost": {
+        "title": "Fantasma",
+        "alt": "Píxeles marcados GHOST",
+        "text": "Bit 22: reflejo interno de una fuente brillante."
+      },
+      "lambda_dipole": {
+        "title": "Dipolo de λ",
+        "alt": "Resta de dos exposiciones a λ distinta",
+        "text": "Al restar exposiciones separadas > 8 canales las estrellas dejan un residuo de 15–25 % con forma de dipolo: no es movimiento, es color + remuestreo. El visor bloquea esa resta."
+      }
+    },
+    "source": "Fuente",
+    "generated": "Generado el"
+  },
+  "status": {
+    "home": "Inicio",
+    "title": "Estado del despliegue",
+    "releases": "Releases ingeridos",
+    "releaseNote": "DR1 = reprocesamiento de QR2, nov 2026",
+    "fields": "Campos precomputados",
+    "visits": "visitas",
+    "exposures": "exposiciones",
+    "precomputed": "Showcase generado",
+    "limits": "Limits generado",
+    "live": "API en vivo",
+    "liveOff": "no configurada (NEXT_PUBLIC_API_URL vacío): solo showcase",
+    "liveOn": "OK",
+    "liveDown": "sin respuesta",
+    "kind": "tipo",
+    "failures": "fallos"
   }
 }

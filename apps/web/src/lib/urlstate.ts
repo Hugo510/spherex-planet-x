@@ -1,4 +1,10 @@
-import { parseAsBoolean, parseAsFloat, parseAsInteger, parseAsString, parseAsStringLiteral } from "nuqs";
+import { createParser, parseAsBoolean, parseAsFloat, parseAsInteger, parseAsString, parseAsStringLiteral } from "nuqs";
+
+/** `?embed=1` (o true) → sin cromo. */
+export const parseAsFlag = createParser({
+  parse: (v) => v === "1" || v === "true",
+  serialize: (v) => (v ? "1" : "0"),
+});
 
 /** Estado completo del visor en la URL: ?field&ra&dec&epoch&pmra&pmdec&fov&det&visit&frame&mode&stretch&clip&cmap&embed&a&b */
 export const viewerParsers = {
@@ -17,7 +23,7 @@ export const viewerParsers = {
   clip: parseAsString.withDefault("5,99.7"),
   cmap: parseAsStringLiteral(["gray", "cividis"] as const).withDefault("gray"),
   invert: parseAsBoolean.withDefault(false),
-  embed: parseAsBoolean.withDefault(false),
+  embed: parseAsFlag.withDefault(false),
   a: parseAsString.withDefault(""),
   b: parseAsString.withDefault(""),
   speed: parseAsFloat.withDefault(1.5), // cuadros por segundo

@@ -192,7 +192,7 @@ export function Viewer() {
             {title} <span className="text-sm font-normal text-[var(--muted)]">{field.target.ra.toFixed(5)}, {field.target.dec.toFixed(5)} · {field.target.fov_deg}° · {field.mode}</span>
           </h1>
         )}
-        <div className="relative">
+        <div className="relative w-fit max-w-full">
           <FrameCanvas
             frame={showFrame}
             params={params}

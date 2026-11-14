@@ -47,7 +47,7 @@ export function Timeline({
               aria-label={`${vv.iso.slice(0, 10)} D${vv.detector} n=${vv.n_exp}`}
               title={`${vv.iso.slice(0, 10)} · ${vv.n_exp} exp · ${vv.lambda_um.min.toFixed(2)}–${vv.lambda_um.max.toFixed(2)} µm`}
               onClick={() => onSelect(i)}
-              className={`absolute top-1 h-7 w-3 -translate-x-1/2 rounded-sm border ${i === current ? "border-[var(--accent)] bg-[var(--accent)]" : loaded.has(vv.key) ? "border-[#5a6376] bg-[#2b3140]" : "border-[#3a3f4c] bg-transparent"} ${sat ? "outline outline-1 outline-[var(--sat)]" : ""}`}
+              className={`absolute top-0 h-9 w-6 -translate-x-1/2 rounded-sm border-2 ${i === current ? "border-[var(--accent)] bg-[var(--accent)]" : loaded.has(vv.key) ? "border-[#5a6376] bg-[#2b3140]" : "border-[#3a3f4c] bg-transparent"} ${sat ? "outline outline-1 outline-[var(--sat)]" : ""}`}
               style={{ left: `${left}%` }}
             />
           );

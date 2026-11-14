@@ -90,3 +90,18 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   convertido DN→MJy/sr con MAGZP y reproyectado con `reproject_exact` a la malla TAN del campo (9 s). Época media 2010-05.
 - **2026-11-14 10:10 UTC** — Veredicto en cliente: fuentes a ≤ 2 px (12.3″) del clic, re-propagadas con pm a la fecha de la
   visita; asteroide gana, si no la más cercana. ADES: SPHEREx no tiene código MPC publicado → `stn = XXX` y el borrador lo dice.
+
+## F6–F8 · Espectro, Limits, i18n/a11y
+
+- **2026-11-14 10:40 UTC** — Espectro y curva de luz con uPlot (barras de error dibujadas en un hook `draw`); los puntos con
+  saturación en la apertura se omiten y se cuentan. ε Indi B muestra la banda de agua a 1.39 µm (326 puntos); WISE 0855 D5
+  432–511 µJy por visita.
+- **2026-11-14 10:55 UTC** — `scripts/limits_analysis.py` genera `public/limits/limits.json`: inyección-recuperación con PSF
+  gaussiana de FWHM = `PSF_FWHM` del header (8.6″ = 1.4 px) en 3 coadds reales (50 % de completitud a AB 17.7 en WISE 0855 D5
+  n=8; 18.5 en ε Indi B D2 y Barnard D3); pm medido por ajuste lineal a los centroides por visita (WISE 0855 D5 1.16 ± 0.31,
+  D6 1.67 ± 0.19 vs 1.33; ε Indi B 0.72 ± 0.04 vs 0.76; Barnard sesgado por saturación y así se muestra); tabla de Δλ de
+  la PoC con fuente; Field Guide con recortes reales elegidos por conteo de bits (saturación R Dra D4, DICHROIC, SNOWBALL,
+  STREAK, PERSIST; no apareció GHOST en los 600 cutouts en cache) y el dipolo de λ como enlace al visor.
+- **2026-11-14 11:05 UTC** — Lighthouse sobre el visor (export estático servido sin compresión): accesibilidad **96**,
+  buenas prácticas 96, rendimiento 65 (sin gzip ni cache en el servidor de prueba; en Vercel mejora). Chips de la línea de
+  tiempo ampliados a 24×36 px por el aviso de touch targets. OG image generada del coadd D5 de WISE 0855 (`scripts/og_image.py`).
