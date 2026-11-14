@@ -22,7 +22,7 @@ def test_group_visits_gap_one_day():
 
 
 def test_target_propagation_wise0855():
-    # WISE 0855: pm −8.12"/yr en RA → en 26 años se corre ~3.5' al oeste (docs/06: 2.2' de 2010 a 2026)
+    # WISE 0855: pm −8.12"/yr en RA → en 26 años se corre ~3.5' al oeste (docs/research/06: 2.2' de 2010 a 2026)
     t = Target(133.818908, -7.247048, 2000.0, -8.1237, 0.6732)
     ra, dec = t.at(2026.0)
     assert ra < t.ra and abs((t.ra - ra) * 3600 * np.cos(np.radians(dec)) - 8.1237 * 26) < 1.0

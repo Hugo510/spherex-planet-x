@@ -1,7 +1,7 @@
 """Cutout por HTTP Range sobre el bucket público de SPHEREx, con fallback al cutout service de IRSA.
 
 Origen: poc/04_s3_range.py (walk de cabeceras HDU por HDU, lectura de filas completas de IMAGE/FLAGS/VARIANCE/ZODI y de
-la tabla WCS-WAVE, MEF en memoria con CRPIX corregido). Validado píxel-idéntico al cutout service (docs/06 §9).
+la tabla WCS-WAVE, MEF en memoria con CRPIX corregido). Validado píxel-idéntico al cutout service (docs/research/06 §9).
 El PSF/EPSF (99.7 % del archivo) nunca se baja.
 """
 

@@ -1,6 +1,6 @@
 """Veredicto espectral de una resta A−B.
 
-Medido en la PoC (docs/06 §8, 9 nov 2026) sobre 153 pares de una visita de WISE 0855 en D5:
+Medido en la PoC (docs/research/06 §8, 9 nov 2026) sobre 153 pares de una visita de WISE 0855 en D5:
 el fondo se resta a RMS/ruido 0.80–0.87; en estrellas el residuo es un piso de ~4 % del flujo (remuestreo)
 más ~1.4 % por canal de separación (Rayleigh-Jeans predice 1.8 %/canal): 8 % a 8 canales, 25 % a 16.
 """

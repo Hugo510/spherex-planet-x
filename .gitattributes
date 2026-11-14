@@ -1,4 +1,15 @@
 * text=auto eol=lf
 *.png binary
 *.gif binary
+*.webp binary
+*.mp3 binary
+*.mp4 binary
 *.fits binary
+# Datos y artefactos generados: fuera de las estadísticas de lenguaje y de los diffs por defecto
+apps/web/public/showcase/** linguist-generated
+apps/web/public/limits/** linguist-generated
+apps/web/public/audio/** linguist-generated
+apps/api/openapi.json linguist-generated
+packages/shared/src/api.d.ts linguist-generated
+pnpm-lock.yaml linguist-generated
+docs/research/** linguist-documentation

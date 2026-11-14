@@ -14,7 +14,7 @@ Uso:
 Salida en ./out/<target>/ (o --out): frames/*.png, blink_D<n>.gif, coadd/*.png, coadd_D<n>.gif,
 frames.json (metadata por cuadro y por coadd, incl. posición esperada, centroide y flujo de apertura).
 
-Hallazgos ya incorporados (ver docs/06-hallazgos-poc.md):
+Hallazgos ya incorporados (ver docs/research/06-hallazgos-poc.md):
   - La escala de píxel de SPHEREx es 6.15"/px (no 0.615"). Un cutout de 0.05° son 29×29 px.
   - La posición del objeto se propaga con su movimiento propio a la época media de las exposiciones
     elegidas; la malla de salida se centra ahí y es la misma para todos los cuadros.
@@ -58,13 +58,13 @@ TAP_URL = "https://irsa.ipac.caltech.edu/TAP"
 IRSA_BASE = "https://irsa.ipac.caltech.edu/"
 PIXSCALE_ARCSEC = 6.15  # medido en la WCS del cutout: 6.14 × 6.15 "/px (2040 px ≈ 3.5°)
 # 1 MJy/sr en un píxel de 6.15" = 1e6 Jy/sr × (6.15/206265)² sr = 8.89e-4 Jy = 889 µJy.
-# Aproximación con píxel uniforme; el producto final usará solid_angle_pixel_map (docs/02).
+# Aproximación con píxel uniforme; el producto final usará solid_angle_pixel_map (docs/research/02).
 UJY_PER_MJYSR_PX = 1e6 * (PIXSCALE_ARCSEC / 206264.806) ** 2 * 1e6
 VERSION_RE = re.compile(r"l2b(?:_retry)?-v\d+-\d+-\d+")
 RELEASE_RE = re.compile(r"spherex/(qr\d+)/")
 CACHE_DIR = Path("out") / "cache"
 
-# Bits de FLAGS que ocultamos en display (ver docs/02): overflow, sur_error, phantom, reference,
+# Bits de FLAGS que ocultamos en display (ver docs/research/02): overflow, sur_error, phantom, reference,
 # nonfunc, missing, hot, cold, nonlinear, persist
 MASK_BITS = [1, 2, 4, 5, 6, 9, 10, 11, 15, 17]
 MASK = sum(1 << b for b in MASK_BITS)

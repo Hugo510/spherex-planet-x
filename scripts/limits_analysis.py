@@ -3,7 +3,7 @@
 1. Inyección-recuperación: fuentes sintéticas (PSF gaussiana con FWHM del header `PSF_FWHM`) en tres coadds reales,
    detección por S/N ≥ 5 en apertura r = 2.5 px con recentrado ≤ 1 px → completitud por magnitud AB.
 2. Movimiento propio medido (ajuste lineal a los centroides por visita del showcase) vs Gaia/Kirkpatrick, con error.
-3. Tabla de residuo por Δλ (medida en la PoC del 9 nov 2026, docs/06 §8) y límites que no se ven.
+3. Tabla de residuo por Δλ (medida en la PoC del 9 nov 2026, docs/research/06 §8) y límites que no se ven.
 4. Field Guide: recortes reales con bits OVERFLOW/BLOOM, DICHROIC, SNOWBALL, STREAK, PERSIST, GHOST pintados.
 
 Uso: python scripts/limits_analysis.py   (requiere cutouts en cache y el showcase precomputado)
@@ -258,9 +258,9 @@ def pm_block() -> list[dict]:
     return out
 
 
-# ---------------------------------------------------------------- 3. tablas medidas en la PoC (docs/06 §8, 9 nov 2026)
+# ---------------------------------------------------------------- 3. tablas medidas en la PoC (docs/research/06 §8, 9 nov 2026)
 DELTA_LAMBDA = {
-    "source": "PoC 9 nov 2026 (docs/06 §8): visita 2025-11-07 de WISE 0855 en D5, 18 exposiciones en 17 canales (3.815→4.402 µm), malla 0.2° (117 px), 153 pares, 5 estrellas Gaia G 10.2–13.9 con S/N > 5",
+    "source": "PoC 9 nov 2026 (docs/research/06 §8): visita 2025-11-07 de WISE 0855 en D5, 18 exposiciones en 17 canales (3.815→4.402 µm), malla 0.2° (117 px), 153 pares, 5 estrellas Gaia G 10.2–13.9 con S/N > 5",
     "rows": [
         {"delta_channels": "0–1", "delta_lambda_um": "0.02–0.04", "pairs": 19, "bg_rms_over_noise": 0.80, "star_rms_over_noise_median": 2.8, "star_rms_over_noise_max": 32, "residual_fraction": "4–7 %"},
         {"delta_channels": "2", "delta_lambda_um": "0.072", "pairs": 17, "bg_rms_over_noise": 0.80, "star_rms_over_noise_median": 3.7, "star_rms_over_noise_max": 27, "residual_fraction": "4.1 %"},
@@ -273,10 +273,10 @@ DELTA_LAMBDA = {
     "rule": {"ok_max": 2, "warn_max": 8},
 }
 NOT_VISIBLE = [
-    {"what": "parallax", "value": "WISE 0855 0.44″ → 0.07 px; Barnard 0.55″ → 0.09 px", "limit": "centroide por visita a 0.1–0.3 px (PoC): no medible", "source": "docs/06 §4"},
+    {"what": "parallax", "value": "WISE 0855 0.44″ → 0.07 px; Barnard 0.55″ → 0.09 px", "limit": "centroide por visita a 0.1–0.3 px (PoC): no medible", "source": "docs/research/06 §4"},
     {"what": "planet_nine", "value": "P9 predicho V ≈ 20–22, W2 ≳ 18 mag; límite 50 % del coadd por visita AB ≈ 17–18 (ver inyección)", "limit": "3–5 mag por debajo del límite de una visita", "source": "Batygin & Brown 2019; inyección-recuperación de esta página"},
     {"what": "saturation", "value": "AB ≈ 11.5 / 11.5 / 11.3 / 11.7 / 10.2 / 9.75 (D1–D6)", "limit": "OVERFLOW (bit 1) y BLOOM (bit 26) se pintan y se cuentan; la apertura no es fiable", "source": "Explanatory Supplement QR v2.0 §3.2.1 (umbrales por banda); verificado en Barnard D2, R Dra, RW Aur"},
-    {"what": "motion_per_visit", "value": "Barnard 1.7 px/año, WISE 0855 1.3 px/año: entre dos visitas de la misma temporada < 0.1 px", "limit": "el movimiento solo se ve comparando visitas separadas ≥ 1 año (y con la referencia de 2010)", "source": "docs/06 §4; medición de esta página"},
+    {"what": "motion_per_visit", "value": "Barnard 1.7 px/año, WISE 0855 1.3 px/año: entre dos visitas de la misma temporada < 0.1 px", "limit": "el movimiento solo se ve comparando visitas separadas ≥ 1 año (y con la referencia de 2010)", "source": "docs/research/06 §4; medición de esta página"},
 ]
 
 

@@ -1,133 +1,96 @@
-# El comparador honesto de SPHEREx · *The honest SPHEREx comparator*
+# The Honest SPHEREx Comparator
 
-**NASA Space Apps Challenge 2026 · reto "Planet X and SPHEREx" (Advanced) · construido el 14–15 de noviembre de 2026**
+[![CI](https://github.com/Hugo510/spherex-planet-x/actions/workflows/ci.yml/badge.svg)](https://github.com/Hugo510/spherex-planet-x/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![NASA Space Apps 2026](https://img.shields.io/badge/NASA%20Space%20Apps-2026-0b3d91.svg)](https://www.spaceappschallenge.org/)
 
-> SPHEREx fotografía todo el cielo en 102 colores infrarrojos, pero cada píxel ve un color distinto: un simple
-> "antes y después" miente. Este visor es el comparador honesto: cada cuadro muestra su λ real, cada visita se
-> colapsa en un coadd ponderado por su varianza, cada resta pasa un veredicto espectral, cada punto se mide en
-> µJy con su error y se cruza con Gaia DR3, CatWISE2020, AllWISE, SIMBAD y los asteroides conocidos.
-> **Lo que no se puede ver, lo decimos con números.** No prometemos encontrar el Planeta X.
+*Versión en español: [README.es.md](README.es.md).*
 
-- Demo pública: **ver `docs/DEPLOY.md`** (Vercel, sitio estático; el proyecto se crea desde la cuenta del equipo).
-- Textos de la plataforma: `docs/SUBMISSION.md`. Guion del video y slides: `docs/DEMO.md`. Decisiones con hora UTC: `docs/DECISIONES.md`.
-- Video de 30 s para la plataforma: `docs/demo/demo.mp4` (subtítulos EN); GIF: `docs/demo/demo.gif`; capturas en `docs/demo/shot_*.png`.
+A public, bilingual viewer for NASA's **SPHEREx** all-sky spectral images, built for the Space Apps 2026 challenge
+*Planet X and SPHEREx*. SPHEREx photographs the whole sky in 102 infrared colours, but every pixel sees a different
+wavelength, so a naive "before and after" lies. This viewer makes the comparison honest:
 
-![Ceres cruzando el campo en 3.3 h](docs/demo/shot_ceres_1.png)
+- **every frame prints its real λ**, detector, UTC date, release (QR2/QR3/DR1 with DOI) and pipeline version;
+- **every visit is a coadd** (exposures < 1 day apart, weighted by 1/VARIANCE, zodiacal model subtracted) and, inside a visit, the exposures form a navigable **λ ladder**;
+- **every subtraction passes a spectral verdict** (ok ≤ 2 channels, warn 3–8, block > 8) based on a residual measured on real data: 4 % + 1.4 % per channel;
+- **saturation is painted and counted**, never hidden;
+- **every point can be cross-matched** with Gaia DR3 (propagated to the frame date), CatWISE2020, AllWISE, SIMBAD and JPL's known asteroids (`sb_ident` with SPHEREx's own state vector);
+- **what cannot be seen is stated with numbers**: parallax (0.07 px), Planet Nine (3–5 mag below the single-visit limit), saturation, completeness by magnitude and by velocity.
 
-## Qué hace
+We do not promise to find Planet X.
 
-| Pieza | Qué muestra | Dónde |
-|---|---|---|
-| **Línea de tiempo por visita** | Exposiciones separadas < 1 día → un coadd 1/VARIANCE con ZODI restado. Dentro de la visita, la **escalera de λ** (una exposición = un ancho de banda) | `/view` |
-| **λ impresa en cada cuadro** | λ (exacta o min–max–media), detector, fecha UTC, release (QR2/QR3/DR1 + DOI), versión l2b, versión de pipeline | etiqueta del cuadro |
-| **Veredicto espectral** | `ok` ≤ 2 canales · `warn` 3–8 · `block` > 8, con el residuo esperado (4 % + 1.4 %/canal, medido) | modo A − B |
-| **Saturación pintada** | OVERFLOW (bit 1) y BLOOM (bit 26) en magenta, contados en la apertura, nunca enmascarados | cuadro + etiqueta |
-| **Referencia de 2010** | AllWISE W2 (IRSA) reproyectado a la misma malla: 15 años de movimiento propio píxel a píxel | primer cuadro de la secuencia |
-| **¿Qué hay aquí?** | Gaia DR3 (propagado a la fecha), CatWISE2020, AllWISE, SIMBAD, JPL `sb_ident` con el vector de estado de SPHEREx → `known_star / known_ir_source / known_sso / candidate`; export CSV y borrador ADES | panel lateral |
-| **Espectro y curva de luz** | Fotometría de apertura por exposición y por visita en µJy con barras de error (uPlot) | panel lateral |
-| **Limits & Method** | Residuo por Δλ, pm medido vs Gaia, inyección-recuperación en coadds reales, lo que no se ve, Field Guide de artefactos reales | `/limits` |
-| **Aula** | Explicación por objeto en ES/EN | panel lateral |
-| **Qué mirar primero** | Cambios detectados solo entre exposiciones del mismo canal (|Δ| = 0, veredicto ok por construcción), S/N ≥ 6, cruzados con los catálogos; cada uno marca si se repite o si es una sola exposición (posible artefacto) | panel lateral |
-| **Misma λ** | Un clic elige como B la exposición de otra visita con el canal más cercano al de A | modo A − B |
-| **Traza** | Máximo píxel a píxel de visitas y escalera actual: Ceres aparece en sus dos posiciones | modo |
-| **Curva de luz a λ fija** | Exposiciones del mismo canal (±1) a lo largo del tiempo: la curva honesta frente a la «por visita» | panel espectro |
-| **Control con estrellas de campo** | El mismo ajuste de pm aplicado a estrellas Gaia del campo: su |pm| residual es el piso sistemático | `/limits` |
-| **Completitud por velocidad** | Movers sintéticos recuperados a ciegas en los coadds reales de WISE 0855 D5 | `/limits` |
+![Ceres crossing the field within one visit](docs/demo/shot_ceres_1.png)
 
-Objetos del showcase (precomputados, < 2 s): WISE 0855−0714, ε Indi Ba/Bb, estrella de Barnard, RW Aur, R Dra,
-asteroides (1) Ceres, (2) Palas y (7) Iris en cuadratura, dos posiciones del campo profundo del polo norte eclíptico,
-una variable roja no saturada del campo profundo (Gaia DR3 2257667121267351296, 48 de sus ~150 visitas) y un campo aleatorio.
+## Features
 
-## Resultados que respaldan la tesis (datos reales, 14 nov 2026)
+| | |
+|---|---|
+| Viewer | Blink by visit, λ ladder, A−B with verdict, "same λ" pairing, trail (pixel-wise max), asinh stretch with per-detector shared clip, cividis/gray, keyboard navigation, pixel picking, full state in the URL, `?embed=1`. |
+| 2010 reference | AllWISE W2 (IRSA) reprojected onto the same pixel grid: 15 years of proper motion. |
+| What is here? | Neighbours within 20″ from five catalogues, verdict `known_star / known_ir_source / known_sso / candidate`, CSV and ADES draft export. |
+| What to look at first | Changes detected only between same-channel exposures of different visits, cross-matched and flagged if seen in a single exposure. |
+| Spectrum & light curve | Aperture photometry in µJy (r = 2.5 px, annulus 5–8 px, solid-angle map), per visit and at fixed λ. |
+| Limits & Method | Δλ residual table, measured proper motion vs catalogue with a field-star control, injection–recovery by magnitude and velocity, Field Guide of real artefacts. |
+| Classroom | Per-object explanations in ES/EN with pre-generated narration. |
 
-- WISE 0855 en D5: 6 visitas, 430–510 µJy por coadd (W2 = 13.9 ⇒ ≈ 430 µJy), movimiento 1.2–1.7 ± 0.3 px/año vs 1.33 esperado;
-  estrellas de campo de control: 0.03–0.11 px/año.
-- ε Indi Ba/Bb en D2: 14 visitas sin saturación, 0.72 ± 0.04 px/año vs 0.76; su espectro muestra la banda de agua a 1.39 µm.
-- Residuo de la resta (PoC 9 nov): fondo 0.80–0.87 del ruido; estrellas 4 % + 1.4 %/canal; 25 % a 16 canales.
-- Completitud 50 % por inyección: AB 17.7 (WISE 0855 D5, n = 8), 18.5 (ε Indi B D2 y Barnard D3). Por velocidad (a ciegas):
-  70–80 % hasta 3 px/año a 1 200 µJy; cae a 4 px/año al salir de la caja de búsqueda.
-- Variable roja del campo profundo: 362 visitas, 45–55 mJy sin saturar, curva de luz a λ fija.
-- Paralaje: 0.07–0.09 px, no medible. Planeta Nueve: 3–5 mag por debajo del límite de una visita.
+Showcase (precomputed, loads in < 2 s): WISE 0855−0714, ε Indi Ba/Bb, Barnard's Star, RW Aur, R Dra, asteroids (1) Ceres,
+(2) Pallas and (7) Iris, two North Ecliptic Pole deep-field positions, a non-saturated red variable in the deep field and a random field.
+Live mode (any RA/Dec) runs on the FastAPI backend deployed on Modal.
 
-## Estructura
+## Results on real data (14 Nov 2026)
+
+- WISE 0855 in D5: 6 visits, 430–510 µJy per coadd (W2 = 13.9 ⇒ ≈ 430 µJy), motion 1.2–1.7 ± 0.3 px/yr vs 1.33 expected; field-star control 0.03–0.11 px/yr.
+- ε Indi Ba/Bb in D2: 14 visits without saturation, 0.72 ± 0.04 px/yr vs 0.76; its spectrum shows the 1.39 µm water band.
+- Subtraction residual (153 real pairs): background 0.80–0.87 of the propagated noise; stars 4 % + 1.4 %/channel, 25 % at 16 channels.
+- 50 % completeness by injection: AB 17.7 (WISE 0855 D5, n = 8), 18.5 (ε Indi B D2, Barnard D3). Blind recovery of synthetic movers: 70–80 % up to 3 px/yr at 1 200 µJy.
+
+## Repository layout
 
 ```
-apps/web        Next.js 15 + TypeScript (App Router, Tailwind 4, nuqs, next-intl, aladin-lite 3.8.2, uPlot, fast-png). Export estático.
-apps/api        Python 3.12 + FastAPI, Clean Architecture: domain/ (modelos, flags, veredicto, fotometría) · usecases/ (build_visits,
-                reproyección, serialización, diff, known) · adapters/ (irsa_tap, s3_range, spherex_fits, allwise_ref, simbad, jpl,
-                frame_store, png16) · api/ (rutas + esquemas Pydantic). modal_app.py para el modo en vivo.
-packages/shared Tipos TS generados del OpenAPI (openapi-typescript) y constantes.
-scripts/        precompute.py (showcase) · find_asteroid_fields.py · find_changes.py (cambios a λ igual) · limits_analysis.py · og_image.py · record_demo.py
-docs/           DECISIONES.md · SUBMISSION.md · DEMO.md · DEPLOY.md · investigación previa 01–15 (8–9 nov)
-poc/            PoC de acceso a datos previa al evento (ver "Hackathon Journey")
+apps/web        Next.js 15 static site (App Router, Tailwind 4, nuqs, next-intl, aladin-lite 3.8.2, uPlot, fast-png)
+apps/api        Python 3.12 + FastAPI, Clean Architecture (domain / usecases / adapters / api); modal_app.py
+packages/shared TypeScript types generated from the OpenAPI contract
+scripts/        precompute · find_changes · limits_analysis · find_asteroid_fields · narration · og_image · record_demo · make_video
+docs/           DECISIONES.md (decision log, UTC) · SUBMISSION.md · DEMO.md (+ demo.mp4) · DEPLOY.md · research/ (pre-event)
+poc/            Pre-event proof of concept for data access (functions reused with attribution in the code)
 ```
 
-## Cómo correrlo
+## Getting started
+
+Requirements: Python ≥ 3.12 with [uv](https://docs.astral.sh/uv/), Node 22 with pnpm 9 (`corepack enable`).
 
 ```bash
-# Backend (Python ≥ 3.12)
-uv venv .venv && . .venv/bin/activate && uv pip install -e "apps/api[dev]"
-cd apps/api && uvicorn app.main:app --reload --port 8000      # http://localhost:8000/docs
+make setup          # Python venv + pnpm install
+make api            # http://localhost:8000/docs
+make web            # http://localhost:3000/es/
+make test && make lint
 ```
 
-```bash
-# Web (Node 22, pnpm 9)
-pnpm install && pnpm dev                                      # http://localhost:3000/es/
-# o export estático:
-pnpm build && python -m http.server 3000 --directory apps/web/out
-```
+Static export: `make build` → `apps/web/out`. Regenerate data: `make precompute`, `make changes`, `make limits`
+(network access to IRSA/S3/JPL required; cutouts are cached under `apps/api/.cache`). Deployment: [docs/DEPLOY.md](docs/DEPLOY.md).
 
-```bash
-# Showcase y Limits (requieren red hacia IRSA/S3/JPL; cache en apps/api/.cache)
-SPHEREX_CACHE_DIR=apps/api/.cache python scripts/precompute.py
-SPHEREX_CACHE_DIR=apps/api/.cache python scripts/limits_analysis.py
-```
+Set `NEXT_PUBLIC_API_URL` to the live API to enable any-RA/Dec mode; without it the site serves the showcase only.
 
-```bash
-# Tests
-pnpm test && pnpm typecheck && pnpm lint
-cd apps/api && pytest -q                 # SPHEREX_OFFLINE=1 salta los tests de red
-```
+## API (v2)
 
-Modo en vivo (cualquier RA/Dec): `cd apps/api && modal deploy modal_app.py` y poner la URL en `NEXT_PUBLIC_API_URL`.
-Sin API, el front muestra "modo en vivo no disponible" y sirve solo el showcase.
+`GET /api/visits` · `GET /api/diff?a&b` · `GET /api/spectrum` · `GET /api/lightcurve` · `GET /api/known` · `GET /api/health`.
+Builds run in the background: while a field is being built the API answers `202` with progress. Contract: `apps/api/openapi.json`.
 
-## Contrato de API (v2)
+## Data, credits and licence
 
-`GET /api/visits?name|ra,dec,epoch,pmra,pmdec&fov&det&release` · `GET /api/diff?a&b` · `GET /api/spectrum` ·
-`GET /api/lightcurve` · `GET /api/known?ra&dec&r_arcsec&mjd` · `GET /api/health`. OpenAPI en `apps/api/openapi.json`.
+- **SPHEREx Quick Release 2**, NASA/IPAC Infrared Science Archive, DOI [10.26131/IRSA652](https://doi.org/10.26131/IRSA652); **Quick Release 3**, DOI [10.26131/IRSA662](https://doi.org/10.26131/IRSA662); **Data Release 1** (Nov 2026 reprocessing of QR2; cited with the QR2 DOI until IRSA publishes its own).
+- "This publication makes use of data products from the SPHEREx mission, funded by NASA and operated by JPL/Caltech; data are hosted by the NASA/IPAC Infrared Science Archive."
+- Access: IRSA TAP (`spherex.plane`, `spherex.artifact`, `gaia_dr3_source`, `catwise_2020`, `allwise_p3as_psd`), the public `s3://nasa-irsa-spherex` bucket (AWS Open Data) by HTTP Range, the IRSA cutout service, the AllWISE atlas via IBE.
+- Gaia DR3 (ESA/Gaia/DPAC) · CatWISE2020 (Marocco et al. 2021) · AllWISE (Cutri et al. 2013) · SIMBAD and Aladin Lite (CDS, Strasbourg; Aladin Lite is LGPL-3.0) · JPL Solar System Dynamics (Horizons, `sb_ident`).
+- UI imagery: NASA/JPL-Caltech (PIA26531, PIA26352, public domain). Fonts: Instrument Serif, Space Grotesk, Inter, JetBrains Mono (OFL).
+- Narration: ElevenLabs text-to-speech of our own texts, generated at build time; no AI-generated science.
+- Software: astropy, reproject, photutils, scipy, numpy, pyvo, FastAPI, Next.js, uPlot, fast-png, Pillow, Playwright, Modal, Vercel.
 
-## Datos y atribución
+Licensed under the [MIT License](LICENSE). See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [CHANGELOG.md](CHANGELOG.md) and [CITATION.cff](CITATION.cff).
 
-- **SPHEREx Quick Release 2**, NASA/IPAC Infrared Science Archive, DOI [10.26131/IRSA652](https://doi.org/10.26131/IRSA652).
-- **SPHEREx Quick Release 3**, DOI [10.26131/IRSA662](https://doi.org/10.26131/IRSA662).
-- **SPHEREx Data Release 1** (nov 2026, reprocesamiento de QR2; se cita con el DOI de QR2 mientras IRSA no publique uno propio).
-- "This publication makes use of data products from the SPHEREx mission, funded by NASA and operated by JPL/Caltech;
-  data are hosted by the NASA/IPAC Infrared Science Archive."
-- Acceso: IRSA TAP (`spherex.plane`, `spherex.artifact`, `gaia_dr3_source`, `catwise_2020`, `allwise_p3as_psd`), bucket
-  público `s3://nasa-irsa-spherex` (AWS Open Data) por HTTP Range, cutout service de IRSA, atlas AllWISE por IBE.
-- Gaia DR3 (ESA/Gaia/DPAC); CatWISE2020 (Marocco et al. 2021); AllWISE (Cutri et al. 2013); SIMBAD y Aladin Lite (CDS,
-  Estrasburgo; Aladin Lite LGPL-3.0); JPL Solar System Dynamics (Horizons, sb_ident).
-- Software: astropy, reproject, photutils, scipy, numpy, pyvo, FastAPI, Next.js, uPlot, fast-png, Pillow, Playwright, Modal.
-- Narración del modo aula y voz del video: ElevenLabs (`scripts/narration.py`, clave solo como variable de entorno en build;
-  el sitio sirve MP3 ya generados en `apps/web/public/audio/`). Lee nuestros propios textos; nada científico generado por IA.
-- Imágenes de la interfaz: NASA/JPL-Caltech, biblioteca de imágenes de NASA (dominio público): PIA26531 «SPHEREx in Orbit (Artist's Concept)»
-  y PIA26352 «SPHEREx's Dust Cloud Reveal»; recortadas y convertidas a WebP en `apps/web/public/img/`. Tipografías Instrument Serif,
-  Space Grotesk, Inter y JetBrains Mono (Google Fonts, OFL) autoalojadas por `next/font`.
-- Funciones reutilizadas de la PoC previa (`poc/`): consulta TAP (`01_find_epochs.py`), cutout por Range (`04_s3_range.py`),
-  λ por píxel, coadd 1/VARIANCE y fotometría (`02_fetch_cutouts.py`); marcadas con "Origen: poc/..." en el código.
+## Hackathon journey
 
-## Hackathon Journey (honesto)
-
-- **8–9 nov 2026 (antes del evento)**: investigación (`docs/01–15`) y una PoC de acceso a datos (`poc/`) que midió la escala
-  de píxel real (6.15″), la cadencia por visita, el residuo de la resta por Δλ y la viabilidad del cutout por HTTP Range.
-  No había producto: ni visor, ni API, ni showcase.
-- **14 nov 2026**: todo el producto se construyó durante el evento por fases (F0–F10, `docs/DECISIONES.md`) con Claude Code
-  como asistente de programación. Sorpresas del día: IRSA ya sirve **DR1** (reprocesamiento de QR2) y comprime FLAGS con
-  Rice; hips2fits y SkyView no respondieron, así que la referencia de 2010 sale del atlas AllWISE de IRSA; SPHEREx no apunta
-  a la oposición, así que los asteroides del showcase están en cuadratura.
-- Lo que no hicimos a propósito: "modo Planeta X" por paralaje (0.07 px: no medible), órbitas, juego. Lo decimos en Limits.
-
-## Licencia
-
-MIT (`LICENSE`).
+Research and a data-access proof of concept were done on 8–9 Nov 2026 (`docs/research/`, `poc/`): they measured the real
+pixel scale (6.15″), the per-visit cadence, the Δλ subtraction residual and the viability of HTTP Range cutouts. The product
+itself was built during the event (14–15 Nov 2026) with Claude Code as a coding assistant; every decision is logged with a UTC
+timestamp in [docs/DECISIONES.md](docs/DECISIONES.md).

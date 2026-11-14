@@ -198,3 +198,13 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   narración de cinco frases cortas con ElevenLabs (voz Daniel, `speed` 1.15) y un `atempo` global de 1.09× para caber en
   29.4 s, subtítulos en inglés quemados con Pillow y `demo.srt` aparte, montaje con ffmpeg (imageio-ffmpeg, H.264 + AAC,
   1.3 MB). La locución larga de 57 s (`voiceover_en.mp3`) queda como material; el video de la plataforma es `demo.mp4`.
+
+- **2026-11-14 19:50 UTC** — Limpieza del repositorio para entrega: la investigación previa (`01–15`, `research_notes/`)
+  pasa a `docs/research/` y `docs/README.md` se vuelve el índice de la documentación del producto; `scripts/asteroid_fields.json`
+  pasa a `scripts/data/`; se elimina `docs/demo/voiceover_en.mp3` (locución larga que no se usa en el video). Se añaden
+  `README.md` en inglés con badges (el español queda en `README.es.md`), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
+  `SECURITY.md`, `CHANGELOG.md` (0.1.0), `CITATION.cff` con los DOI de QR2/QR3, plantillas de issue y PR con checklist de
+  honestidad, `CODEOWNERS`, `dependabot.yml`, `.editorconfig`, `.nvmrc`, `.python-version` y el `Makefile` que `CLAUDE.md`
+  ya anunciaba. `ruff.toml` en la raíz es la única config de lint (se quita la duplicada de `pyproject.toml`; `poc/` se
+  excluye por ser histórico). Metadatos de licencia, repositorio y `engines` en los `package.json` y `pyproject.toml`.
+  `.gitattributes` marca showcase, limits, audio, OpenAPI y tipos generados como `linguist-generated`.

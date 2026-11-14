@@ -815,7 +815,7 @@
   ]
  },
  "delta_lambda": {
-  "source": "PoC 9 nov 2026 (docs/06 \u00a78): visita 2025-11-07 de WISE 0855 en D5, 18 exposiciones en 17 canales (3.815\u21924.402 \u00b5m), malla 0.2\u00b0 (117 px), 153 pares, 5 estrellas Gaia G 10.2\u201313.9 con S/N > 5",
+  "source": "PoC 9 nov 2026 (docs/research/06 \u00a78): visita 2025-11-07 de WISE 0855 en D5, 18 exposiciones en 17 canales (3.815\u21924.402 \u00b5m), malla 0.2\u00b0 (117 px), 153 pares, 5 estrellas Gaia G 10.2\u201313.9 con S/N > 5",
   "rows": [
    {
     "delta_channels": "0\u20131",
@@ -887,7 +887,7 @@
    "what": "parallax",
    "value": "WISE 0855 0.44\u2033 \u2192 0.07 px; Barnard 0.55\u2033 \u2192 0.09 px",
    "limit": "centroide por visita a 0.1\u20130.3 px (PoC): no medible",
-   "source": "docs/06 \u00a74"
+   "source": "docs/research/06 \u00a74"
   },
   {
    "what": "planet_nine",
@@ -905,7 +905,7 @@
    "what": "motion_per_visit",
    "value": "Barnard 1.7 px/a\u00f1o, WISE 0855 1.3 px/a\u00f1o: entre dos visitas de la misma temporada < 0.1 px",
    "limit": "el movimiento solo se ve comparando visitas separadas \u2265 1 a\u00f1o (y con la referencia de 2010)",
-   "source": "docs/06 \u00a74; medici\u00f3n de esta p\u00e1gina"
+   "source": "docs/research/06 \u00a74; medici\u00f3n de esta p\u00e1gina"
   }
  ],
  "field_guide": [

@@ -9,5 +9,15 @@
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "gen:types": "pnpm --filter @spherex/shared gen"
+  },
+  "description": "The Honest SPHEREx Comparator \u2014 a public viewer for SPHEREx images with the real \u03bb on every frame, per-visit coadds, a spectral verdict before subtracting and catalogue cross-matches (NASA Space Apps 2026).",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hugo510/spherex-planet-x.git"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=9"
   }
 }

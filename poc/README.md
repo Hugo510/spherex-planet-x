@@ -4,7 +4,7 @@ Objetivo: antes del hackathon, confirmar que podemos ir de (RA, Dec) a un blink 
 sin almacenar FITS completos. Todo contra servicios públicos de IRSA; no requiere cuenta.
 
 **Estado (8 nov 2026): validada contra IRSA real.** Resultados y sorpresas en
-`docs/06-hallazgos-poc.md`. Las dos más importantes: la escala de píxel de SPHEREx es **6.15"/px**
+`docs/research/06-hallazgos-poc.md`. Las dos más importantes: la escala de píxel de SPHEREx es **6.15"/px**
 (no 0.615") y las coordenadas de catálogo de los objetos de alto movimiento propio están a varios
 minutos de arco de su posición en 2025–2026, por lo que `targets.py` ahora lleva pm y época.
 
@@ -28,7 +28,7 @@ python 02_fetch_cutouts.py wise0855 --det 5 6 --per-visit 1 --max 16   # 1 cuadr
 python 02_fetch_cutouts.py barnard --det 2 --per-visit 1 --max 14
 python 02_fetch_cutouts.py wise0855 --det 5 6 --max 12   # sin --per-visit: toma las primeras 12 en el tiempo (casi todas de UNA visita)
 python 02_fetch_cutouts.py wise0855 --det 5 6 --coadd-visit --max 200 --out out/wise0855_coadd56   # coadd 1/VAR por visita
-python 03_delta_lambda_residual.py wise0855 --det 5 --size 0.2   # residuo de la resta vs Δλ (brecha 12 de docs/13)
+python 03_delta_lambda_residual.py wise0855 --det 5 --size 0.2   # residuo de la resta vs Δλ (brecha 12 de docs/research/13)
 python 04_s3_range.py wise0855 --det 5 --n 4                     # cutout por HTTP Range sobre S3 vs cutout service
 ```
 

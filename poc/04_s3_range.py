@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PoC 4 — Cutout "a mano" por HTTP Range sobre el bucket público de SPHEREx (brecha 15 de docs/13).
+"""PoC 4 — Cutout "a mano" por HTTP Range sobre el bucket público de SPHEREx (brecha 15 de docs/research/13).
 
 El servicio de cutouts de IRSA no permite omitir HDUs y devuelve siempre ~5 MB porque incluye la PSF
 (99.7 % del peso). Alternativa: leer del FITS completo (71.6 MB) SOLO los bytes de la región que

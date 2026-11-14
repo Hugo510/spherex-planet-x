@@ -46,7 +46,7 @@ def ephemeris(ast: str) -> list[dict]:
 
 def main():
     found = []
-    out = Path(__file__).with_name("asteroid_fields.json")
+    out = Path(__file__).with_name("data") / "asteroid_fields.json"
     for ast in CANDIDATES:
         try:
             eph = ephemeris(ast)

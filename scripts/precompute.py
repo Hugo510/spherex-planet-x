@@ -85,7 +85,7 @@ FIELDS: list[dict] = [
 
 
 def asteroid_fields() -> list[dict]:
-    p = ROOT / "scripts" / "asteroid_fields.json"
+    p = ROOT / "scripts" / "data" / "asteroid_fields.json"
     if not p.exists():
         return []
     best: dict[str, dict] = {}

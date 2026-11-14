@@ -54,5 +54,5 @@ This product was built during the hackathon (14–15 November 2026) with **Claud
 - Batygin & Brown 2019 (Planet Nine review) — context only; we do not claim any detection.
 - Software: astropy, reproject, photutils, scipy, numpy, pyvo, FastAPI, Next.js, uPlot, fast‑png, Pillow, Playwright, Modal, Vercel.
 - UI imagery: NASA/JPL‑Caltech, NASA Image and Video Library (public domain): PIA26531 "SPHEREx in Orbit (Artist's Concept)" and PIA26352 "SPHEREx's Dust Cloud Reveal". Fonts: Instrument Serif, Space Grotesk, Inter, JetBrains Mono (OFL).
-- Prior research and proof of concept (8–9 Nov 2026, before the event): `docs/01–15` and `poc/` in this repository.
+- Prior research and proof of concept (8–9 Nov 2026, before the event): `docs/research/01–15` and `poc/` in this repository.
 - Source code: https://github.com/Hugo510/spherex-planet-x (MIT).

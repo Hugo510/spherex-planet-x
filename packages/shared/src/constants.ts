@@ -1,4 +1,4 @@
-/** Escala de píxel de la imagen SPHEREx (no la de la PSF sobremuestreada). docs/06 de la investigación previa. */
+/** Escala de píxel de la imagen SPHEREx (no la de la PSF sobremuestreada). docs/research/06 de la investigación previa. */
 export const PIXSCALE_ARCSEC = 6.15;
 
 /** Bits de FLAGS (Explanatory Supplement QR v2.0, tabla 16). */

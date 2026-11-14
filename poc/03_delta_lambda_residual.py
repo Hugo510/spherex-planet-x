@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PoC 3 — ¿Cuánto residuo deja restar dos exposiciones SPHEREx de λ distinta? (brecha 12 de docs/13)
+"""PoC 3 — ¿Cuánto residuo deja restar dos exposiciones SPHEREx de λ distinta? (brecha 12 de docs/research/13)
 
 Toma la visita con más exposiciones de un detector, baja (o lee de cache) todas sus exposiciones,
 las reproyecta a la malla común (imagen y varianza), y para cada par (a, b) separado Δ canales:

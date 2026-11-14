@@ -1,5 +1,13 @@
+# Configuración única de ruff para apps/api, scripts/ y poc/.
 line-length = 120
 target-version = "py312"
+# poc/ es la prueba de concepto previa al evento: se conserva tal cual (histórica), sin lint.
+extend-exclude = ["poc"]
+force-exclude = true
+
 [lint]
 select = ["E", "F", "I", "W", "UP", "B"]
 ignore = ["B008", "E741", "E501"]
+
+[lint.isort]
+known-first-party = ["app"]

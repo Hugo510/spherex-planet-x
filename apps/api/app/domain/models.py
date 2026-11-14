@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from math import cos, radians
 
-PIXSCALE_ARCSEC = 6.15  # píxel de imagen SPHEREx (docs/06); la PSF sobremuestreada es 0.615"
+PIXSCALE_ARCSEC = 6.15  # píxel de imagen SPHEREx (docs/research/06); la PSF sobremuestreada es 0.615"
 OMEGA_MEDIAN_ARCSEC2 = 37.9  # ángulo sólido mediano por píxel; se usa si no hay solid_angle_pixel_map
 UJY_PER_MJYSR_ARCSEC2 = 23.504  # 1 MJy/sr × 1 arcsec² = 23.504 µJy
 DOI = {"qr1": "10.26131/IRSA629", "qr2": "10.26131/IRSA652", "qr3": "10.26131/IRSA662", "dr1": "10.26131/IRSA652"}

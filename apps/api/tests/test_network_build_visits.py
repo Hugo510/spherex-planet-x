@@ -30,7 +30,7 @@ def test_wise0855_d5_five_visits_and_motion():
     good = [v.meta.photometry for v in res.visits if v.meta.n_exp >= 5]
     assert all(p.saturated_px == 0 for p in good)
     med = np.median([p.flux_ujy for p in good])
-    assert 250 < med < 700, med  # ≈ 430 µJy (W2 = 13.9), docs/06 §10
+    assert 250 < med < 700, med  # ≈ 430 µJy (W2 = 13.9), docs/research/06 §10
 
 
 def test_epsindib_d2_five_visits_without_saturation():

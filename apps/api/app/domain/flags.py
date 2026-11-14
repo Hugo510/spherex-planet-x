@@ -1,4 +1,4 @@
-"""Bits de FLAGS de SPHEREx (Explanatory Supplement QR v2.0, tabla 16; bit 26 = BLOOM verificado en docs/06)."""
+"""Bits de FLAGS de SPHEREx (Explanatory Supplement QR v2.0, tabla 16; bit 26 = BLOOM verificado en docs/research/06)."""
 
 FLAG_BITS: dict[str, int] = {
     "TRANSIENT": 0, "OVERFLOW": 1, "SUR_ERROR": 2, "PHANTOM": 4, "REFERENCE": 5, "NONFUNC": 6,
@@ -12,7 +12,7 @@ def mask_of(*names: str) -> int:
     return sum(1 << FLAG_BITS[n] for n in names)
 
 
-# Saturación: se PINTA y se cuenta, nunca se enmascara para display (docs/06 §9 nov).
+# Saturación: se PINTA y se cuenta, nunca se enmascara para display (docs/research/06 §9 nov).
 SATURATION_MASK = mask_of("OVERFLOW", "BLOOM")
 # Píxeles que no deben entrar en fotometría ni coadd (bits "fatales"): incluye saturación.
 FATAL_MASK = mask_of(

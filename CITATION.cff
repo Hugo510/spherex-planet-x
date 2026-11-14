@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "The Honest SPHEREx Comparator"
+message: "If you use this software, please cite it and the SPHEREx data releases it builds on."
+type: software
+authors:
+  - name: "The Honest SPHEREx Comparator team (NASA Space Apps Challenge 2026)"
+repository-code: "https://github.com/Hugo510/spherex-planet-x"
+license: MIT
+version: 0.1.0
+date-released: "2026-11-14"
+keywords: [SPHEREx, IRSA, infrared, time-domain, proper-motion, NASA Space Apps]
+references:
+  - type: data
+    title: "SPHEREx Quick Release 2"
+    publisher: { name: "NASA/IPAC Infrared Science Archive" }
+    doi: 10.26131/IRSA652
+  - type: data
+    title: "SPHEREx Quick Release 3"
+    publisher: { name: "NASA/IPAC Infrared Science Archive" }
+    doi: 10.26131/IRSA662

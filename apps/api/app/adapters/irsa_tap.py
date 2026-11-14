@@ -1,6 +1,6 @@
 """Adapter TAP de IRSA (síncrono, CSV). Origen: poc/01_find_epochs.py (consulta spherex.artifact ⋈ spherex.plane).
 
-Reglas aprendidas en la PoC (docs/06, docs/13): el TAP mezcla releases (QR2/QR3 y, desde nov 2026, DR1); el release
+Reglas aprendidas en la PoC (docs/research/06, docs/research/13): el TAP mezcla releases (QR2/QR3 y, desde nov 2026, DR1); el release
 se lee de `obs_publisher_did`; IRSA rechaza ORDER BY con expresiones → ordenar en cliente; Gaia DR3, CatWISE2020 y
 AllWISE viven en el mismo TAP.
 """

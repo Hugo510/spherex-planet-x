@@ -1,4 +1,4 @@
-"""SIMBAD por TAP (CDS, con espejo de Harvard como fallback: desde algunas redes CDS no responde, docs/06)."""
+"""SIMBAD por TAP (CDS, con espejo de Harvard como fallback: desde algunas redes CDS no responde, docs/research/06)."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from math import cos, radians
 from app.adapters import cache, http
 from app.usecases.known import _sep_arcsec
 
-# Harvard primero: desde esta red (14 nov 2026) y desde México (docs/06) el TAP de CDS devuelve HTML en vez de VOTable.
+# Harvard primero: desde esta red (14 nov 2026) y desde México (docs/research/06) el TAP de CDS devuelve HTML en vez de VOTable.
 SIMBAD_TAP = ("https://simbad.harvard.edu/simbad/sim-tap/sync", "https://simbad.cds.unistra.fr/simbad/sim-tap/sync")
 
 
