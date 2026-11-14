@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0b0d12;
+  --fg: #e6e8ee;
+  --muted: #9aa3b2;
+  --accent: #7cc4ff;
+  --warn: #ffb454;
+  --block: #ff6b6b;
+  --sat: #ff2fa8;
+}
+
+html, body { background: var(--bg); color: var(--fg); }
+body { font-family: ui-sans-serif, system-ui, sans-serif; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }

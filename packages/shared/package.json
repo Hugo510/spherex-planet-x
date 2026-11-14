@@ -1,0 +1,18 @@
+{
+  "name": "@spherex/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "gen": "openapi-typescript ../../apps/api/openapi.json -o src/api.d.ts",
+    "lint": "echo skip",
+    "test": "echo skip",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.13.0",
+    "typescript": "^5.9.0"
+  }
+}

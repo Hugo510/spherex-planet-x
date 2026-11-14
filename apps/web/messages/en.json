@@ -1,0 +1,5 @@
+{
+  "app": { "title": "The honest SPHEREx comparator", "tagline": "Every frame with its real λ. Every visit, a coadd. Every subtraction, a verdict." },
+  "nav": { "view": "Viewer", "limits": "Limits & method", "status": "Status", "lang": "Español" },
+  "home": { "cta": "Open the viewer", "showcase": "Showcase objects" }
+}

@@ -1,5 +1,9 @@
 # Planet X and SPHEREx — NASA Space Apps 2026
 
+> **14 nov**: el producto se construye en este repo por fases (F0–F10). Ver `README.md` y `docs/DECISIONES.md`.
+> Arquitectura decidida: monorepo pnpm, `apps/web` (Next 15, export estático), `apps/api` (FastAPI, Clean Architecture),
+> `packages/shared` (tipos del OpenAPI), `scripts/precompute.py` → `apps/web/public/showcase/`.
+
 Equipo compitiendo en el reto **Planet X and SPHEREx** (Advanced). Hackathon: 14–15 nov 2026,
 hora de Ciudad de México. Recursos oficiales del reto salen el viernes 13 nov.
 

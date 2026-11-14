@@ -1,0 +1,5 @@
+{
+  "app": { "title": "El comparador honesto de SPHEREx", "tagline": "Cada cuadro con su λ real. Cada visita, un coadd. Cada resta, un veredicto." },
+  "nav": { "view": "Visor", "limits": "Límites y método", "status": "Estado", "lang": "English" },
+  "home": { "cta": "Abrir el visor", "showcase": "Objetos de muestra" }
+}

@@ -1,9 +1,17 @@
-"""Esqueleto. El producto se construye el 14–15 de noviembre. Solo /health para validar el deploy."""
+"""Punto de entrada FastAPI. Las rutas viven en app/api/routes.py (F2)."""
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="spherex-api", version="0.0.0")
+from app.api.routes import router
 
-
-@app.get("/health")
-def health() -> dict:
-    return {"status": "ok", "releases": ["qr2", "qr3"]}
+app = FastAPI(
+    title="SPHEREx honest comparator API",
+    version="0.1.0",
+    description=(
+        "Visitas, coadds, restas con veredicto espectral, espectros y cruce con catálogos "
+        "sobre SPHEREx QR2/QR3."
+    ),
+)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], allow_headers=["*"])
+app.include_router(router, prefix="/api")
