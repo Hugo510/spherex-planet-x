@@ -121,10 +121,14 @@ def build_visits(
     mjd_range: tuple[float, float] | None = None,
     max_visits: int | None = None,
     query_epoch: float | None = None,
+    refs: list | None = None,
 ) -> FieldResult:
-    # posición de consulta al TAP: a `query_epoch` si se da (asteroides: pm enorme), si no a 2026.0 (footprint de 3.5°)
-    ra_q, dec_q = target.at(query_epoch or epoch_ref or 2026.0)
-    refs = [r for r in irsa_tap.find_exposures(ra_q, dec_q, releases=releases) if r.detector in detectors]
+    # posición de consulta al TAP: a `query_epoch` si se da (asteroides: pm enorme), si no a 2026.0 (footprint de 3.5°).
+    # `refs` permite saltarse el TAP (p. ej. reconstruir un campo del showcase con los cutouts en cache).
+    if refs is None:
+        ra_q, dec_q = target.at(query_epoch or epoch_ref or 2026.0)
+        refs = irsa_tap.find_exposures(ra_q, dec_q, releases=releases)
+    refs = [r for r in refs if r.detector in detectors]
     if mjd_range:
         refs = [r for r in refs if mjd_range[0] <= r.mjd <= mjd_range[1]]
     if max_per_visit or max_visits:

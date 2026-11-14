@@ -113,10 +113,27 @@ def find_changes(res, known: dict, grid_naxis: int) -> list[dict]:
     return kept[:MAX_PER_FIELD]
 
 
+def _refs_from_index(d: Path) -> list | None:
+    """Reconstruye las ExposureRef de un campo precomputado (sin TAP) a partir de su index.json."""
+    from app.domain.models import ExposureRef
+
+    idx = json.loads((d / "index.json").read_text())
+    refs = []
+    for v in idx["visits"]:
+        for e in v["exposures"]:
+            uri = e["source_url"].replace("https://irsa.ipac.caltech.edu/", "")
+            refs.append(ExposureRef(uri=uri, obsid=e["obsid"], detector=e["detector"], mjd_start=e["mjd"] - 0.0007, mjd_end=e["mjd"] + 0.0007,
+                                    release=e["release"], l2b_version=e["l2b_version"], lambda_lo_um=0.0, lambda_hi_um=0.0))
+    return refs or None
+
+
 def _build(spec: dict, tgt: Target):
+    d = OUT / spec["id"]
+    refs = _refs_from_index(d) if (d / "index.json").exists() else None
     return build_visits(tgt, size_deg=spec["fov"], detectors=(1, 2, 3, 4, 5, 6), releases=spec.get("releases"),
-                        max_per_visit=spec.get("max_per_visit"), max_visits=spec.get("max_visits"),
-                        mjd_range=spec.get("mjd_range"), query_epoch=spec.get("query_epoch"))
+                        max_per_visit=None if refs else spec.get("max_per_visit"), max_visits=None if refs else spec.get("max_visits"),
+                        mjd_range=None if refs else spec.get("mjd_range"), query_epoch=spec.get("query_epoch"), refs=refs,
+                        epoch_ref=spec.get("epoch_ref"))
 
 
 def main() -> int:
