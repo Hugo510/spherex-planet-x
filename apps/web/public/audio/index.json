@@ -1,0 +1,64 @@
+{
+ "clips": {
+  "intro": {
+   "es": "/audio/intro.es.mp3",
+   "en": "/audio/intro.en.mp3"
+  },
+  "wise0855": {
+   "es": "/audio/wise0855.es.mp3",
+   "en": "/audio/wise0855.en.mp3"
+  },
+  "epsindib": {
+   "es": "/audio/epsindib.es.mp3",
+   "en": "/audio/epsindib.en.mp3"
+  },
+  "barnard": {
+   "es": "/audio/barnard.es.mp3",
+   "en": "/audio/barnard.en.mp3"
+  },
+  "rwaur": {
+   "es": "/audio/rwaur.es.mp3",
+   "en": "/audio/rwaur.en.mp3"
+  },
+  "rdra": {
+   "es": "/audio/rdra.es.mp3",
+   "en": "/audio/rdra.en.mp3"
+  },
+  "nep-deep-1": {
+   "es": "/audio/nep-deep-1.es.mp3",
+   "en": "/audio/nep-deep-1.en.mp3"
+  },
+  "nep-deep-2": {
+   "es": "/audio/nep-deep-2.es.mp3",
+   "en": "/audio/nep-deep-2.en.mp3"
+  },
+  "nep-variable": {
+   "es": "/audio/nep-variable.es.mp3",
+   "en": "/audio/nep-variable.en.mp3"
+  },
+  "random-1": {
+   "es": "/audio/random-1.es.mp3",
+   "en": "/audio/random-1.en.mp3"
+  },
+  "asteroid-1": {
+   "es": "/audio/asteroid-1.es.mp3",
+   "en": "/audio/asteroid-1.en.mp3"
+  },
+  "asteroid-2": {
+   "es": "/audio/asteroid-2.es.mp3",
+   "en": "/audio/asteroid-2.en.mp3"
+  },
+  "asteroid-7": {
+   "es": "/audio/asteroid-7.es.mp3",
+   "en": "/audio/asteroid-7.en.mp3"
+  }
+ },
+ "generated_at": "2026-11-14T18:15:01+00:00",
+ "model": "eleven_multilingual_v2",
+ "voices": {
+  "es": "EXAVITQu4vr4xnSDxMaL",
+  "en": "EXAVITQu4vr4xnSDxMaL",
+  "video": "onwK4e9ZLuTAKqWW03F9"
+ },
+ "note": "Narración sintética (ElevenLabs) de los textos propios del showcase; sin contenido generado por IA."
+}

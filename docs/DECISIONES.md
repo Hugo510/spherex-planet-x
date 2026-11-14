@@ -175,3 +175,10 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   (G 14.1, K 10.4, BP−RP 2.7) elegida con una consulta Gaia×2MASS a 1.5° del polo; 362 visitas en el showcase, sin saturar,
   45–55 mJy; curva de luz a λ fija (±1 canal) en el panel de espectro para cualquier campo.
 - **2026-11-14 16:35 UTC** — Showcase final: 12 campos, 36.4 MB (≤ 60 MB); suite verde; capturas y GIF regrabados.
+
+## Narración (tarde del 14 nov)
+
+- **2026-11-14 18:20 UTC** — ElevenLabs solo como presentación: clips MP3 (22 kHz, 32 kbps) del modo aula en ES/EN para los
+  12 campos más una intro, y la voz en off en inglés del guion de 30 s. Generados en build por `scripts/narration.py` con la
+  clave en `ELEVENLABS_API_KEY` (secreto del entorno; nunca en el repo ni en el navegador). Voz Sarah (multilingüe) para el
+  aula y Daniel para el video; modelo `eleven_multilingual_v2`. Declarado en «Use of AI» y README.

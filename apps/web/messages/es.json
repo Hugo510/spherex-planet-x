@@ -177,7 +177,10 @@
     "verdictRule": "Restar dos cuadros solo vale si tienen la misma λ: ≤ 2 canales OK, 3–8 aviso, > 8 bloqueado (residuo medido: 4 % + 1.4 %/canal).",
     "saturation": "Los píxeles magenta están saturados (OVERFLOW/BLOOM): se muestran y se cuentan, no se ocultan.",
     "known": "Haz clic sobre cualquier punto para preguntar «¿qué hay aquí?» a Gaia, CatWISE, AllWISE, SIMBAD y JPL.",
-    "tryIt": "Prueba: ← → para cambiar de visita; ↑ ↓ para recorrer la escalera de λ; modo A − B para ver el veredicto."
+    "tryIt": "Prueba: ← → para cambiar de visita; ↑ ↓ para recorrer la escalera de λ; modo A − B para ver el veredicto.",
+    "listen": "Escuchar",
+    "listenAria": "Narración del objeto",
+    "listenNote": "Voz sintética (ElevenLabs) que lee este mismo texto; generada en build, sin contenido científico generado por IA."
   },
   "limits": {
     "home": "Inicio",

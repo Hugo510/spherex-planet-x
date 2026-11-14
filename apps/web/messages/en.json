@@ -176,7 +176,10 @@
     "verdictRule": "Subtracting two frames is only valid at the same λ: ≤ 2 channels OK, 3–8 warning, > 8 blocked (measured residual: 4 % + 1.4 %/channel).",
     "saturation": "Magenta pixels are saturated (OVERFLOW/BLOOM): they are shown and counted, never hidden.",
     "known": "Click any point to ask “what is here?” to Gaia, CatWISE, AllWISE, SIMBAD and JPL.",
-    "tryIt": "Try: ← → to change visit; ↑ ↓ to walk the λ ladder; A − B mode to see the verdict."
+    "tryIt": "Try: ← → to change visit; ↑ ↓ to walk the λ ladder; A − B mode to see the verdict.",
+    "listen": "Listen",
+    "listenAria": "Object narration",
+    "listenNote": "Synthetic voice (ElevenLabs) reading this same text; generated at build time, no AI-generated science."
   },
   "limits": {
     "home": "Home",
