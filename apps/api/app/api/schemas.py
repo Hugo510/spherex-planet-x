@@ -77,6 +77,7 @@ class ExposureOut(FrameAssets, PhotometryOut):
     saturated_px: int
     artifact_bits: list[str]
     source_url: str
+    expected_xy: list[float] = []
 
 
 class VisitOut(FrameAssets, PhotometryOut):

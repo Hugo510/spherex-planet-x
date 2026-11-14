@@ -159,7 +159,7 @@ export function Viewer() {
   // ---- marcador de posición esperada (objeto con pm) y clic
   const markers = useMemo(() => {
     if (!visit || q.mode === "diff") return [];
-    let [x, y] = visit.expected_xy;
+    let [x, y] = exposure?.expected_xy?.length ? exposure.expected_xy : visit.expected_xy;
     if (showRef && ref && field && (field.target.pmra || field.target.pmdec)) {
       const p = propagate(field.target.ra, field.target.dec, field.target.epoch, field.target.pmra, field.target.pmdec, ref.epoch);
       const px = skyToPixel({ naxis: field.grid.naxis[0], ra: field.target.ra, dec: field.target.dec, pixscaleArcsec: field.target.pixscale_arcsec }, p.ra, p.dec);
@@ -168,7 +168,7 @@ export function Viewer() {
     const ms = [{ x, y, color: "#43d17a", r: 3, label: field?.target.pmra || field?.target.pmdec ? t("expected") : undefined }];
     if (q.pick) { const [px, py] = q.pick.split(",").map(Number); ms.push({ x: px, y: py, color: "#ffd166", r: 2, label: undefined }); }
     return ms;
-  }, [visit, q.mode, q.pick, field, t, showRef, ref]);
+  }, [visit, exposure, q.mode, q.pick, field, t, showRef, ref]);
 
   const onPick = (x: number, y: number) => setQ({ pick: `${x},${y}`, panel: q.panel === "none" ? "known" : q.panel });
 

@@ -208,6 +208,11 @@ export interface components {
             artifact_bits: string[];
             /** Source Url */
             source_url: string;
+            /**
+             * Expected Xy
+             * @default []
+             */
+            expected_xy: number[];
         };
         /** GridOut */
         GridOut: {

@@ -1065,6 +1065,14 @@
      "source_url": {
       "type": "string",
       "title": "Source Url"
+     },
+     "expected_xy": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "title": "Expected Xy",
+      "default": []
      }
     },
     "type": "object",

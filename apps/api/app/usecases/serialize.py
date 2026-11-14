@@ -53,7 +53,8 @@ def serialize_visit(v: Visit, store: FrameStore, fkey: str, target_epoch_xy: boo
             "lambda_um": em.lambda_um, "bandwidth_um": em.bandwidth_um, "release": em.ref.release,
             "doi": DOI.get(em.ref.release), "l2b_version": em.ref.l2b_version, "pipeline_version": em.pipeline_version,
             "flag_fraction": em.flag_fraction, "saturated_px": em.saturated_px, "artifact_bits": em.artifact_bits,
-            "source_url": "https://irsa.ipac.caltech.edu/" + em.ref.uri, **ea, **_ph(em.photometry),
+            "source_url": "https://irsa.ipac.caltech.edu/" + em.ref.uri, "expected_xy": list(em.expected_xy or ()),
+            **ea, **_ph(em.photometry),
         })
     return {
         "id": m.id, "detector": m.detector, "mjd_mean": m.mjd_mean, "iso": _iso(m.mjd_mean), "mjd_min": m.mjd_min,
