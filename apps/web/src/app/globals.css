@@ -13,3 +13,7 @@
 html, body { background: var(--bg); color: var(--fg); }
 body { font-family: ui-sans-serif, system-ui, sans-serif; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.btn { @apply rounded bg-[#2b3140] px-2 py-1 hover:bg-[#3a4154]; }
+.sel, .num { @apply rounded bg-[#2b3140] px-1 py-0.5; }
+.num { width: 4.5rem; }

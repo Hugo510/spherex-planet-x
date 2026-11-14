@@ -45,7 +45,7 @@ def get(url: str, *, headers: dict | None = None, retries: int = 4, params: dict
     raise RuntimeError(f"fallo tras {retries} intentos: {url[:160]}: {last}")
 
 
-def post(url: str, data: dict, *, retries: int = 3) -> httpx.Response:
+def post(url: str, data: dict, *, retries: int = 5) -> httpx.Response:
     last: Exception | None = None
     for i in range(retries):
         try:
@@ -53,7 +53,7 @@ def post(url: str, data: dict, *, retries: int = 3) -> httpx.Response:
             if r.status_code == 200:
                 return r
             last = RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
-            if 400 <= r.status_code < 500:
+            if 400 <= r.status_code < 500 and r.status_code != 429:
                 break
         except Exception as e:  # noqa: BLE001
             last = e

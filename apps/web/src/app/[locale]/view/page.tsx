@@ -1,7 +1,17 @@
 import { setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
+import { Viewer } from "@/components/viewer/Viewer";
+import { SiteHeader } from "@/components/SiteHeader";
 
 export default async function ViewPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <main className="p-4">Visor (F4)</main>;
+  return (
+    <main className="mx-auto max-w-7xl px-3 py-3">
+      <Suspense fallback={null}>
+        <SiteHeader />
+        <Viewer />
+      </Suspense>
+    </main>
+  );
 }

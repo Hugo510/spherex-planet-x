@@ -118,15 +118,25 @@ def build_visits(
     workers: int = 6,
     use_omega: bool = True,
     epoch_ref: float | None = None,
+    mjd_range: tuple[float, float] | None = None,
+    max_visits: int | None = None,
 ) -> FieldResult:
     ra_q, dec_q = target.at(2026.0)
     refs = [r for r in irsa_tap.find_exposures(ra_q, dec_q, releases=releases) if r.detector in detectors]
-    if max_per_visit:
+    if mjd_range:
+        refs = [r for r in refs if mjd_range[0] <= r.mjd <= mjd_range[1]]
+    if max_per_visit or max_visits:
         chosen = []
         for det in detectors:
-            for v in group_visits([r for r in refs if r.detector == det], key=lambda r: r.mjd):
-                step = max(1, len(v) // max_per_visit)
-                chosen.extend(v[::step][:max_per_visit])
+            visits_det = group_visits([r for r in refs if r.detector == det], key=lambda r: r.mjd)
+            if max_visits and len(visits_det) > max_visits:  # muestreo uniforme en el tiempo (campo profundo: 60+ visitas)
+                idx = np.unique(np.linspace(0, len(visits_det) - 1, max_visits).round().astype(int))
+                visits_det = [visits_det[i] for i in idx]
+            for v in visits_det:
+                if max_per_visit:
+                    step = max(1, len(v) // max_per_visit)
+                    v = v[::step][:max_per_visit]
+                chosen.extend(v)
         refs = sorted(chosen, key=lambda r: (r.mjd, r.detector))
     if max_exposures:
         refs = refs[:max_exposures]
@@ -156,7 +166,10 @@ def build_visits(
         visits: list[Visit] = []
         for vf in group_visits(det_frames, key=lambda f: f.native.mjd_avg):
             img, var, depth = coadd([f.img_phot for f in vf], [f.var for f in vf])
-            sat = np.any([f.sat for f in vf], axis=0)
+            # saturación del coadd: píxeles saturados en la MAYORÍA de las exposiciones (un OVERFLOW aislado en una sola
+            # exposición queda fuera del coadd por la máscara fatal y no "mancha" la visita); las exposiciones conservan la suya
+            sat_count = np.sum([f.sat for f in vf], axis=0)
+            sat = sat_count >= max(1, (len(vf) + 1) // 2)
             iso = _iso_day(float(np.mean([f.native.mjd_avg for f in vf])))
             meta = _visit_meta(f"D{det}_{iso}", det, vf, depth, sat)
             # fotometría en la posición esperada (pm propagado a la fecha media de la visita), recentrada

@@ -1,5 +1,74 @@
 {
-  "app": { "title": "The honest SPHEREx comparator", "tagline": "Every frame with its real λ. Every visit, a coadd. Every subtraction, a verdict." },
-  "nav": { "view": "Viewer", "limits": "Limits & method", "status": "Status", "lang": "Español" },
-  "home": { "cta": "Open the viewer", "showcase": "Showcase objects" }
+  "app": {
+    "title": "The honest SPHEREx comparator",
+    "tagline": "Every frame with its real λ. Every visit, a coadd. Every subtraction, a verdict."
+  },
+  "nav": {
+    "view": "Viewer",
+    "limits": "Limits & method",
+    "status": "Status",
+    "lang": "Español",
+    "brand": "honest comparator"
+  },
+  "home": {
+    "cta": "Open the viewer",
+    "showcase": "Showcase objects",
+    "objects": "Test objects",
+    "asteroids": "Asteroids (the only thing that visibly moves)",
+    "deep": "North Ecliptic Pole deep field",
+    "random": "Random field",
+    "thesis": "SPHEREx images the whole sky in 102 infrared colours, but every pixel sees a different colour: a naive ‘before and after’ lies. Here every frame shows its real λ, every visit collapses into a variance-weighted coadd, every subtraction passes a spectral verdict, and every point is cross-matched with Gaia DR3, CatWISE2020, AllWISE, SIMBAD and known asteroids. We do not promise to find Planet X: what cannot be seen, we state with numbers.",
+    "precomputedAt": "Showcase precomputed on"
+  },
+  "viewer": {
+    "timeline": "Timeline",
+    "visits": "visits",
+    "ladder": "λ ladder",
+    "coadd": "visit coadd",
+    "playback": "Playback",
+    "prev": "Previous visit",
+    "next": "Next visit",
+    "play": "Play",
+    "pause": "Pause",
+    "space": "space",
+    "speed": "Speed",
+    "reducedMotion": "Reduced motion on: use ← →",
+    "detector": "Detector",
+    "allDetectors": "all (warning)",
+    "mode": "Mode",
+    "blink": "Blink by visit",
+    "clip": "Clip",
+    "cmap": "Colormap",
+    "gray": "gray",
+    "invert": "Invert",
+    "expected": "expected position",
+    "liveUnavailable": "Live mode unavailable: this deployment serves precomputed fields only.",
+    "loadError": "Could not load the field.",
+    "loading": "Loading frames",
+    "allWarning": "Warning: “all detectors” mixes λ from 0.75 to 5 µm on one timeline; brightness changes with color, not variability.",
+    "keys": "Keys: ← → visit · ↑ ↓ λ ladder · space play/pause. The full state lives in the URL (permalink).",
+    "mean": "mean",
+    "visitOf": "visit of",
+    "channels": "channels",
+    "expectedResidual": "expected residual on stars",
+    "saturated": "{n} saturated px (OVERFLOW/BLOOM), painted, not masked",
+    "fluxAt": "flux at expected position:",
+    "unreliable": "unreliable (saturation in aperture)",
+    "precomputed": "precomputed",
+    "verdict": {
+      "ok": "OK: same λ (≤ 2 channels)",
+      "warn": "Warning: 3–8 channels apart; part of the residual is color",
+      "block": "Blocked: > 8 channels apart",
+      "blockHint": "|Δ| = {n} channels → expected residual ≈ {r} % of stellar flux. Compare coadds of the same detector or exposures ≤ 2 channels apart."
+    },
+    "panel": {
+      "known": "What is here?",
+      "spectrum": "Spectrum",
+      "aladin": "Aladin",
+      "class": "Classroom",
+      "knownSoon": "Click on the viewer to list neighbours (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
+      "spectrumSoon": "Spectrum and light curve in µJy.",
+      "aladinSoon": "Context with Aladin Lite (unWISE, 2MASS, Gaia DR3)."
+    }
+  }
 }

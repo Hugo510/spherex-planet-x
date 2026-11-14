@@ -1,0 +1,113 @@
+{
+ "generated_at": "2026-11-14T08:44:53+00:00",
+ "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
+ "fields": [
+  {
+   "id": "wise0855",
+   "kind": "object",
+   "title": {
+    "es": "WISE 0855\u22120714",
+    "en": "WISE 0855\u22120714"
+   },
+   "blurb": {
+    "es": "Enana marr\u00f3n Y, el objeto m\u00e1s fr\u00edo conocido fuera del Sistema Solar. Se mueve 8\u2033/a\u00f1o (1.3 px/a\u00f1o) y solo brilla en D5\u2013D6; en D1\u2013D4 lo que ves es una estrella Gaia G = 16.3 a 7\u2033 que no se mueve.",
+    "en": "Y-type brown dwarf, the coldest known object outside the Solar System. It moves 8\u2033/yr (1.3 px/yr) and shines only in D5\u2013D6; in D1\u2013D4 what you see is a Gaia G = 16.3 star 7\u2033 away that does not move."
+   },
+   "default_det": 5,
+   "ra": 133.75976931266203,
+   "dec": -7.242186407023074,
+   "epoch": 2025.9978,
+   "fov_deg": 0.1,
+   "n_visits": 42,
+   "n_exposures": 222,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1"
+   ],
+   "failures": 0,
+   "bytes": 2031656,
+   "seconds": 157.8,
+   "thumbnail": "/showcase/wise0855/visits/a61dce7b3447f332_D5_2025-05-06.png",
+   "asteroid": null
+  },
+  {
+   "id": "epsindib",
+   "kind": "object",
+   "title": {
+    "es": "\u03b5 Indi Ba/Bb",
+    "en": "\u03b5 Indi Ba/Bb"
+   },
+   "blurb": {
+    "es": "Par de enanas T a 6.7\u2032 de \u03b5 Indi A. No satura, se mueve 1 px/a\u00f1o y su \u00abparpadeo\u00bb entre exposiciones es su propio espectro: 6 mJy en la banda de agua de 1.39 \u00b5m frente a 40 mJy en el pico H.",
+    "en": "T-dwarf pair 6.7\u2032 from \u03b5 Indi A. It does not saturate, moves 1 px/yr, and its \u2018blinking\u2019 between exposures is its own spectrum: 6 mJy in the 1.39 \u00b5m water band vs 40 mJy at the H-band peak."
+   },
+   "default_det": 2,
+   "ra": 331.09645142608804,
+   "dec": -56.800598644561546,
+   "epoch": 2025.9108,
+   "fov_deg": 0.1,
+   "n_visits": 89,
+   "n_exposures": 326,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 3088061,
+   "seconds": 169.2,
+   "thumbnail": "/showcase/epsindib/visits/1e2edd51fb20787a_D2_2025-04-26.png",
+   "asteroid": null
+  },
+  {
+   "id": "barnard",
+   "kind": "object",
+   "title": {
+    "es": "Estrella de Barnard",
+    "en": "Barnard's Star"
+   },
+   "blurb": {
+    "es": "El mayor movimiento propio del cielo: 10.4\u2033/a\u00f1o = 1.7 px/a\u00f1o. Satura el n\u00facleo en D2 (OVERFLOW/BLOOM pintados en magenta); el anillo de la PSF se desplaza hacia el norte entre visitas.",
+    "en": "The largest proper motion in the sky: 10.4\u2033/yr = 1.7 px/yr. The core saturates in D2 (OVERFLOW/BLOOM painted magenta); the PSF ring shifts north between visits."
+   },
+   "default_det": 2,
+   "ra": 269.44624941821587,
+   "dec": 4.768446394071849,
+   "epoch": 2026.084,
+   "fov_deg": 0.1,
+   "n_visits": 76,
+   "n_exposures": 263,
+   "detectors": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "releases": [
+    "dr1",
+    "qr3"
+   ],
+   "failures": 0,
+   "bytes": 1893249,
+   "seconds": 169.7,
+   "thumbnail": "/showcase/barnard/visits/ba0317fffe0f2a53_D2_2026-03-15.png",
+   "asteroid": null
+  }
+ ]
+}

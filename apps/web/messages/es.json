@@ -1,5 +1,74 @@
 {
-  "app": { "title": "El comparador honesto de SPHEREx", "tagline": "Cada cuadro con su λ real. Cada visita, un coadd. Cada resta, un veredicto." },
-  "nav": { "view": "Visor", "limits": "Límites y método", "status": "Estado", "lang": "English" },
-  "home": { "cta": "Abrir el visor", "showcase": "Objetos de muestra" }
+  "app": {
+    "title": "El comparador honesto de SPHEREx",
+    "tagline": "Cada cuadro con su λ real. Cada visita, un coadd. Cada resta, un veredicto."
+  },
+  "nav": {
+    "view": "Visor",
+    "limits": "Límites y método",
+    "status": "Estado",
+    "lang": "English",
+    "brand": "comparador honesto"
+  },
+  "home": {
+    "cta": "Abrir el visor",
+    "showcase": "Objetos de muestra",
+    "objects": "Objetos de prueba",
+    "asteroids": "Asteroides (lo único que se mueve a ojo)",
+    "deep": "Campo profundo del polo norte eclíptico",
+    "random": "Campo aleatorio",
+    "thesis": "SPHEREx fotografía todo el cielo en 102 colores infrarrojos, pero cada píxel ve un color distinto: un simple «antes y después» miente. Aquí cada cuadro muestra su λ real, cada visita se colapsa en un coadd con su varianza, cada resta pasa un veredicto espectral y cada punto se cruza con Gaia DR3, CatWISE2020, AllWISE, SIMBAD y los asteroides conocidos. No prometemos encontrar el Planeta X: lo que no se puede ver, lo decimos con números.",
+    "precomputedAt": "Showcase precomputado el"
+  },
+  "viewer": {
+    "timeline": "Línea de tiempo",
+    "visits": "visitas",
+    "ladder": "Escalera de λ",
+    "coadd": "coadd de la visita",
+    "playback": "Reproducción",
+    "prev": "Visita anterior",
+    "next": "Visita siguiente",
+    "play": "Reproducir",
+    "pause": "Pausa",
+    "space": "espacio",
+    "speed": "Velocidad",
+    "reducedMotion": "Movimiento reducido activo: usa ← →",
+    "detector": "Detector",
+    "allDetectors": "todos (aviso)",
+    "mode": "Modo",
+    "blink": "Blink por visita",
+    "clip": "Recorte",
+    "cmap": "Mapa de color",
+    "gray": "gris",
+    "invert": "Invertir",
+    "expected": "posición esperada",
+    "liveUnavailable": "Modo en vivo no disponible: este despliegue solo sirve los campos precomputados.",
+    "loadError": "No se pudo cargar el campo.",
+    "loading": "Cargando cuadros",
+    "allWarning": "Aviso: «todos los detectores» mezcla λ de 0.75 a 5 µm en una misma línea de tiempo; el brillo cambia por color, no por variabilidad.",
+    "keys": "Teclado: ← → visita · ↑ ↓ escalera de λ · espacio reproducir/pausar. El estado completo está en la URL (permalink).",
+    "mean": "media",
+    "visitOf": "visita de",
+    "channels": "canales",
+    "expectedResidual": "residuo esperado en estrellas",
+    "saturated": "{n} px saturados (OVERFLOW/BLOOM), pintados, no enmascarados",
+    "fluxAt": "flujo en la posición esperada:",
+    "unreliable": "no fiable (saturación en la apertura)",
+    "precomputed": "precomputado",
+    "verdict": {
+      "ok": "OK: misma λ (≤ 2 canales)",
+      "warn": "Aviso: 3–8 canales; parte del residuo es color",
+      "block": "Bloqueado: > 8 canales de diferencia",
+      "blockHint": "|Δ| = {n} canales → residuo esperado ≈ {r} % del flujo estelar. Compara coadds del mismo detector o exposiciones a ≤ 2 canales."
+    },
+    "panel": {
+      "known": "¿Qué hay aquí?",
+      "spectrum": "Espectro",
+      "aladin": "Aladin",
+      "class": "Aula",
+      "knownSoon": "Haz clic en el visor para listar vecinos (Gaia, CatWISE, AllWISE, SIMBAD, JPL).",
+      "spectrumSoon": "Espectro y curva de luz en µJy.",
+      "aladinSoon": "Contexto con Aladin Lite (unWISE, 2MASS, Gaia DR3)."
+    }
+  }
 }
