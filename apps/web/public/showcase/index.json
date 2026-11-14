@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:45:17+00:00",
+ "generated_at": "2026-11-14T09:48:18+00:00",
  "attribution": "SPHEREx QR2 DOI 10.26131/IRSA652 \u00b7 QR3 DOI 10.26131/IRSA662 \u00b7 DR1 (reprocesamiento de QR2, nov 2026) \u00b7 NASA/IPAC Infrared Science Archive. Gaia DR3 (ESA/Gaia/DPAC), CatWISE2020, AllWISE, SIMBAD (CDS), JPL SSD.",
  "fields": [
   {
@@ -301,12 +301,12 @@
     "en": "Bright asteroid (V \u2248 9.1) observed by SPHEREx 83\u00b0 from the Sun. Within a visit it moves several pixels between exposures: the only thing that visibly \u2018moves\u2019 in SPHEREx."
    },
    "default_det": 1,
-   "ra": 13.866536426200078,
-   "dec": -5.754038897519985,
-   "epoch": 2025.4793,
+   "ra": 14.200046553401762,
+   "dec": -5.692357454639681,
+   "epoch": 2025.4834,
    "fov_deg": 0.2,
    "n_visits": 2,
-   "n_exposures": 8,
+   "n_exposures": 16,
    "detectors": [
     1,
     4
@@ -315,9 +315,9 @@
     "dr1"
    ],
    "failures": 0,
-   "bytes": 370467,
-   "seconds": 129.3,
-   "thumbnail": "/showcase/asteroid-1/visits/04978b8ab2ddbbe0_D1_2025-06-24.png",
+   "bytes": 465123,
+   "seconds": 146.6,
+   "thumbnail": "/showcase/asteroid-1/visits/4e580fae436e5e29_D1_2025-06-26.png",
    "asteroid": {
     "asteroid": "1",
     "ra": 13.90957,
@@ -363,9 +363,9 @@
     "dr1"
    ],
    "failures": 0,
-   "bytes": 577384,
-   "seconds": 130.5,
-   "thumbnail": "/showcase/asteroid-2/visits/d54682b97bdaa71b_D1_2025-05-06.png",
+   "bytes": 577906,
+   "seconds": 1.8,
+   "thumbnail": "/showcase/asteroid-2/visits/6cb2072c62bc3233_D1_2025-05-06.png",
    "asteroid": {
     "asteroid": "2",
     "ra": 314.91288,
@@ -411,9 +411,9 @@
     "dr1"
    ],
    "failures": 0,
-   "bytes": 380847,
-   "seconds": 169.1,
-   "thumbnail": "/showcase/asteroid-7/visits/7ceff95c1b9ab88a_D1_2025-11-25.png",
+   "bytes": 381099,
+   "seconds": 0.8,
+   "thumbnail": "/showcase/asteroid-7/visits/03306f3e11229ff5_D1_2025-11-25.png",
    "asteroid": {
     "asteroid": "7",
     "ra": 159.38818,
