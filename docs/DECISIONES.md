@@ -223,3 +223,8 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   las peticiones a los 150 s, por lo que `?wait=true` no debe usarse tras Modal (el front sondea el 202); el `commit`
   del Volume pasa a `await volume.commit.aio()`. Durante la prueba IRSA TAP no respondió (timeouts de 90 s también desde
   el entorno de build): el modo en vivo devuelve 202/503 con reintento, el showcase no depende de IRSA.
+
+- **2026-11-15 00:20 UTC** — Modo en vivo verificado de punta a punta en producción (WISE 0855 D5 construido en Modal).
+  Con IRSA degradado, la etapa final tardó ~12 min porque la referencia AllWISE 2010 (IBE) reintentaba 4 veces con
+  120 s cada una; como la referencia es opcional, se acota a 2 reintentos (peor caso ≈ 4 min) y el campo se entrega sin
+  referencia si IRSA no responde.

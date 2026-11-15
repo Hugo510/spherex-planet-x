@@ -26,7 +26,7 @@ ALLWISE_W2_EPOCH_HINT = 2010.4  # las exposiciones del atlas van de 2010-01 a 20
 
 
 def _coadd_id(ra: float, dec: float) -> str | None:
-    r = http.get(IBE_SEARCH, params={"POS": f"{ra:.5f},{dec:.5f}", "mcen": ""})
+    r = http.get(IBE_SEARCH, params={"POS": f"{ra:.5f},{dec:.5f}", "mcen": ""}, retries=2)  # referencia opcional: acotar la espera
     for line in r.text.splitlines():
         if line.startswith(("\\", "|")):
             continue
@@ -49,7 +49,7 @@ def allwise_w2_on_grid(grid: Grid, band: int = 2) -> dict | None:
         return None
     size = grid.size_deg * 1.6  # margen para la rotación/orientación SIN del atlas
     url = f"{IBE_DATA}/{cid[:2]}/{cid[:4]}/{cid}/{cid}-w{band}-int-3.fits?center={grid.ra:.5f},{grid.dec:.5f}&size={size:.3f}deg"
-    r = http.get(url)
+    r = http.get(url, retries=2)
     raw = gzip.decompress(r.content) if r.content[:2] == b"\x1f\x8b" else r.content  # IRSA sirve el atlas como .fits.gz
     with fits.open(io.BytesIO(raw), memmap=False) as h:
         hdr = h[0].header
