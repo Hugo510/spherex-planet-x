@@ -228,3 +228,8 @@ Registro de decisiones tomadas durante el evento. Una línea por decisión, con 
   Con IRSA degradado, la etapa final tardó ~12 min porque la referencia AllWISE 2010 (IBE) reintentaba 4 veces con
   120 s cada una; como la referencia es opcional, se acota a 2 reintentos (peor caso ≈ 4 min) y el campo se entrega sin
   referencia si IRSA no responde.
+
+- **2026-11-15 02:17 UTC** — Proyecto enviado a evaluación en la plataforma de Space Apps (Submit for Judging). Enlaces
+  entregados: sitio `https://spherex-honest.vercel.app`, video en Google Drive (demo.mp4 con marca de agua), repositorio
+  público. A partir de aquí `main` se congela salvo correcciones críticas; la API de Modal queda con un contenedor
+  activo hasta que termine la evaluación.
